@@ -1,0 +1,820 @@
+***************
+** Arguments **
+***************
+backbone: 
+config_file: configs/trainers/RPO_prime/main_tmp1_0.1sdl.yaml
+dataset_config_file: configs/datasets/food101.yaml
+eval_only: False
+head: 
+load_epoch: None
+model_dir: 
+no_train: False
+opts: ['DATASET.NUM_SHOTS', '16', 'DATASET.SUBSAMPLE_CLASSES', 'base']
+output_dir: output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3
+resume: 
+root: /shared/s2/lab01/dataset/clip
+seed: 3
+source_domains: None
+target_domains: None
+trainer: RPO_prime_sdl
+transforms: None
+************
+** Config **
+************
+DATALOADER:
+  K_TRANSFORMS: 1
+  NUM_WORKERS: 16
+  RETURN_IMG0: False
+  TEST:
+    BATCH_SIZE: 100
+    SAMPLER: SequentialSampler
+  TRAIN_U:
+    BATCH_SIZE: 32
+    N_DOMAIN: 0
+    N_INS: 16
+    SAME_AS_X: True
+    SAMPLER: RandomSampler
+  TRAIN_X:
+    BATCH_SIZE: 4
+    N_DOMAIN: 0
+    N_INS: 16
+    SAMPLER: RandomSampler
+DATASET:
+  ALL_AS_UNLABELED: False
+  CIFAR_C_LEVEL: 1
+  CIFAR_C_TYPE: 
+  NAME: Food101
+  NUM_LABELED: -1
+  NUM_SHOTS: 16
+  PROMPT: a photo of a _.
+  ROOT: /shared/s2/lab01/dataset/clip
+  SOURCE_DOMAINS: ()
+  STL10_FOLD: -1
+  SUBSAMPLE_CLASSES: base
+  TARGET_DOMAINS: ()
+  VAL_PERCENT: 0.1
+INPUT:
+  COLORJITTER_B: 0.4
+  COLORJITTER_C: 0.4
+  COLORJITTER_H: 0.1
+  COLORJITTER_S: 0.4
+  CROP_PADDING: 4
+  CUTOUT_LEN: 16
+  CUTOUT_N: 1
+  GB_K: 21
+  GB_P: 0.5
+  GN_MEAN: 0.0
+  GN_STD: 0.15
+  INTERPOLATION: bicubic
+  NO_TRANSFORM: False
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  RANDAUGMENT_M: 10
+  RANDAUGMENT_N: 2
+  RGS_P: 0.2
+  RRCROP_SCALE: (0.08, 1.0)
+  SIZE: (224, 224)
+  TRANSFORMS: ('random_resized_crop', 'random_flip', 'normalize')
+MODEL:
+  BACKBONE:
+    NAME: ViT-B/16
+    PRETRAINED: True
+  HEAD:
+    ACTIVATION: relu
+    BN: True
+    DROPOUT: 0.0
+    HIDDEN_LAYERS: ()
+    NAME: 
+  INIT_WEIGHTS: 
+OPTIM:
+  ADAM_BETA1: 0.9
+  ADAM_BETA2: 0.999
+  BASE_LR_MULT: 0.1
+  GAMMA: 0.1
+  LR: 0.01
+  LR_SCHEDULER: cosine
+  MAX_EPOCH: 30
+  MOMENTUM: 0.9
+  NAME: sgd
+  NEW_LAYERS: ()
+  RMSPROP_ALPHA: 0.99
+  SGD_DAMPNING: 0
+  SGD_NESTEROV: False
+  STAGED_LR: False
+  STEPSIZE: (-1,)
+  WARMUP_CONS_LR: 1e-05
+  WARMUP_EPOCH: -1
+  WARMUP_MIN_LR: 1e-05
+  WARMUP_RECOUNT: True
+  WARMUP_TYPE: linear
+  WEIGHT_DECAY: 0.0005
+OUTPUT_DIR: output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3
+RESUME: 
+SEED: 3
+TEST:
+  COMPUTE_CMAT: False
+  EVALUATOR: Classification
+  FINAL_MODEL: best_val
+  NO_TEST: False
+  PER_CLASS_RESULT: False
+  SPLIT: test
+TRAIN:
+  CHECKPOINT_FREQ: 10
+  COUNT_ITER: train_x
+  PRINT_FREQ: 20
+TRAINER:
+  CDAC:
+    CLASS_LR_MULTI: 10
+    P_THRESH: 0.95
+    RAMPUP_COEF: 30
+    RAMPUP_ITRS: 1000
+    STRONG_TRANSFORMS: ()
+    TOPK_MATCH: 5
+  COCOOP:
+    CTX_INIT: a photo of a
+    N_CTX: 4
+    PREC: fp16
+  COOP:
+    CLASS_TOKEN_POSITION: end
+    CSC: False
+    CTX_INIT: 
+    N_CTX: 16
+    PREC: fp16
+  CROSSGRAD:
+    ALPHA_D: 0.5
+    ALPHA_F: 0.5
+    EPS_D: 1.0
+    EPS_F: 1.0
+  DAEL:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 0.5
+  DAELDG:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 0.5
+  DDAIG:
+    ALPHA: 0.5
+    CLAMP: False
+    CLAMP_MAX: 1.0
+    CLAMP_MIN: -1.0
+    G_ARCH: 
+    LMDA: 0.3
+    WARMUP: 0
+  DOMAINMIX:
+    ALPHA: 1.0
+    BETA: 1.0
+    TYPE: crossdomain
+  ENTMIN:
+    LMDA: 0.001
+  FIXMATCH:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 1.0
+  LP:
+    PREC: fp16
+    PROMPT: A photo of a {cls_name}
+  M3SDA:
+    LMDA: 0.5
+    N_STEP_F: 4
+  MCD:
+    N_STEP_F: 4
+  MEANTEACHER:
+    EMA_ALPHA: 0.999
+    RAMPUP: 5
+    WEIGHT_U: 1.0
+  MIXMATCH:
+    MIXUP_BETA: 0.75
+    RAMPUP: 20000
+    TEMP: 2.0
+    WEIGHT_U: 100.0
+  MME:
+    LMDA: 0.1
+  NAME: RPO_prime_sdl
+  RPO:
+    CTX_INIT: a photo of a
+    K1: 18
+    K2: 6
+    PREC: fp16
+    cov_loss: 500
+    sdl_loss: 1
+  SE:
+    CONF_THRE: 0.95
+    EMA_ALPHA: 0.999
+    RAMPUP: 300
+USE_CUDA: True
+VERBOSE: True
+VERSION: 1
+Collecting env info ...
+** System info **
+PyTorch version: 1.13.1
+Is debug build: False
+CUDA used to build PyTorch: 11.7
+ROCM used to build PyTorch: N/A
+
+OS: Ubuntu 20.04.6 LTS (x86_64)
+GCC version: (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+Clang version: Could not collect
+CMake version: version 3.16.3
+Libc version: glibc-2.10
+
+Python version: 3.7.12 | packaged by conda-forge | (default, Oct 26 2021, 06:08:21)  [GCC 9.4.0] (64-bit runtime)
+Python platform: Linux-5.4.0-100-generic-x86_64-with-debian-bullseye-sid
+Is CUDA available: True
+CUDA runtime version: Could not collect
+CUDA_MODULE_LOADING set to: LAZY
+GPU models and configuration: GPU 0: NVIDIA GeForce RTX 3090
+Nvidia driver version: 520.61.05
+cuDNN version: Could not collect
+HIP runtime version: N/A
+MIOpen runtime version: N/A
+Is XNNPACK available: True
+
+Versions of relevant libraries:
+[pip3] imagenetv2-pytorch==0.1
+[pip3] numpy==1.21.5
+[pip3] torch==1.13.1
+[pip3] torchvision==0.14.1
+[conda] blas                      1.0                         mkl  
+[conda] cudatoolkit               10.2.89              hfd86e86_1  
+[conda] ffmpeg                    4.3                  hf484d3e_0    pytorch
+[conda] imagenetv2-pytorch        0.1                      pypi_0    pypi
+[conda] mkl                       2021.4.0           h06a4308_640  
+[conda] mkl-service               2.4.0            py37h7f8727e_0  
+[conda] mkl_fft                   1.3.1            py37hd3c417c_0  
+[conda] mkl_random                1.2.2            py37h51133e4_0  
+[conda] numpy                     1.21.6                   pypi_0    pypi
+[conda] numpy-base                1.21.5           py37ha15fc14_3  
+[conda] pytorch                   1.13.1          py3.7_cuda11.7_cudnn8.5.0_0    pytorch
+[conda] pytorch-cuda              11.7                 h778d358_5    pytorch
+[conda] pytorch-mutex             1.0                        cuda    pytorch
+[conda] torchvision               0.14.1               py37_cu117    pytorch
+        Pillow (9.4.0)
+
+requested:RPO_prime_sdl
+Loading trainer: RPO_prime_sdl
+requested:Food101
+Loading dataset: Food101
+Reading split from /shared/s2/lab01/dataset/clip/food-101/split_zhou_Food101.json
+Loading preprocessed few-shot data from /shared/s2/lab01/dataset/clip/food-101/split_fewshot_taesup/shot_16-seed_3.pkl
+SUBSAMPLE BASE CLASSES!
+816 10200 15300
+Building transform_train
++ random resized crop (size=(224, 224), scale=(0.08, 1.0))
++ random flip
++ to torch tensor of range [0, 1]
++ normalization (mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
+Building transform_test
++ resize the smaller edge to 224
++ 224x224 center crop
++ to torch tensor of range [0, 1]
++ normalization (mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
+---------  -------
+Dataset    Food101
+# classes  51
+# train_x  816
+# val      10,200
+# test     15,300
+---------  -------
+Loading CLIP (backbone: ViT-B/16)
+Building custom CLIP
+Parameters to be updated: {'prompt_learner.text_prompt', 'prompt_learner.img_prompt'}
+requested:Classification
+Loading evaluator: Classification
+No checkpoint found, train from scratch
+Initialize tensorboard (log_dir=output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/tensorboard)
+epoch [1/30] batch [20/204] time 0.251 (0.379) data 0.000 (0.057) loss 0.3167 (1.0138) lr 1.0000e-02 eta 0:38:31
+epoch [1/30] batch [40/204] time 0.254 (0.317) data 0.000 (0.029) loss 0.6079 (1.4706) lr 1.0000e-02 eta 0:32:05
+epoch [1/30] batch [60/204] time 0.250 (0.296) data 0.000 (0.019) loss 0.9360 (1.4911) lr 1.0000e-02 eta 0:29:51
+epoch [1/30] batch [80/204] time 0.250 (0.286) data 0.000 (0.014) loss 3.7363 (1.5056) lr 1.0000e-02 eta 0:28:49
+epoch [1/30] batch [100/204] time 0.249 (0.280) data 0.000 (0.012) loss 0.1252 (1.4901) lr 1.0000e-02 eta 0:28:04
+epoch [1/30] batch [120/204] time 0.257 (0.276) data 0.001 (0.010) loss 1.4961 (1.5088) lr 1.0000e-02 eta 0:27:33
+epoch [1/30] batch [140/204] time 0.250 (0.272) data 0.000 (0.008) loss 0.2598 (1.4221) lr 1.0000e-02 eta 0:27:08
+epoch [1/30] batch [160/204] time 0.256 (0.270) data 0.000 (0.007) loss 2.4805 (1.3946) lr 1.0000e-02 eta 0:26:50
+epoch [1/30] batch [180/204] time 0.241 (0.268) data 0.000 (0.007) loss 0.3538 (1.4004) lr 1.0000e-02 eta 0:26:31
+epoch [1/30] batch [200/204] time 0.249 (0.266) data 0.000 (0.006) loss 0.4561 (1.3626) lr 1.0000e-02 eta 0:26:12
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,127
+* accuracy: 89.5%
+* error: 10.5%
+* macro_f1: 89.4%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model-best.pth.tar
+epoch [2/30] batch [20/204] time 0.252 (0.303) data 0.000 (0.040) loss 0.0706 (0.9077) lr 9.9726e-03 eta 0:29:46
+epoch [2/30] batch [40/204] time 0.258 (0.278) data 0.000 (0.020) loss 5.6445 (1.2015) lr 9.9726e-03 eta 0:27:15
+epoch [2/30] batch [60/204] time 0.250 (0.271) data 0.000 (0.013) loss 0.0939 (1.1587) lr 9.9726e-03 eta 0:26:24
+epoch [2/30] batch [80/204] time 0.255 (0.266) data 0.000 (0.010) loss 0.2996 (1.1716) lr 9.9726e-03 eta 0:25:54
+epoch [2/30] batch [100/204] time 0.251 (0.264) data 0.000 (0.008) loss 1.2373 (1.2443) lr 9.9726e-03 eta 0:25:37
+epoch [2/30] batch [120/204] time 0.252 (0.263) data 0.000 (0.007) loss 1.5830 (1.2034) lr 9.9726e-03 eta 0:25:22
+epoch [2/30] batch [140/204] time 0.252 (0.262) data 0.000 (0.006) loss 0.5449 (1.2622) lr 9.9726e-03 eta 0:25:12
+epoch [2/30] batch [160/204] time 0.253 (0.261) data 0.000 (0.005) loss -0.0374 (1.2518) lr 9.9726e-03 eta 0:25:00
+epoch [2/30] batch [180/204] time 0.241 (0.259) data 0.000 (0.005) loss 1.9629 (1.2588) lr 9.9726e-03 eta 0:24:46
+epoch [2/30] batch [200/204] time 0.241 (0.257) data 0.000 (0.004) loss 0.3362 (1.2473) lr 9.9726e-03 eta 0:24:31
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,164
+* accuracy: 89.8%
+* error: 10.2%
+* macro_f1: 89.8%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model-best.pth.tar
+epoch [3/30] batch [20/204] time 0.254 (0.302) data 0.000 (0.038) loss 0.8086 (0.6422) lr 9.8907e-03 eta 0:28:36
+epoch [3/30] batch [40/204] time 0.258 (0.277) data 0.000 (0.019) loss 1.5977 (0.9914) lr 9.8907e-03 eta 0:26:13
+epoch [3/30] batch [60/204] time 0.259 (0.269) data 0.000 (0.013) loss 4.4258 (1.3699) lr 9.8907e-03 eta 0:25:21
+epoch [3/30] batch [80/204] time 0.247 (0.265) data 0.000 (0.010) loss 2.3809 (1.3923) lr 9.8907e-03 eta 0:24:52
+epoch [3/30] batch [100/204] time 0.249 (0.262) data 0.000 (0.008) loss -0.0517 (1.2864) lr 9.8907e-03 eta 0:24:31
+epoch [3/30] batch [120/204] time 0.274 (0.260) data 0.000 (0.006) loss 0.1492 (1.2418) lr 9.8907e-03 eta 0:24:16
+epoch [3/30] batch [140/204] time 0.255 (0.259) data 0.000 (0.006) loss 3.6875 (1.2955) lr 9.8907e-03 eta 0:24:04
+epoch [3/30] batch [160/204] time 0.246 (0.258) data 0.000 (0.005) loss -0.0415 (1.2498) lr 9.8907e-03 eta 0:23:54
+epoch [3/30] batch [180/204] time 0.242 (0.257) data 0.000 (0.004) loss 0.1443 (1.1822) lr 9.8907e-03 eta 0:23:44
+epoch [3/30] batch [200/204] time 0.241 (0.256) data 0.000 (0.004) loss 0.3003 (1.1962) lr 9.8907e-03 eta 0:23:30
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,161
+* accuracy: 89.8%
+* error: 10.2%
+* macro_f1: 89.8%
+epoch [4/30] batch [20/204] time 0.250 (0.296) data 0.000 (0.040) loss 0.0515 (1.0082) lr 9.7553e-03 eta 0:27:04
+epoch [4/30] batch [40/204] time 0.252 (0.275) data 0.000 (0.020) loss 3.8574 (1.4082) lr 9.7553e-03 eta 0:25:01
+epoch [4/30] batch [60/204] time 0.252 (0.267) data 0.000 (0.014) loss 1.2686 (1.3109) lr 9.7553e-03 eta 0:24:14
+epoch [4/30] batch [80/204] time 0.251 (0.263) data 0.000 (0.010) loss 3.8047 (1.1985) lr 9.7553e-03 eta 0:23:49
+epoch [4/30] batch [100/204] time 0.256 (0.262) data 0.000 (0.008) loss 2.1191 (1.3161) lr 9.7553e-03 eta 0:23:38
+epoch [4/30] batch [120/204] time 0.252 (0.261) data 0.000 (0.007) loss 0.0266 (1.2729) lr 9.7553e-03 eta 0:23:25
+epoch [4/30] batch [140/204] time 0.253 (0.260) data 0.000 (0.006) loss 0.1704 (1.2270) lr 9.7553e-03 eta 0:23:15
+epoch [4/30] batch [160/204] time 0.252 (0.259) data 0.000 (0.005) loss 1.8613 (1.1885) lr 9.7553e-03 eta 0:23:07
+epoch [4/30] batch [180/204] time 0.242 (0.258) data 0.000 (0.005) loss 1.5303 (1.1724) lr 9.7553e-03 eta 0:22:56
+epoch [4/30] batch [200/204] time 0.242 (0.257) data 0.000 (0.004) loss 2.0703 (1.1561) lr 9.7553e-03 eta 0:22:43
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,167
+* accuracy: 89.9%
+* error: 10.1%
+* macro_f1: 89.8%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model-best.pth.tar
+epoch [5/30] batch [20/204] time 0.253 (0.303) data 0.000 (0.039) loss 3.2305 (1.1465) lr 9.5677e-03 eta 0:26:40
+epoch [5/30] batch [40/204] time 0.254 (0.278) data 0.000 (0.019) loss 2.1777 (1.1748) lr 9.5677e-03 eta 0:24:23
+epoch [5/30] batch [60/204] time 0.257 (0.270) data 0.000 (0.013) loss 0.4092 (1.0935) lr 9.5677e-03 eta 0:23:37
+epoch [5/30] batch [80/204] time 0.255 (0.267) data 0.000 (0.010) loss 2.8262 (1.1340) lr 9.5677e-03 eta 0:23:12
+epoch [5/30] batch [100/204] time 0.253 (0.264) data 0.000 (0.008) loss 0.0972 (1.1584) lr 9.5677e-03 eta 0:22:55
+epoch [5/30] batch [120/204] time 0.252 (0.262) data 0.000 (0.007) loss 0.0947 (1.0836) lr 9.5677e-03 eta 0:22:39
+epoch [5/30] batch [140/204] time 0.256 (0.261) data 0.000 (0.006) loss 2.3926 (1.0514) lr 9.5677e-03 eta 0:22:28
+epoch [5/30] batch [160/204] time 0.253 (0.260) data 0.000 (0.005) loss 2.1660 (1.0700) lr 9.5677e-03 eta 0:22:17
+epoch [5/30] batch [180/204] time 0.244 (0.259) data 0.000 (0.005) loss 1.7490 (1.1097) lr 9.5677e-03 eta 0:22:06
+epoch [5/30] batch [200/204] time 0.241 (0.258) data 0.000 (0.004) loss 0.1417 (1.0835) lr 9.5677e-03 eta 0:21:55
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,161
+* accuracy: 89.8%
+* error: 10.2%
+* macro_f1: 89.8%
+epoch [6/30] batch [20/204] time 0.265 (0.301) data 0.000 (0.042) loss 0.0547 (0.6772) lr 9.3301e-03 eta 0:25:28
+epoch [6/30] batch [40/204] time 0.262 (0.278) data 0.000 (0.021) loss 0.0325 (0.8876) lr 9.3301e-03 eta 0:23:24
+epoch [6/30] batch [60/204] time 0.247 (0.270) data 0.000 (0.014) loss -0.0126 (0.8900) lr 9.3301e-03 eta 0:22:38
+epoch [6/30] batch [80/204] time 0.253 (0.267) data 0.000 (0.011) loss 1.7383 (0.8692) lr 9.3301e-03 eta 0:22:19
+epoch [6/30] batch [100/204] time 0.255 (0.265) data 0.000 (0.009) loss 1.4941 (0.9583) lr 9.3301e-03 eta 0:22:02
+epoch [6/30] batch [120/204] time 0.252 (0.263) data 0.000 (0.007) loss 1.9238 (0.9167) lr 9.3301e-03 eta 0:21:47
+epoch [6/30] batch [140/204] time 0.251 (0.262) data 0.000 (0.006) loss 0.1465 (0.9202) lr 9.3301e-03 eta 0:21:37
+epoch [6/30] batch [160/204] time 0.251 (0.260) data 0.000 (0.005) loss 0.0140 (0.9020) lr 9.3301e-03 eta 0:21:26
+epoch [6/30] batch [180/204] time 0.246 (0.259) data 0.000 (0.005) loss 0.4270 (0.8849) lr 9.3301e-03 eta 0:21:14
+epoch [6/30] batch [200/204] time 0.241 (0.257) data 0.000 (0.004) loss 0.2397 (0.9440) lr 9.3301e-03 eta 0:21:01
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,167
+* accuracy: 89.9%
+* error: 10.1%
+* macro_f1: 89.8%
+epoch [7/30] batch [20/204] time 0.252 (0.294) data 0.000 (0.040) loss -0.0097 (0.5723) lr 9.0451e-03 eta 0:23:55
+epoch [7/30] batch [40/204] time 0.254 (0.274) data 0.000 (0.020) loss 3.8828 (0.7959) lr 9.0451e-03 eta 0:22:08
+epoch [7/30] batch [60/204] time 0.256 (0.268) data 0.000 (0.014) loss 6.0469 (0.9043) lr 9.0451e-03 eta 0:21:38
+epoch [7/30] batch [80/204] time 0.251 (0.265) data 0.000 (0.010) loss 2.5918 (0.9407) lr 9.0451e-03 eta 0:21:13
+epoch [7/30] batch [100/204] time 0.253 (0.262) data 0.000 (0.008) loss 0.0883 (0.8970) lr 9.0451e-03 eta 0:20:57
+epoch [7/30] batch [120/204] time 0.247 (0.260) data 0.000 (0.007) loss 0.0802 (0.9650) lr 9.0451e-03 eta 0:20:44
+epoch [7/30] batch [140/204] time 0.260 (0.260) data 0.000 (0.006) loss 0.6133 (0.9997) lr 9.0451e-03 eta 0:20:35
+epoch [7/30] batch [160/204] time 0.257 (0.259) data 0.000 (0.005) loss 0.2585 (1.0051) lr 9.0451e-03 eta 0:20:26
+epoch [7/30] batch [180/204] time 0.245 (0.258) data 0.000 (0.005) loss 2.2070 (1.0089) lr 9.0451e-03 eta 0:20:16
+epoch [7/30] batch [200/204] time 0.244 (0.257) data 0.000 (0.004) loss 0.8022 (1.0262) lr 9.0451e-03 eta 0:20:04
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,179
+* accuracy: 90.0%
+* error: 10.0%
+* macro_f1: 89.9%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model-best.pth.tar
+epoch [8/30] batch [20/204] time 0.255 (0.302) data 0.000 (0.038) loss 1.9834 (0.7340) lr 8.7157e-03 eta 0:23:31
+epoch [8/30] batch [40/204] time 0.254 (0.278) data 0.000 (0.019) loss 4.2383 (0.8503) lr 8.7157e-03 eta 0:21:34
+epoch [8/30] batch [60/204] time 0.247 (0.270) data 0.000 (0.013) loss -0.0040 (1.0445) lr 8.7157e-03 eta 0:20:51
+epoch [8/30] batch [80/204] time 0.249 (0.266) data 0.000 (0.010) loss 1.7588 (1.1088) lr 8.7157e-03 eta 0:20:26
+epoch [8/30] batch [100/204] time 0.253 (0.264) data 0.000 (0.008) loss 1.1836 (1.0673) lr 8.7157e-03 eta 0:20:13
+epoch [8/30] batch [120/204] time 0.252 (0.263) data 0.000 (0.006) loss 3.2578 (1.1024) lr 8.7157e-03 eta 0:20:01
+epoch [8/30] batch [140/204] time 0.254 (0.262) data 0.000 (0.006) loss 0.0475 (1.1449) lr 8.7157e-03 eta 0:19:50
+epoch [8/30] batch [160/204] time 0.257 (0.261) data 0.000 (0.005) loss 0.8672 (1.1385) lr 8.7157e-03 eta 0:19:41
+epoch [8/30] batch [180/204] time 0.241 (0.259) data 0.000 (0.004) loss 0.0596 (1.1528) lr 8.7157e-03 eta 0:19:30
+epoch [8/30] batch [200/204] time 0.240 (0.257) data 0.000 (0.004) loss 2.5215 (1.1368) lr 8.7157e-03 eta 0:19:16
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,193
+* accuracy: 90.1%
+* error: 9.9%
+* macro_f1: 90.1%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model-best.pth.tar
+epoch [9/30] batch [20/204] time 0.259 (0.295) data 0.000 (0.038) loss 2.4902 (1.0471) lr 8.3457e-03 eta 0:21:57
+epoch [9/30] batch [40/204] time 0.260 (0.277) data 0.001 (0.019) loss -0.0344 (1.1391) lr 8.3457e-03 eta 0:20:32
+epoch [9/30] batch [60/204] time 0.248 (0.270) data 0.000 (0.013) loss 2.5801 (1.1819) lr 8.3457e-03 eta 0:19:54
+epoch [9/30] batch [80/204] time 0.253 (0.266) data 0.000 (0.010) loss 0.0165 (1.1293) lr 8.3457e-03 eta 0:19:33
+epoch [9/30] batch [100/204] time 0.252 (0.265) data 0.000 (0.008) loss 0.3018 (1.0497) lr 8.3457e-03 eta 0:19:21
+epoch [9/30] batch [120/204] time 0.247 (0.263) data 0.000 (0.007) loss 0.7383 (1.0484) lr 8.3457e-03 eta 0:19:08
+epoch [9/30] batch [140/204] time 0.251 (0.262) data 0.000 (0.006) loss 1.6465 (1.0840) lr 8.3457e-03 eta 0:18:58
+epoch [9/30] batch [160/204] time 0.254 (0.261) data 0.000 (0.005) loss 1.8525 (1.0919) lr 8.3457e-03 eta 0:18:48
+epoch [9/30] batch [180/204] time 0.242 (0.260) data 0.000 (0.004) loss 0.2961 (1.0355) lr 8.3457e-03 eta 0:18:38
+epoch [9/30] batch [200/204] time 0.242 (0.258) data 0.000 (0.004) loss 0.0191 (0.9935) lr 8.3457e-03 eta 0:18:26
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,190
+* accuracy: 90.1%
+* error: 9.9%
+* macro_f1: 90.1%
+epoch [10/30] batch [20/204] time 0.254 (0.295) data 0.000 (0.038) loss 0.0090 (1.5248) lr 7.9389e-03 eta 0:20:59
+epoch [10/30] batch [40/204] time 0.253 (0.277) data 0.000 (0.019) loss 0.7705 (1.2573) lr 7.9389e-03 eta 0:19:35
+epoch [10/30] batch [60/204] time 0.264 (0.269) data 0.000 (0.013) loss 1.6758 (1.1353) lr 7.9389e-03 eta 0:18:57
+epoch [10/30] batch [80/204] time 0.252 (0.265) data 0.000 (0.010) loss 4.6133 (1.2806) lr 7.9389e-03 eta 0:18:34
+epoch [10/30] batch [100/204] time 0.249 (0.263) data 0.000 (0.008) loss 0.0326 (1.2485) lr 7.9389e-03 eta 0:18:20
+epoch [10/30] batch [120/204] time 0.258 (0.261) data 0.000 (0.007) loss 1.9746 (1.1300) lr 7.9389e-03 eta 0:18:08
+epoch [10/30] batch [140/204] time 0.249 (0.260) data 0.000 (0.006) loss 0.1913 (1.0863) lr 7.9389e-03 eta 0:17:58
+epoch [10/30] batch [160/204] time 0.254 (0.259) data 0.000 (0.005) loss 0.6084 (1.0386) lr 7.9389e-03 eta 0:17:49
+epoch [10/30] batch [180/204] time 0.243 (0.258) data 0.000 (0.004) loss 0.5474 (1.0797) lr 7.9389e-03 eta 0:17:39
+epoch [10/30] batch [200/204] time 0.242 (0.257) data 0.000 (0.004) loss 0.0390 (1.1147) lr 7.9389e-03 eta 0:17:27
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,168
+* accuracy: 89.9%
+* error: 10.1%
+* macro_f1: 89.8%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model.pth.tar-10
+epoch [11/30] batch [20/204] time 0.248 (0.296) data 0.000 (0.039) loss -0.0114 (0.7890) lr 7.5000e-03 eta 0:20:00
+epoch [11/30] batch [40/204] time 0.257 (0.277) data 0.000 (0.020) loss 0.7959 (0.9001) lr 7.5000e-03 eta 0:18:38
+epoch [11/30] batch [60/204] time 0.254 (0.270) data 0.000 (0.013) loss 3.9082 (1.0131) lr 7.5000e-03 eta 0:18:05
+epoch [11/30] batch [80/204] time 0.257 (0.266) data 0.000 (0.010) loss -0.0367 (1.0360) lr 7.5000e-03 eta 0:17:44
+epoch [11/30] batch [100/204] time 0.247 (0.264) data 0.000 (0.008) loss 0.3120 (1.0493) lr 7.5000e-03 eta 0:17:30
+epoch [11/30] batch [120/204] time 0.251 (0.262) data 0.000 (0.007) loss 2.7930 (1.0946) lr 7.5000e-03 eta 0:17:17
+epoch [11/30] batch [140/204] time 0.250 (0.261) data 0.000 (0.006) loss 0.9937 (1.1200) lr 7.5000e-03 eta 0:17:07
+epoch [11/30] batch [160/204] time 0.252 (0.260) data 0.000 (0.005) loss 1.3252 (1.1024) lr 7.5000e-03 eta 0:16:58
+epoch [11/30] batch [180/204] time 0.240 (0.259) data 0.000 (0.005) loss 0.0396 (1.0879) lr 7.5000e-03 eta 0:16:48
+epoch [11/30] batch [200/204] time 0.239 (0.257) data 0.000 (0.004) loss 0.3164 (1.0557) lr 7.5000e-03 eta 0:16:36
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,168
+* accuracy: 89.9%
+* error: 10.1%
+* macro_f1: 89.8%
+epoch [12/30] batch [20/204] time 0.252 (0.296) data 0.000 (0.038) loss 2.0078 (1.0320) lr 7.0337e-03 eta 0:19:01
+epoch [12/30] batch [40/204] time 0.258 (0.277) data 0.000 (0.019) loss 1.0449 (0.8670) lr 7.0337e-03 eta 0:17:43
+epoch [12/30] batch [60/204] time 0.251 (0.270) data 0.000 (0.013) loss -0.0241 (0.8686) lr 7.0337e-03 eta 0:17:08
+epoch [12/30] batch [80/204] time 0.267 (0.266) data 0.000 (0.010) loss 0.0003 (0.9134) lr 7.0337e-03 eta 0:16:48
+epoch [12/30] batch [100/204] time 0.258 (0.265) data 0.000 (0.008) loss -0.0244 (0.9434) lr 7.0337e-03 eta 0:16:39
+epoch [12/30] batch [120/204] time 0.249 (0.263) data 0.000 (0.007) loss 0.6846 (1.0655) lr 7.0337e-03 eta 0:16:27
+epoch [12/30] batch [140/204] time 0.250 (0.262) data 0.000 (0.006) loss 0.5840 (1.0253) lr 7.0337e-03 eta 0:16:18
+epoch [12/30] batch [160/204] time 0.253 (0.261) data 0.000 (0.005) loss 2.8145 (1.0068) lr 7.0337e-03 eta 0:16:09
+epoch [12/30] batch [180/204] time 0.242 (0.259) data 0.000 (0.004) loss 2.4707 (0.9921) lr 7.0337e-03 eta 0:15:59
+epoch [12/30] batch [200/204] time 0.242 (0.258) data 0.000 (0.004) loss 0.0937 (0.9928) lr 7.0337e-03 eta 0:15:47
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,192
+* accuracy: 90.1%
+* error: 9.9%
+* macro_f1: 90.1%
+epoch [13/30] batch [20/204] time 0.251 (0.295) data 0.000 (0.038) loss 2.9473 (1.2554) lr 6.5451e-03 eta 0:17:58
+epoch [13/30] batch [40/204] time 0.253 (0.277) data 0.000 (0.019) loss -0.0006 (1.1913) lr 6.5451e-03 eta 0:16:44
+epoch [13/30] batch [60/204] time 0.251 (0.269) data 0.000 (0.013) loss -0.0157 (1.2568) lr 6.5451e-03 eta 0:16:11
+epoch [13/30] batch [80/204] time 0.258 (0.265) data 0.000 (0.010) loss -0.0179 (1.2134) lr 6.5451e-03 eta 0:15:52
+epoch [13/30] batch [100/204] time 0.252 (0.264) data 0.000 (0.008) loss 3.2168 (1.2455) lr 6.5451e-03 eta 0:15:41
+epoch [13/30] batch [120/204] time 0.258 (0.262) data 0.000 (0.007) loss 0.2734 (1.1607) lr 6.5451e-03 eta 0:15:31
+epoch [13/30] batch [140/204] time 0.257 (0.261) data 0.000 (0.006) loss 1.7354 (1.1355) lr 6.5451e-03 eta 0:15:22
+epoch [13/30] batch [160/204] time 0.247 (0.260) data 0.000 (0.005) loss -0.0175 (1.0772) lr 6.5451e-03 eta 0:15:12
+epoch [13/30] batch [180/204] time 0.245 (0.259) data 0.000 (0.004) loss 1.6641 (1.0543) lr 6.5451e-03 eta 0:15:02
+epoch [13/30] batch [200/204] time 0.241 (0.257) data 0.000 (0.004) loss 0.6343 (1.0511) lr 6.5451e-03 eta 0:14:52
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,179
+* accuracy: 90.0%
+* error: 10.0%
+* macro_f1: 90.0%
+epoch [14/30] batch [20/204] time 0.252 (0.294) data 0.000 (0.037) loss 2.2520 (1.0463) lr 6.0396e-03 eta 0:16:53
+epoch [14/30] batch [40/204] time 0.251 (0.277) data 0.000 (0.019) loss 0.4963 (1.1274) lr 6.0396e-03 eta 0:15:49
+epoch [14/30] batch [60/204] time 0.255 (0.270) data 0.000 (0.013) loss 0.1010 (1.1676) lr 6.0396e-03 eta 0:15:19
+epoch [14/30] batch [80/204] time 0.256 (0.266) data 0.000 (0.010) loss 0.9185 (1.0932) lr 6.0396e-03 eta 0:15:01
+epoch [14/30] batch [100/204] time 0.247 (0.264) data 0.000 (0.008) loss 0.0181 (1.0256) lr 6.0396e-03 eta 0:14:49
+epoch [14/30] batch [120/204] time 0.251 (0.262) data 0.000 (0.006) loss 0.4011 (1.0433) lr 6.0396e-03 eta 0:14:38
+epoch [14/30] batch [140/204] time 0.255 (0.261) data 0.000 (0.006) loss 0.3345 (0.9972) lr 6.0396e-03 eta 0:14:28
+epoch [14/30] batch [160/204] time 0.258 (0.260) data 0.000 (0.005) loss 0.0210 (0.9459) lr 6.0396e-03 eta 0:14:20
+epoch [14/30] batch [180/204] time 0.242 (0.259) data 0.000 (0.004) loss 0.1931 (0.9194) lr 6.0396e-03 eta 0:14:11
+epoch [14/30] batch [200/204] time 0.242 (0.257) data 0.000 (0.004) loss 0.0309 (0.9326) lr 6.0396e-03 eta 0:14:00
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,197
+* accuracy: 90.2%
+* error: 9.8%
+* macro_f1: 90.1%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model-best.pth.tar
+epoch [15/30] batch [20/204] time 0.254 (0.297) data 0.000 (0.041) loss 0.4282 (0.7939) lr 5.5226e-03 eta 0:16:04
+epoch [15/30] batch [40/204] time 0.255 (0.277) data 0.000 (0.020) loss 0.3157 (0.8114) lr 5.5226e-03 eta 0:14:54
+epoch [15/30] batch [60/204] time 0.253 (0.269) data 0.000 (0.014) loss 1.8975 (0.9446) lr 5.5226e-03 eta 0:14:22
+epoch [15/30] batch [80/204] time 0.252 (0.265) data 0.000 (0.010) loss 0.1886 (0.8347) lr 5.5226e-03 eta 0:14:03
+epoch [15/30] batch [100/204] time 0.254 (0.264) data 0.000 (0.008) loss 0.1265 (0.8104) lr 5.5226e-03 eta 0:13:53
+epoch [15/30] batch [120/204] time 0.252 (0.262) data 0.000 (0.007) loss 2.4414 (0.8558) lr 5.5226e-03 eta 0:13:44
+epoch [15/30] batch [140/204] time 0.250 (0.261) data 0.000 (0.006) loss 2.1562 (0.9363) lr 5.5226e-03 eta 0:13:36
+epoch [15/30] batch [160/204] time 0.253 (0.260) data 0.000 (0.005) loss 0.1478 (0.9408) lr 5.5226e-03 eta 0:13:27
+epoch [15/30] batch [180/204] time 0.242 (0.259) data 0.000 (0.005) loss 0.5229 (0.9449) lr 5.5226e-03 eta 0:13:18
+epoch [15/30] batch [200/204] time 0.244 (0.258) data 0.000 (0.004) loss 1.7217 (1.0207) lr 5.5226e-03 eta 0:13:09
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,190
+* accuracy: 90.1%
+* error: 9.9%
+* macro_f1: 90.1%
+epoch [16/30] batch [20/204] time 0.257 (0.294) data 0.000 (0.040) loss 0.9443 (1.1313) lr 5.0000e-03 eta 0:14:53
+epoch [16/30] batch [40/204] time 0.259 (0.276) data 0.000 (0.020) loss 0.7222 (0.9102) lr 5.0000e-03 eta 0:13:54
+epoch [16/30] batch [60/204] time 0.254 (0.269) data 0.000 (0.013) loss 0.1838 (0.8285) lr 5.0000e-03 eta 0:13:26
+epoch [16/30] batch [80/204] time 0.253 (0.265) data 0.000 (0.010) loss 0.2338 (0.7577) lr 5.0000e-03 eta 0:13:09
+epoch [16/30] batch [100/204] time 0.255 (0.263) data 0.000 (0.008) loss 0.6899 (0.7949) lr 5.0000e-03 eta 0:12:57
+epoch [16/30] batch [120/204] time 0.253 (0.261) data 0.000 (0.007) loss 0.1202 (0.7608) lr 5.0000e-03 eta 0:12:47
+epoch [16/30] batch [140/204] time 0.252 (0.261) data 0.000 (0.006) loss 0.7061 (0.7869) lr 5.0000e-03 eta 0:12:40
+epoch [16/30] batch [160/204] time 0.252 (0.260) data 0.000 (0.005) loss 1.4180 (0.7910) lr 5.0000e-03 eta 0:12:32
+epoch [16/30] batch [180/204] time 0.241 (0.258) data 0.000 (0.005) loss 0.6807 (0.8108) lr 5.0000e-03 eta 0:12:23
+epoch [16/30] batch [200/204] time 0.241 (0.256) data 0.000 (0.004) loss 0.7959 (0.8218) lr 5.0000e-03 eta 0:12:13
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,199
+* accuracy: 90.2%
+* error: 9.8%
+* macro_f1: 90.2%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model-best.pth.tar
+epoch [17/30] batch [20/204] time 0.252 (0.298) data 0.000 (0.042) loss 0.0829 (0.6256) lr 4.4774e-03 eta 0:14:05
+epoch [17/30] batch [40/204] time 0.251 (0.278) data 0.000 (0.021) loss 4.0391 (0.7160) lr 4.4774e-03 eta 0:13:03
+epoch [17/30] batch [60/204] time 0.258 (0.270) data 0.000 (0.014) loss 0.2925 (0.6675) lr 4.4774e-03 eta 0:12:34
+epoch [17/30] batch [80/204] time 0.245 (0.265) data 0.000 (0.011) loss 3.0273 (0.8002) lr 4.4774e-03 eta 0:12:16
+epoch [17/30] batch [100/204] time 0.254 (0.263) data 0.000 (0.008) loss -0.0274 (0.9541) lr 4.4774e-03 eta 0:12:05
+epoch [17/30] batch [120/204] time 0.259 (0.262) data 0.000 (0.007) loss 2.5332 (0.9708) lr 4.4774e-03 eta 0:11:56
+epoch [17/30] batch [140/204] time 0.251 (0.260) data 0.000 (0.006) loss 0.0085 (0.9797) lr 4.4774e-03 eta 0:11:47
+epoch [17/30] batch [160/204] time 0.251 (0.259) data 0.000 (0.005) loss 2.6836 (0.9600) lr 4.4774e-03 eta 0:11:38
+epoch [17/30] batch [180/204] time 0.240 (0.258) data 0.000 (0.005) loss 1.8145 (0.9890) lr 4.4774e-03 eta 0:11:30
+epoch [17/30] batch [200/204] time 0.241 (0.256) data 0.000 (0.004) loss -0.0485 (0.9972) lr 4.4774e-03 eta 0:11:20
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,205
+* accuracy: 90.2%
+* error: 9.8%
+* macro_f1: 90.2%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model-best.pth.tar
+epoch [18/30] batch [20/204] time 0.251 (0.303) data 0.000 (0.038) loss 0.6431 (0.9505) lr 3.9604e-03 eta 0:13:16
+epoch [18/30] batch [40/204] time 0.252 (0.277) data 0.000 (0.019) loss 1.4229 (0.7090) lr 3.9604e-03 eta 0:12:04
+epoch [18/30] batch [60/204] time 0.256 (0.270) data 0.000 (0.013) loss 3.0273 (0.9730) lr 3.9604e-03 eta 0:11:38
+epoch [18/30] batch [80/204] time 0.252 (0.266) data 0.000 (0.010) loss 0.4124 (0.9797) lr 3.9604e-03 eta 0:11:22
+epoch [18/30] batch [100/204] time 0.247 (0.264) data 0.000 (0.008) loss 1.0156 (0.9447) lr 3.9604e-03 eta 0:11:12
+epoch [18/30] batch [120/204] time 0.253 (0.261) data 0.000 (0.007) loss 0.0464 (0.9042) lr 3.9604e-03 eta 0:11:01
+epoch [18/30] batch [140/204] time 0.250 (0.260) data 0.000 (0.006) loss 0.0203 (0.8706) lr 3.9604e-03 eta 0:10:53
+epoch [18/30] batch [160/204] time 0.247 (0.260) data 0.000 (0.005) loss 0.2056 (0.8668) lr 3.9604e-03 eta 0:10:47
+epoch [18/30] batch [180/204] time 0.241 (0.258) data 0.000 (0.004) loss -0.0337 (0.8438) lr 3.9604e-03 eta 0:10:38
+epoch [18/30] batch [200/204] time 0.241 (0.257) data 0.000 (0.004) loss 1.1309 (0.8205) lr 3.9604e-03 eta 0:10:29
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,206
+* accuracy: 90.3%
+* error: 9.7%
+* macro_f1: 90.2%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model-best.pth.tar
+epoch [19/30] batch [20/204] time 0.253 (0.296) data 0.000 (0.039) loss 1.1797 (1.0055) lr 3.4549e-03 eta 0:11:59
+epoch [19/30] batch [40/204] time 0.251 (0.275) data 0.000 (0.020) loss -0.0257 (0.8768) lr 3.4549e-03 eta 0:11:02
+epoch [19/30] batch [60/204] time 0.260 (0.270) data 0.000 (0.013) loss -0.0016 (0.9284) lr 3.4549e-03 eta 0:10:45
+epoch [19/30] batch [80/204] time 0.248 (0.266) data 0.000 (0.010) loss 0.0191 (0.9038) lr 3.4549e-03 eta 0:10:29
+epoch [19/30] batch [100/204] time 0.253 (0.263) data 0.000 (0.008) loss 0.4829 (0.9672) lr 3.4549e-03 eta 0:10:17
+epoch [19/30] batch [120/204] time 0.246 (0.261) data 0.000 (0.007) loss 0.5879 (0.9803) lr 3.4549e-03 eta 0:10:07
+epoch [19/30] batch [140/204] time 0.249 (0.260) data 0.000 (0.006) loss 1.4541 (0.9686) lr 3.4549e-03 eta 0:09:59
+epoch [19/30] batch [160/204] time 0.323 (0.260) data 0.000 (0.005) loss 4.7188 (1.0627) lr 3.4549e-03 eta 0:09:53
+epoch [19/30] batch [180/204] time 0.242 (0.258) data 0.000 (0.005) loss 0.2644 (1.0559) lr 3.4549e-03 eta 0:09:46
+epoch [19/30] batch [200/204] time 0.242 (0.257) data 0.000 (0.004) loss -0.0372 (1.0216) lr 3.4549e-03 eta 0:09:37
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,202
+* accuracy: 90.2%
+* error: 9.8%
+* macro_f1: 90.2%
+epoch [20/30] batch [20/204] time 0.257 (0.300) data 0.000 (0.042) loss -0.0091 (0.8944) lr 2.9663e-03 eta 0:11:08
+epoch [20/30] batch [40/204] time 0.359 (0.280) data 0.000 (0.021) loss 1.6260 (1.0489) lr 2.9663e-03 eta 0:10:17
+epoch [20/30] batch [60/204] time 0.255 (0.271) data 0.000 (0.014) loss 1.4717 (0.9252) lr 2.9663e-03 eta 0:09:52
+epoch [20/30] batch [80/204] time 0.252 (0.267) data 0.000 (0.011) loss 1.5752 (0.9175) lr 2.9663e-03 eta 0:09:38
+epoch [20/30] batch [100/204] time 0.254 (0.265) data 0.000 (0.009) loss 0.9473 (0.8676) lr 2.9663e-03 eta 0:09:27
+epoch [20/30] batch [120/204] time 0.255 (0.264) data 0.000 (0.007) loss 0.6377 (0.8944) lr 2.9663e-03 eta 0:09:20
+epoch [20/30] batch [140/204] time 0.251 (0.262) data 0.000 (0.006) loss 0.1482 (0.9171) lr 2.9663e-03 eta 0:09:12
+epoch [20/30] batch [160/204] time 0.250 (0.262) data 0.000 (0.005) loss -0.0463 (0.9280) lr 2.9663e-03 eta 0:09:05
+epoch [20/30] batch [180/204] time 0.242 (0.260) data 0.000 (0.005) loss 1.5771 (0.9523) lr 2.9663e-03 eta 0:08:57
+epoch [20/30] batch [200/204] time 0.242 (0.258) data 0.000 (0.004) loss 0.7383 (0.9344) lr 2.9663e-03 eta 0:08:48
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,203
+* accuracy: 90.2%
+* error: 9.8%
+* macro_f1: 90.2%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model.pth.tar-20
+epoch [21/30] batch [20/204] time 0.256 (0.301) data 0.000 (0.040) loss 0.2900 (0.9015) lr 2.5000e-03 eta 0:10:07
+epoch [21/30] batch [40/204] time 0.247 (0.277) data 0.000 (0.020) loss 0.2222 (0.8756) lr 2.5000e-03 eta 0:09:14
+epoch [21/30] batch [60/204] time 0.254 (0.270) data 0.000 (0.014) loss 0.0717 (0.8758) lr 2.5000e-03 eta 0:08:53
+epoch [21/30] batch [80/204] time 0.251 (0.266) data 0.000 (0.010) loss 2.1641 (0.9481) lr 2.5000e-03 eta 0:08:41
+epoch [21/30] batch [100/204] time 0.250 (0.264) data 0.000 (0.008) loss 3.6328 (0.9914) lr 2.5000e-03 eta 0:08:31
+epoch [21/30] batch [120/204] time 0.250 (0.262) data 0.000 (0.007) loss 0.2729 (1.0211) lr 2.5000e-03 eta 0:08:22
+epoch [21/30] batch [140/204] time 0.254 (0.261) data 0.000 (0.006) loss 1.8428 (0.9922) lr 2.5000e-03 eta 0:08:15
+epoch [21/30] batch [160/204] time 0.251 (0.260) data 0.000 (0.005) loss 0.2023 (1.0414) lr 2.5000e-03 eta 0:08:08
+epoch [21/30] batch [180/204] time 0.244 (0.259) data 0.000 (0.005) loss 1.3477 (0.9842) lr 2.5000e-03 eta 0:08:01
+epoch [21/30] batch [200/204] time 0.242 (0.257) data 0.000 (0.004) loss 0.6074 (0.9654) lr 2.5000e-03 eta 0:07:53
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,202
+* accuracy: 90.2%
+* error: 9.8%
+* macro_f1: 90.2%
+epoch [22/30] batch [20/204] time 0.252 (0.298) data 0.000 (0.039) loss 0.7354 (0.6249) lr 2.0611e-03 eta 0:09:01
+epoch [22/30] batch [40/204] time 0.254 (0.280) data 0.000 (0.019) loss 0.1008 (0.6449) lr 2.0611e-03 eta 0:08:22
+epoch [22/30] batch [60/204] time 0.249 (0.271) data 0.000 (0.013) loss 0.6982 (0.7097) lr 2.0611e-03 eta 0:08:00
+epoch [22/30] batch [80/204] time 0.257 (0.267) data 0.000 (0.010) loss -0.0334 (0.7982) lr 2.0611e-03 eta 0:07:49
+epoch [22/30] batch [100/204] time 0.256 (0.265) data 0.000 (0.008) loss -0.0163 (0.9019) lr 2.0611e-03 eta 0:07:40
+epoch [22/30] batch [120/204] time 0.253 (0.264) data 0.001 (0.007) loss 1.1133 (0.9198) lr 2.0611e-03 eta 0:07:32
+epoch [22/30] batch [140/204] time 0.256 (0.262) data 0.000 (0.006) loss 0.0984 (0.9175) lr 2.0611e-03 eta 0:07:24
+epoch [22/30] batch [160/204] time 0.261 (0.261) data 0.000 (0.005) loss 0.0042 (0.9261) lr 2.0611e-03 eta 0:07:17
+epoch [22/30] batch [180/204] time 0.243 (0.260) data 0.000 (0.005) loss 0.4287 (0.9156) lr 2.0611e-03 eta 0:07:10
+epoch [22/30] batch [200/204] time 0.244 (0.258) data 0.000 (0.004) loss -0.0059 (0.8859) lr 2.0611e-03 eta 0:07:02
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,212
+* accuracy: 90.3%
+* error: 9.7%
+* macro_f1: 90.3%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model-best.pth.tar
+epoch [23/30] batch [20/204] time 0.259 (0.297) data 0.000 (0.038) loss 2.1504 (0.6391) lr 1.6543e-03 eta 0:07:58
+epoch [23/30] batch [40/204] time 0.257 (0.278) data 0.000 (0.019) loss 0.1478 (0.6701) lr 1.6543e-03 eta 0:07:22
+epoch [23/30] batch [60/204] time 0.250 (0.270) data 0.000 (0.013) loss -0.0060 (0.6942) lr 1.6543e-03 eta 0:07:03
+epoch [23/30] batch [80/204] time 0.255 (0.265) data 0.000 (0.010) loss 0.1615 (0.6817) lr 1.6543e-03 eta 0:06:51
+epoch [23/30] batch [100/204] time 0.251 (0.263) data 0.000 (0.008) loss 0.8257 (0.7726) lr 1.6543e-03 eta 0:06:42
+epoch [23/30] batch [120/204] time 0.260 (0.261) data 0.000 (0.006) loss 1.6387 (0.7783) lr 1.6543e-03 eta 0:06:35
+epoch [23/30] batch [140/204] time 0.248 (0.260) data 0.000 (0.006) loss 0.3899 (0.7513) lr 1.6543e-03 eta 0:06:28
+epoch [23/30] batch [160/204] time 0.257 (0.259) data 0.000 (0.005) loss 0.8320 (0.7690) lr 1.6543e-03 eta 0:06:21
+epoch [23/30] batch [180/204] time 0.241 (0.258) data 0.000 (0.004) loss 2.2676 (0.8342) lr 1.6543e-03 eta 0:06:14
+epoch [23/30] batch [200/204] time 0.242 (0.257) data 0.000 (0.004) loss 1.4727 (0.8076) lr 1.6543e-03 eta 0:06:07
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,219
+* accuracy: 90.4%
+* error: 9.6%
+* macro_f1: 90.3%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model-best.pth.tar
+epoch [24/30] batch [20/204] time 0.255 (0.307) data 0.000 (0.044) loss 0.4009 (1.0803) lr 1.2843e-03 eta 0:07:11
+epoch [24/30] batch [40/204] time 0.254 (0.280) data 0.000 (0.022) loss 2.1309 (0.8183) lr 1.2843e-03 eta 0:06:28
+epoch [24/30] batch [60/204] time 0.256 (0.271) data 0.000 (0.015) loss 2.3086 (0.8608) lr 1.2843e-03 eta 0:06:10
+epoch [24/30] batch [80/204] time 0.254 (0.267) data 0.000 (0.011) loss 1.4551 (0.9551) lr 1.2843e-03 eta 0:06:00
+epoch [24/30] batch [100/204] time 0.259 (0.265) data 0.000 (0.009) loss 2.1445 (0.9834) lr 1.2843e-03 eta 0:05:51
+epoch [24/30] batch [120/204] time 0.259 (0.263) data 0.000 (0.008) loss 0.0457 (0.9573) lr 1.2843e-03 eta 0:05:43
+epoch [24/30] batch [140/204] time 0.253 (0.262) data 0.000 (0.006) loss -0.0291 (0.9456) lr 1.2843e-03 eta 0:05:37
+epoch [24/30] batch [160/204] time 0.259 (0.260) data 0.000 (0.006) loss 0.2103 (0.9626) lr 1.2843e-03 eta 0:05:30
+epoch [24/30] batch [180/204] time 0.243 (0.259) data 0.000 (0.005) loss 0.5151 (0.9393) lr 1.2843e-03 eta 0:05:23
+epoch [24/30] batch [200/204] time 0.242 (0.257) data 0.000 (0.005) loss 2.1289 (0.9301) lr 1.2843e-03 eta 0:05:15
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,211
+* accuracy: 90.3%
+* error: 9.7%
+* macro_f1: 90.3%
+epoch [25/30] batch [20/204] time 0.249 (0.297) data 0.000 (0.039) loss 2.9180 (0.8108) lr 9.5492e-04 eta 0:05:57
+epoch [25/30] batch [40/204] time 0.260 (0.278) data 0.000 (0.019) loss 2.1465 (1.0487) lr 9.5492e-04 eta 0:05:29
+epoch [25/30] batch [60/204] time 0.255 (0.270) data 0.000 (0.013) loss -0.0528 (0.9263) lr 9.5492e-04 eta 0:05:14
+epoch [25/30] batch [80/204] time 0.252 (0.266) data 0.000 (0.010) loss 2.3398 (0.9111) lr 9.5492e-04 eta 0:05:04
+epoch [25/30] batch [100/204] time 0.256 (0.264) data 0.000 (0.008) loss 0.1311 (0.8240) lr 9.5492e-04 eta 0:04:56
+epoch [25/30] batch [120/204] time 0.251 (0.263) data 0.000 (0.007) loss 0.8945 (0.8367) lr 9.5492e-04 eta 0:04:50
+epoch [25/30] batch [140/204] time 0.258 (0.262) data 0.000 (0.006) loss 2.7012 (0.8736) lr 9.5492e-04 eta 0:04:43
+epoch [25/30] batch [160/204] time 0.263 (0.261) data 0.000 (0.005) loss 0.2412 (0.8536) lr 9.5492e-04 eta 0:04:37
+epoch [25/30] batch [180/204] time 0.242 (0.260) data 0.000 (0.005) loss 0.0551 (0.8665) lr 9.5492e-04 eta 0:04:31
+epoch [25/30] batch [200/204] time 0.245 (0.258) data 0.000 (0.004) loss 1.7061 (0.8816) lr 9.5492e-04 eta 0:04:24
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,211
+* accuracy: 90.3%
+* error: 9.7%
+* macro_f1: 90.3%
+epoch [26/30] batch [20/204] time 0.252 (0.297) data 0.000 (0.039) loss 0.7490 (0.8263) lr 6.6987e-04 eta 0:04:56
+epoch [26/30] batch [40/204] time 0.249 (0.274) data 0.000 (0.020) loss 2.1309 (0.8251) lr 6.6987e-04 eta 0:04:28
+epoch [26/30] batch [60/204] time 0.250 (0.267) data 0.000 (0.013) loss 0.5879 (0.7628) lr 6.6987e-04 eta 0:04:16
+epoch [26/30] batch [80/204] time 0.246 (0.264) data 0.000 (0.010) loss 2.4824 (0.8364) lr 6.6987e-04 eta 0:04:08
+epoch [26/30] batch [100/204] time 0.251 (0.262) data 0.000 (0.008) loss 0.9263 (0.8167) lr 6.6987e-04 eta 0:04:00
+epoch [26/30] batch [120/204] time 0.249 (0.260) data 0.000 (0.007) loss 2.3867 (0.8569) lr 6.6987e-04 eta 0:03:54
+epoch [26/30] batch [140/204] time 0.241 (0.260) data 0.000 (0.006) loss 1.6533 (0.8379) lr 6.6987e-04 eta 0:03:48
+epoch [26/30] batch [160/204] time 0.253 (0.259) data 0.000 (0.005) loss 1.8330 (0.8791) lr 6.6987e-04 eta 0:03:42
+epoch [26/30] batch [180/204] time 0.243 (0.258) data 0.000 (0.005) loss 1.9512 (0.8543) lr 6.6987e-04 eta 0:03:36
+epoch [26/30] batch [200/204] time 0.241 (0.256) data 0.000 (0.004) loss 3.2012 (0.8622) lr 6.6987e-04 eta 0:03:30
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,208
+* accuracy: 90.3%
+* error: 9.7%
+* macro_f1: 90.2%
+epoch [27/30] batch [20/204] time 0.255 (0.295) data 0.000 (0.040) loss 1.2832 (0.9538) lr 4.3227e-04 eta 0:03:54
+epoch [27/30] batch [40/204] time 0.345 (0.277) data 0.000 (0.020) loss 2.6523 (0.9772) lr 4.3227e-04 eta 0:03:34
+epoch [27/30] batch [60/204] time 0.251 (0.269) data 0.000 (0.014) loss 2.4863 (1.0137) lr 4.3227e-04 eta 0:03:23
+epoch [27/30] batch [80/204] time 0.250 (0.265) data 0.000 (0.010) loss 0.4563 (1.0798) lr 4.3227e-04 eta 0:03:15
+epoch [27/30] batch [100/204] time 0.254 (0.263) data 0.000 (0.008) loss 0.2629 (1.0311) lr 4.3227e-04 eta 0:03:08
+epoch [27/30] batch [120/204] time 0.251 (0.262) data 0.000 (0.007) loss 0.2803 (0.9837) lr 4.3227e-04 eta 0:03:02
+epoch [27/30] batch [140/204] time 0.255 (0.261) data 0.000 (0.006) loss 1.5576 (0.9751) lr 4.3227e-04 eta 0:02:56
+epoch [27/30] batch [160/204] time 0.250 (0.259) data 0.000 (0.005) loss 0.0639 (0.9503) lr 4.3227e-04 eta 0:02:50
+epoch [27/30] batch [180/204] time 0.241 (0.258) data 0.000 (0.005) loss 0.7861 (0.9474) lr 4.3227e-04 eta 0:02:44
+epoch [27/30] batch [200/204] time 0.241 (0.256) data 0.000 (0.004) loss 0.8857 (0.9066) lr 4.3227e-04 eta 0:02:37
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,212
+* accuracy: 90.3%
+* error: 9.7%
+* macro_f1: 90.3%
+epoch [28/30] batch [20/204] time 0.255 (0.302) data 0.000 (0.038) loss 3.6602 (1.2088) lr 2.4472e-04 eta 0:02:59
+epoch [28/30] batch [40/204] time 0.253 (0.278) data 0.000 (0.019) loss 1.5234 (1.0887) lr 2.4472e-04 eta 0:02:39
+epoch [28/30] batch [60/204] time 0.252 (0.270) data 0.000 (0.013) loss -0.0046 (1.0654) lr 2.4472e-04 eta 0:02:28
+epoch [28/30] batch [80/204] time 0.258 (0.266) data 0.000 (0.010) loss 0.4570 (1.0294) lr 2.4472e-04 eta 0:02:21
+epoch [28/30] batch [100/204] time 0.253 (0.265) data 0.000 (0.008) loss 4.7930 (1.0711) lr 2.4472e-04 eta 0:02:15
+epoch [28/30] batch [120/204] time 0.254 (0.263) data 0.000 (0.007) loss 3.8789 (1.0862) lr 2.4472e-04 eta 0:02:09
+epoch [28/30] batch [140/204] time 0.248 (0.262) data 0.000 (0.006) loss 0.2659 (1.0148) lr 2.4472e-04 eta 0:02:03
+epoch [28/30] batch [160/204] time 0.317 (0.261) data 0.000 (0.005) loss 0.1145 (1.0120) lr 2.4472e-04 eta 0:01:57
+epoch [28/30] batch [180/204] time 0.242 (0.259) data 0.000 (0.004) loss -0.0286 (1.0003) lr 2.4472e-04 eta 0:01:51
+epoch [28/30] batch [200/204] time 0.240 (0.257) data 0.000 (0.004) loss -0.0300 (0.9721) lr 2.4472e-04 eta 0:01:46
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,212
+* accuracy: 90.3%
+* error: 9.7%
+* macro_f1: 90.3%
+epoch [29/30] batch [20/204] time 0.251 (0.295) data 0.000 (0.038) loss 2.3301 (0.7728) lr 1.0926e-04 eta 0:01:54
+epoch [29/30] batch [40/204] time 0.255 (0.275) data 0.000 (0.019) loss 5.0781 (0.8967) lr 1.0926e-04 eta 0:01:41
+epoch [29/30] batch [60/204] time 0.358 (0.270) data 0.000 (0.013) loss 1.1221 (0.8966) lr 1.0926e-04 eta 0:01:34
+epoch [29/30] batch [80/204] time 0.244 (0.265) data 0.000 (0.010) loss 0.2324 (0.9037) lr 1.0926e-04 eta 0:01:27
+epoch [29/30] batch [100/204] time 0.252 (0.262) data 0.000 (0.008) loss 0.4893 (0.8961) lr 1.0926e-04 eta 0:01:20
+epoch [29/30] batch [120/204] time 0.251 (0.261) data 0.000 (0.007) loss 0.1926 (0.8689) lr 1.0926e-04 eta 0:01:15
+epoch [29/30] batch [140/204] time 0.256 (0.260) data 0.000 (0.006) loss 0.7485 (0.8175) lr 1.0926e-04 eta 0:01:09
+epoch [29/30] batch [160/204] time 0.253 (0.259) data 0.000 (0.005) loss 2.0371 (0.8817) lr 1.0926e-04 eta 0:01:04
+epoch [29/30] batch [180/204] time 0.241 (0.257) data 0.000 (0.004) loss 0.5117 (0.8532) lr 1.0926e-04 eta 0:00:58
+epoch [29/30] batch [200/204] time 0.241 (0.256) data 0.000 (0.004) loss 0.1401 (0.8580) lr 1.0926e-04 eta 0:00:53
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,211
+* accuracy: 90.3%
+* error: 9.7%
+* macro_f1: 90.3%
+epoch [30/30] batch [20/204] time 0.246 (0.295) data 0.000 (0.039) loss 0.1261 (0.9703) lr 2.7391e-05 eta 0:00:54
+epoch [30/30] batch [40/204] time 0.246 (0.277) data 0.000 (0.020) loss 0.9746 (1.0426) lr 2.7391e-05 eta 0:00:45
+epoch [30/30] batch [60/204] time 0.257 (0.269) data 0.000 (0.013) loss -0.0177 (1.0393) lr 2.7391e-05 eta 0:00:38
+epoch [30/30] batch [80/204] time 0.245 (0.265) data 0.000 (0.010) loss 0.8770 (1.0167) lr 2.7391e-05 eta 0:00:32
+epoch [30/30] batch [100/204] time 0.247 (0.262) data 0.000 (0.008) loss -0.0383 (1.0084) lr 2.7391e-05 eta 0:00:27
+epoch [30/30] batch [120/204] time 0.252 (0.261) data 0.000 (0.007) loss 1.2256 (0.9899) lr 2.7391e-05 eta 0:00:21
+epoch [30/30] batch [140/204] time 0.257 (0.259) data 0.000 (0.006) loss 0.3674 (0.9775) lr 2.7391e-05 eta 0:00:16
+epoch [30/30] batch [160/204] time 0.255 (0.259) data 0.000 (0.005) loss 0.1963 (0.9656) lr 2.7391e-05 eta 0:00:11
+epoch [30/30] batch [180/204] time 0.242 (0.258) data 0.000 (0.005) loss 0.4175 (0.9211) lr 2.7391e-05 eta 0:00:06
+epoch [30/30] batch [200/204] time 0.241 (0.256) data 0.000 (0.004) loss 0.4075 (0.9565) lr 2.7391e-05 eta 0:00:01
+Evaluate on the *val* set
+=> result
+* total: 10,200
+* correct: 9,210
+* accuracy: 90.3%
+* error: 9.7%
+* macro_f1: 90.3%
+Checkpoint saved to output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model.pth.tar-30
+Finish training
+Deploy the model with the best val performance
+Loading weights to prompt_learner from "output/rpo_prime/base2new/train_base/food101/shots_16/RPO_prime_sdl/main_tmp1_0.1sdl/seed3/prompt_learner/model-best.pth.tar" (epoch = 23)
+Evaluate on the *test* set
+=> result
+* total: 15,300
+* correct: 13,852
+* accuracy: 90.5%
+* error: 9.5%
+* macro_f1: 90.5%
+Elapsed: 0:39:40

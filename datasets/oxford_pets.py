@@ -1,5 +1,5 @@
 import os
-import pickle
+import pickle5 as pickle
 import math
 import random
 from collections import defaultdict
@@ -19,7 +19,7 @@ class OxfordPets(DatasetBase):
         self.image_dir = os.path.join(self.dataset_dir, "images")
         self.anno_dir = os.path.join(self.dataset_dir, "annotations")
         self.split_path = os.path.join(self.dataset_dir, "split_zhou_OxfordPets.json")
-        self.split_fewshot_dir = os.path.join(self.dataset_dir, "split_fewshot")
+        self.split_fewshot_dir = os.path.join(self.dataset_dir, "split_fewshot_taesup")
         mkdir_if_missing(self.split_fewshot_dir)
 
         if os.path.exists(self.split_path):
@@ -42,7 +42,7 @@ class OxfordPets(DatasetBase):
                     train, val = data["train"], data["val"]
             else:
                 train = self.generate_fewshot_dataset(train, num_shots=num_shots)
-                val = self.generate_fewshot_dataset(val, num_shots=min(num_shots, 4))
+                # val = self.generate_fewshot_dataset(val, num_shots=min(num_shots, 4))
                 data = {"train": train, "val": val}
                 print(f"Saving preprocessed few-shot data to {preprocessed}")
                 with open(preprocessed, "wb") as file:
@@ -50,7 +50,7 @@ class OxfordPets(DatasetBase):
 
         subsample = cfg.DATASET.SUBSAMPLE_CLASSES
         train, val, test = self.subsample_classes(train, val, test, subsample=subsample)
-
+        print(len(train), len(val), len(test))
         super().__init__(train_x=train, val=val, test=test)
 
     def read_data(self, split_file):

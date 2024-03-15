@@ -1,5 +1,5 @@
 import os
-import pickle
+import pickle5 as pickle
 
 from dassl.data.datasets import DATASET_REGISTRY, Datum, DatasetBase
 from dassl.utils import mkdir_if_missing
@@ -31,7 +31,7 @@ class EuroSAT(DatasetBase):
         self.dataset_dir = os.path.join(root, self.dataset_dir)
         self.image_dir = os.path.join(self.dataset_dir, "2750")
         self.split_path = os.path.join(self.dataset_dir, "split_zhou_EuroSAT.json")
-        self.split_fewshot_dir = os.path.join(self.dataset_dir, "split_fewshot")
+        self.split_fewshot_dir = os.path.join(self.dataset_dir, "split_fewshot_taesup")
         mkdir_if_missing(self.split_fewshot_dir)
 
         if os.path.exists(self.split_path):
@@ -52,7 +52,7 @@ class EuroSAT(DatasetBase):
                     train, val = data["train"], data["val"]
             else:
                 train = self.generate_fewshot_dataset(train, num_shots=num_shots)
-                val = self.generate_fewshot_dataset(val, num_shots=min(num_shots, 4))
+                #val = self.generate_fewshot_dataset(val, num_shots=min(num_shots, 4))
                 data = {"train": train, "val": val}
                 print(f"Saving preprocessed few-shot data to {preprocessed}")
                 with open(preprocessed, "wb") as file:
@@ -60,7 +60,7 @@ class EuroSAT(DatasetBase):
 
         subsample = cfg.DATASET.SUBSAMPLE_CLASSES
         train, val, test = OxfordPets.subsample_classes(train, val, test, subsample=subsample)
-
+        print(len(train), len(val), len(test))
         super().__init__(train_x=train, val=val, test=test)
 
     def update_classname(self, dataset_old):

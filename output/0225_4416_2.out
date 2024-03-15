@@ -1,0 +1,1094 @@
+set -e
+set -x
+
+eval "$(conda shell.bash hook)"
+++ conda shell.bash hook
++ eval 'export CONDA_EXE='\''/home/s2/mjoolee/anaconda/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/home/s2/mjoolee/anaconda/bin/python'\''
+
+# Copyright (C) 2012 Anaconda, Inc
+# SPDX-License-Identifier: BSD-3-Clause
+__conda_exe() (
+    "$CONDA_EXE" $_CE_M $_CE_CONDA "$@"
+)
+
+__conda_hashr() {
+    if [ -n "${ZSH_VERSION:+x}" ]; then
+        \rehash
+    elif [ -n "${POSH_VERSION:+x}" ]; then
+        :  # pass
+    else
+        \hash -r
+    fi
+}
+
+__conda_activate() {
+    if [ -n "${CONDA_PS1_BACKUP:+x}" ]; then
+        # Handle transition from shell activated with conda <= 4.3 to a subsequent activation
+        # after conda updated to >= 4.4. See issue #6173.
+        PS1="$CONDA_PS1_BACKUP"
+        \unset CONDA_PS1_BACKUP
+    fi
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix "$@")" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+__conda_reactivate() {
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix reactivate)" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+conda() {
+    \local cmd="${1-__missing__}"
+    case "$cmd" in
+        activate|deactivate)
+            __conda_activate "$@"
+            ;;
+        install|update|upgrade|remove|uninstall)
+            __conda_exe "$@" || \return
+            __conda_reactivate
+            ;;
+        *)
+            __conda_exe "$@"
+            ;;
+    esac
+}
+
+if [ -z "${CONDA_SHLVL+x}" ]; then
+    \export CONDA_SHLVL=0
+    # In dev-mode CONDA_EXE is python.exe and on Windows
+    # it is in a different relative location to condabin.
+    if [ -n "${_CE_CONDA:+x}" ] && [ -n "${WINDIR+x}" ]; then
+        PATH="$(\dirname "$CONDA_EXE")/condabin${PATH:+":${PATH}"}"
+    else
+        PATH="$(\dirname "$(\dirname "$CONDA_EXE")")/condabin${PATH:+":${PATH}"}"
+    fi
+    \export PATH
+
+    # We'\''re not allowing PS1 to be unbound. It must at least be set.
+    # However, we'\''re not exporting it, which can cause problems when starting a second shell
+    # via a first shell (i.e. starting zsh from bash).
+    if [ -z "${PS1+x}" ]; then
+        PS1=
+    fi
+fi
+
+conda activate base'
+export CONDA_EXE='/home/s2/mjoolee/anaconda/bin/conda'
+++ export CONDA_EXE=/home/s2/mjoolee/anaconda/bin/conda
+++ CONDA_EXE=/home/s2/mjoolee/anaconda/bin/conda
+export _CE_M=''
+++ export _CE_M=
+++ _CE_M=
+export _CE_CONDA=''
+++ export _CE_CONDA=
+++ _CE_CONDA=
+export CONDA_PYTHON_EXE='/home/s2/mjoolee/anaconda/bin/python'
+++ export CONDA_PYTHON_EXE=/home/s2/mjoolee/anaconda/bin/python
+++ CONDA_PYTHON_EXE=/home/s2/mjoolee/anaconda/bin/python
+
+# Copyright (C) 2012 Anaconda, Inc
+# SPDX-License-Identifier: BSD-3-Clause
+__conda_exe() (
+    "$CONDA_EXE" $_CE_M $_CE_CONDA "$@"
+)
+
+__conda_hashr() {
+    if [ -n "${ZSH_VERSION:+x}" ]; then
+        \rehash
+    elif [ -n "${POSH_VERSION:+x}" ]; then
+        :  # pass
+    else
+        \hash -r
+    fi
+}
+
+__conda_activate() {
+    if [ -n "${CONDA_PS1_BACKUP:+x}" ]; then
+        # Handle transition from shell activated with conda <= 4.3 to a subsequent activation
+        # after conda updated to >= 4.4. See issue #6173.
+        PS1="$CONDA_PS1_BACKUP"
+        \unset CONDA_PS1_BACKUP
+    fi
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix "$@")" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+__conda_reactivate() {
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix reactivate)" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+conda() {
+    \local cmd="${1-__missing__}"
+    case "$cmd" in
+        activate|deactivate)
+            __conda_activate "$@"
+            ;;
+        install|update|upgrade|remove|uninstall)
+            __conda_exe "$@" || \return
+            __conda_reactivate
+            ;;
+        *)
+            __conda_exe "$@"
+            ;;
+    esac
+}
+
+if [ -z "${CONDA_SHLVL+x}" ]; then
+    \export CONDA_SHLVL=0
+    # In dev-mode CONDA_EXE is python.exe and on Windows
+    # it is in a different relative location to condabin.
+    if [ -n "${_CE_CONDA:+x}" ] && [ -n "${WINDIR+x}" ]; then
+        PATH="$(\dirname "$CONDA_EXE")/condabin${PATH:+":${PATH}"}"
+    else
+        PATH="$(\dirname "$(\dirname "$CONDA_EXE")")/condabin${PATH:+":${PATH}"}"
+    fi
+    \export PATH
+
+    # We're not allowing PS1 to be unbound. It must at least be set.
+    # However, we're not exporting it, which can cause problems when starting a second shell
+    # via a first shell (i.e. starting zsh from bash).
+    if [ -z "${PS1+x}" ]; then
+        PS1=
+    fi
+fi
+++ '[' -z x ']'
+
+conda activate base
+++ conda activate base
+++ local cmd=activate
+++ case "$cmd" in
+++ __conda_activate activate base
+++ '[' -n '' ']'
+++ local ask_conda
++++ PS1=
++++ __conda_exe shell.posix activate base
++++ /home/s2/mjoolee/anaconda/bin/conda shell.posix activate base
+++ ask_conda='PS1='\''(base) '\''
+export PATH='\''/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'\''
+export CONDA_PREFIX='\''/home/s2/mjoolee/anaconda'\''
+export CONDA_SHLVL='\''3'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_PREFIX_2='\''/home/s2/mjoolee/anaconda/envs/dassl'\''
+export CONDA_EXE='\''/home/s2/mjoolee/anaconda/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/home/s2/mjoolee/anaconda/bin/python'\'''
+++ eval 'PS1='\''(base) '\''
+export PATH='\''/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'\''
+export CONDA_PREFIX='\''/home/s2/mjoolee/anaconda'\''
+export CONDA_SHLVL='\''3'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_PREFIX_2='\''/home/s2/mjoolee/anaconda/envs/dassl'\''
+export CONDA_EXE='\''/home/s2/mjoolee/anaconda/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/home/s2/mjoolee/anaconda/bin/python'\'''
+PS1='(base) '
++++ PS1='(base) '
+export PATH='/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
++++ export PATH=/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
++++ PATH=/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+export CONDA_PREFIX='/home/s2/mjoolee/anaconda'
++++ export CONDA_PREFIX=/home/s2/mjoolee/anaconda
++++ CONDA_PREFIX=/home/s2/mjoolee/anaconda
+export CONDA_SHLVL='3'
++++ export CONDA_SHLVL=3
++++ CONDA_SHLVL=3
+export CONDA_DEFAULT_ENV='base'
++++ export CONDA_DEFAULT_ENV=base
++++ CONDA_DEFAULT_ENV=base
+export CONDA_PROMPT_MODIFIER='(base) '
++++ export 'CONDA_PROMPT_MODIFIER=(base) '
++++ CONDA_PROMPT_MODIFIER='(base) '
+export CONDA_PREFIX_2='/home/s2/mjoolee/anaconda/envs/dassl'
++++ export CONDA_PREFIX_2=/home/s2/mjoolee/anaconda/envs/dassl
++++ CONDA_PREFIX_2=/home/s2/mjoolee/anaconda/envs/dassl
+export CONDA_EXE='/home/s2/mjoolee/anaconda/bin/conda'
++++ export CONDA_EXE=/home/s2/mjoolee/anaconda/bin/conda
++++ CONDA_EXE=/home/s2/mjoolee/anaconda/bin/conda
+export _CE_M=''
++++ export _CE_M=
++++ _CE_M=
+export _CE_CONDA=''
++++ export _CE_CONDA=
++++ _CE_CONDA=
+export CONDA_PYTHON_EXE='/home/s2/mjoolee/anaconda/bin/python'
++++ export CONDA_PYTHON_EXE=/home/s2/mjoolee/anaconda/bin/python
++++ CONDA_PYTHON_EXE=/home/s2/mjoolee/anaconda/bin/python
+++ __conda_hashr
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
+conda activate dassl
++ conda activate dassl
++ local cmd=activate
++ case "$cmd" in
++ __conda_activate activate dassl
++ '[' -n '' ']'
++ local ask_conda
+++ PS1='(base) '
+++ __conda_exe shell.posix activate dassl
+++ /home/s2/mjoolee/anaconda/bin/conda shell.posix activate dassl
++ ask_conda='PS1='\''(dassl) '\''
+export PATH='\''/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/envs/dassl/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'\''
+export CONDA_PREFIX='\''/home/s2/mjoolee/anaconda/envs/dassl'\''
+export CONDA_SHLVL='\''4'\''
+export CONDA_DEFAULT_ENV='\''dassl'\''
+export CONDA_PROMPT_MODIFIER='\''(dassl) '\''
+export CONDA_PREFIX_3='\''/home/s2/mjoolee/anaconda'\''
+export CONDA_EXE='\''/home/s2/mjoolee/anaconda/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/home/s2/mjoolee/anaconda/bin/python'\'''
++ eval 'PS1='\''(dassl) '\''
+export PATH='\''/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/envs/dassl/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'\''
+export CONDA_PREFIX='\''/home/s2/mjoolee/anaconda/envs/dassl'\''
+export CONDA_SHLVL='\''4'\''
+export CONDA_DEFAULT_ENV='\''dassl'\''
+export CONDA_PROMPT_MODIFIER='\''(dassl) '\''
+export CONDA_PREFIX_3='\''/home/s2/mjoolee/anaconda'\''
+export CONDA_EXE='\''/home/s2/mjoolee/anaconda/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/home/s2/mjoolee/anaconda/bin/python'\'''
+PS1='(dassl) '
+++ PS1='(dassl) '
+export PATH='/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/envs/dassl/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
+++ export PATH=/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/envs/dassl/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ PATH=/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/envs/dassl/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+export CONDA_PREFIX='/home/s2/mjoolee/anaconda/envs/dassl'
+++ export CONDA_PREFIX=/home/s2/mjoolee/anaconda/envs/dassl
+++ CONDA_PREFIX=/home/s2/mjoolee/anaconda/envs/dassl
+export CONDA_SHLVL='4'
+++ export CONDA_SHLVL=4
+++ CONDA_SHLVL=4
+export CONDA_DEFAULT_ENV='dassl'
+++ export CONDA_DEFAULT_ENV=dassl
+++ CONDA_DEFAULT_ENV=dassl
+export CONDA_PROMPT_MODIFIER='(dassl) '
+++ export 'CONDA_PROMPT_MODIFIER=(dassl) '
+++ CONDA_PROMPT_MODIFIER='(dassl) '
+export CONDA_PREFIX_3='/home/s2/mjoolee/anaconda'
+++ export CONDA_PREFIX_3=/home/s2/mjoolee/anaconda
+++ CONDA_PREFIX_3=/home/s2/mjoolee/anaconda
+export CONDA_EXE='/home/s2/mjoolee/anaconda/bin/conda'
+++ export CONDA_EXE=/home/s2/mjoolee/anaconda/bin/conda
+++ CONDA_EXE=/home/s2/mjoolee/anaconda/bin/conda
+export _CE_M=''
+++ export _CE_M=
+++ _CE_M=
+export _CE_CONDA=''
+++ export _CE_CONDA=
+++ _CE_CONDA=
+export CONDA_PYTHON_EXE='/home/s2/mjoolee/anaconda/bin/python'
+++ export CONDA_PYTHON_EXE=/home/s2/mjoolee/anaconda/bin/python
+++ CONDA_PYTHON_EXE=/home/s2/mjoolee/anaconda/bin/python
++ __conda_hashr
++ '[' -n '' ']'
++ '[' -n '' ']'
++ hash -r
+
+GPU=0
++ GPU=0
+SHOT=16
++ SHOT=16
+
+for dataset in stanford_cars oxford_pets food101 ucf101 caltech101 sun397 imagenet
+do
+    for seed in 1 2 3
+    do
+    sh scripts/rpo_prime/base2new_train_sdl.sh ${dataset} ${seed} ${GPU} main_tmp ${SHOT}
+    #sh scripts/rpo_prime/base2new_test.sh ${dataset} ${seed} ${GPU} main_9_9 ${SHOT} base
+    sh scripts/rpo_prime/base2new_test_sdl.sh ${dataset} ${seed} ${GPU} main_tmp ${SHOT} new
+    done
+done
++ for dataset in stanford_cars oxford_pets food101 ucf101 caltech101 sun397 imagenet
++ for seed in 1 2 3
++ sh scripts/rpo_prime/base2new_train_sdl.sh stanford_cars 1 0 main_tmp 16
+Setting fixed seed: 1
+***************
+** Arguments **
+***************
+backbone: 
+config_file: configs/trainers/RPO_prime/main_tmp.yaml
+dataset_config_file: configs/datasets/stanford_cars.yaml
+eval_only: False
+head: 
+load_epoch: None
+model_dir: 
+no_train: False
+opts: ['DATASET.NUM_SHOTS', '16', 'DATASET.SUBSAMPLE_CLASSES', 'base']
+output_dir: output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1
+resume: 
+root: /shared/s2/lab01/dataset/clip
+seed: 1
+source_domains: None
+target_domains: None
+trainer: RPO_prime_sdl
+transforms: None
+************
+** Config **
+************
+DATALOADER:
+  K_TRANSFORMS: 1
+  NUM_WORKERS: 12
+  RETURN_IMG0: False
+  TEST:
+    BATCH_SIZE: 196
+    SAMPLER: SequentialSampler
+  TRAIN_U:
+    BATCH_SIZE: 32
+    N_DOMAIN: 0
+    N_INS: 16
+    SAME_AS_X: True
+    SAMPLER: RandomSampler
+  TRAIN_X:
+    BATCH_SIZE: 64
+    N_DOMAIN: 0
+    N_INS: 16
+    SAMPLER: RandomSampler
+DATASET:
+  ALL_AS_UNLABELED: False
+  CIFAR_C_LEVEL: 1
+  CIFAR_C_TYPE: 
+  NAME: StanfordCars
+  NUM_LABELED: -1
+  NUM_SHOTS: 16
+  PROMPT: a photo of a _.
+  ROOT: /shared/s2/lab01/dataset/clip
+  SOURCE_DOMAINS: ()
+  STL10_FOLD: -1
+  SUBSAMPLE_CLASSES: base
+  TARGET_DOMAINS: ()
+  VAL_PERCENT: 0.1
+INPUT:
+  COLORJITTER_B: 0.4
+  COLORJITTER_C: 0.4
+  COLORJITTER_H: 0.1
+  COLORJITTER_S: 0.4
+  CROP_PADDING: 4
+  CUTOUT_LEN: 16
+  CUTOUT_N: 1
+  GB_K: 21
+  GB_P: 0.5
+  GN_MEAN: 0.0
+  GN_STD: 0.15
+  INTERPOLATION: bicubic
+  NO_TRANSFORM: False
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  RANDAUGMENT_M: 10
+  RANDAUGMENT_N: 2
+  RGS_P: 0.2
+  RRCROP_SCALE: (0.08, 1.0)
+  SIZE: (224, 224)
+  TRANSFORMS: ('random_resized_crop', 'random_flip', 'normalize')
+MODEL:
+  BACKBONE:
+    NAME: ViT-B/16
+    PRETRAINED: True
+  HEAD:
+    ACTIVATION: relu
+    BN: True
+    DROPOUT: 0.0
+    HIDDEN_LAYERS: ()
+    NAME: 
+  INIT_WEIGHTS: 
+OPTIM:
+  ADAM_BETA1: 0.9
+  ADAM_BETA2: 0.999
+  BASE_LR_MULT: 0.1
+  GAMMA: 0.1
+  LR: 0.1
+  LR_SCHEDULER: cosine
+  MAX_EPOCH: 50
+  MOMENTUM: 0.9
+  NAME: sgd
+  NEW_LAYERS: ()
+  RMSPROP_ALPHA: 0.99
+  SGD_DAMPNING: 0
+  SGD_NESTEROV: False
+  STAGED_LR: False
+  STEPSIZE: (-1,)
+  WARMUP_CONS_LR: 1e-05
+  WARMUP_EPOCH: -1
+  WARMUP_MIN_LR: 1e-05
+  WARMUP_RECOUNT: True
+  WARMUP_TYPE: linear
+  WEIGHT_DECAY: 0.0005
+OUTPUT_DIR: output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1
+RESUME: 
+SEED: 1
+TEST:
+  COMPUTE_CMAT: False
+  EVALUATOR: Classification
+  FINAL_MODEL: best_val
+  NO_TEST: False
+  PER_CLASS_RESULT: False
+  SPLIT: test
+TRAIN:
+  CHECKPOINT_FREQ: 10
+  COUNT_ITER: train_x
+  PRINT_FREQ: 2
+TRAINER:
+  CDAC:
+    CLASS_LR_MULTI: 10
+    P_THRESH: 0.95
+    RAMPUP_COEF: 30
+    RAMPUP_ITRS: 1000
+    STRONG_TRANSFORMS: ()
+    TOPK_MATCH: 5
+  COCOOP:
+    CTX_INIT: a photo of a
+    N_CTX: 4
+    PREC: fp16
+  COOP:
+    CLASS_TOKEN_POSITION: 
+    CSC: False
+    CTX_INIT: 
+    N_CTX: 4
+    PREC: fp16
+  CROSSGRAD:
+    ALPHA_D: 0.5
+    ALPHA_F: 0.5
+    EPS_D: 1.0
+    EPS_F: 1.0
+  DAEL:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 0.5
+  DAELDG:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 0.5
+  DDAIG:
+    ALPHA: 0.5
+    CLAMP: False
+    CLAMP_MAX: 1.0
+    CLAMP_MIN: -1.0
+    G_ARCH: 
+    LMDA: 0.3
+    WARMUP: 0
+  DOMAINMIX:
+    ALPHA: 1.0
+    BETA: 1.0
+    TYPE: crossdomain
+  ENTMIN:
+    LMDA: 0.001
+  FIXMATCH:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 1.0
+  LP:
+    PREC: fp16
+    PROMPT: A photo of a {cls_name}
+  M3SDA:
+    LMDA: 0.5
+    N_STEP_F: 4
+  MCD:
+    N_STEP_F: 4
+  MEANTEACHER:
+    EMA_ALPHA: 0.999
+    RAMPUP: 5
+    WEIGHT_U: 1.0
+  MIXMATCH:
+    MIXUP_BETA: 0.75
+    RAMPUP: 20000
+    TEMP: 2.0
+    WEIGHT_U: 100.0
+  MME:
+    LMDA: 0.1
+  NAME: RPO_prime_sdl
+  RPO:
+    CTX_INIT: a photo of a
+    K1: 8
+    K2: 16
+    PREC: fp16
+    sdl_loss: 0
+  SE:
+    CONF_THRE: 0.95
+    EMA_ALPHA: 0.999
+    RAMPUP: 300
+USE_CUDA: True
+VERBOSE: True
+VERSION: 1
+Collecting env info ...
+** System info **
+PyTorch version: 1.13.1
+Is debug build: False
+CUDA used to build PyTorch: 11.7
+ROCM used to build PyTorch: N/A
+
+OS: Ubuntu 20.04.6 LTS (x86_64)
+GCC version: (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+Clang version: Could not collect
+CMake version: version 3.16.3
+Libc version: glibc-2.10
+
+Python version: 3.7.12 | packaged by conda-forge | (default, Oct 26 2021, 06:08:21)  [GCC 9.4.0] (64-bit runtime)
+Python platform: Linux-5.4.0-100-generic-x86_64-with-debian-bullseye-sid
+Is CUDA available: True
+CUDA runtime version: Could not collect
+CUDA_MODULE_LOADING set to: LAZY
+GPU models and configuration: GPU 0: NVIDIA TITAN RTX
+Nvidia driver version: 520.61.05
+cuDNN version: Could not collect
+HIP runtime version: N/A
+MIOpen runtime version: N/A
+Is XNNPACK available: True
+
+Versions of relevant libraries:
+[pip3] imagenetv2-pytorch==0.1
+[pip3] numpy==1.21.5
+[pip3] torch==1.13.1
+[pip3] torchvision==0.14.1
+[conda] blas                      1.0                         mkl  
+[conda] cudatoolkit               10.2.89              hfd86e86_1  
+[conda] ffmpeg                    4.3                  hf484d3e_0    pytorch
+[conda] imagenetv2-pytorch        0.1                      pypi_0    pypi
+[conda] mkl                       2021.4.0           h06a4308_640  
+[conda] mkl-service               2.4.0            py37h7f8727e_0  
+[conda] mkl_fft                   1.3.1            py37hd3c417c_0  
+[conda] mkl_random                1.2.2            py37h51133e4_0  
+[conda] numpy                     1.21.6                   pypi_0    pypi
+[conda] numpy-base                1.21.5           py37ha15fc14_3  
+[conda] pytorch                   1.13.1          py3.7_cuda11.7_cudnn8.5.0_0    pytorch
+[conda] pytorch-cuda              11.7                 h778d358_5    pytorch
+[conda] pytorch-mutex             1.0                        cuda    pytorch
+[conda] torchvision               0.14.1               py37_cu117    pytorch
+        Pillow (9.4.0)
+
+requested:RPO_prime_sdl
+Loading trainer: RPO_prime_sdl
+requested:StanfordCars
+Loading dataset: StanfordCars
+Reading split from /shared/s2/lab01/dataset/clip/stanford_cars/split_zhou_StanfordCars.json
+Loading preprocessed few-shot data from /shared/s2/lab01/dataset/clip/stanford_cars/split_fewshot_taesup/shot_16-seed_1.pkl
+SUBSAMPLE BASE CLASSES!
+1568 812 4002
+Building transform_train
++ random resized crop (size=(224, 224), scale=(0.08, 1.0))
++ random flip
++ to torch tensor of range [0, 1]
++ normalization (mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
+Building transform_test
++ resize the smaller edge to 224
++ 224x224 center crop
++ to torch tensor of range [0, 1]
++ normalization (mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
+---------  ------------
+Dataset    StanfordCars
+# classes  98
+# train_x  1,568
+# val      812
+# test     4,002
+---------  ------------
+Loading CLIP (backbone: ViT-B/16)
+Building custom CLIP
+Parameters to be updated: {'prompt_learner.text_prompt', 'prompt_learner.img_prompt'}
+requested:Classification
+Loading evaluator: Classification
+No checkpoint found, train from scratch
+Initialize tensorboard (log_dir=output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/tensorboard)
+/shared/s2/lab01/myungjoo/RPO_v2/clip/clip.py:23: UserWarning: PyTorch version 1.7.1 or higher is recommended
+  warnings.warn("PyTorch version 1.7.1 or higher is recommended")
+epoch [1/50] batch [2/24] time 0.572 (4.285) data 0.001 (1.114) loss 5.1992 (5.6309) lr 1.0000e-01 eta 1:25:33
+epoch [1/50] batch [4/24] time 0.547 (2.416) data 0.000 (0.557) loss 4.8164 (5.2715) lr 1.0000e-01 eta 0:48:09
+epoch [1/50] batch [6/24] time 0.529 (1.788) data 0.000 (0.371) loss 4.7266 (5.1009) lr 1.0000e-01 eta 0:35:34
+epoch [1/50] batch [8/24] time 0.531 (1.473) data 0.000 (0.279) loss 4.7031 (5.0020) lr 1.0000e-01 eta 0:29:16
+epoch [1/50] batch [10/24] time 0.523 (1.283) data 0.000 (0.223) loss 4.6406 (4.9359) lr 1.0000e-01 eta 0:25:27
+epoch [1/50] batch [12/24] time 0.523 (1.156) data 0.000 (0.186) loss 4.6094 (4.8825) lr 1.0000e-01 eta 0:22:53
+epoch [1/50] batch [14/24] time 0.529 (1.067) data 0.000 (0.159) loss 4.5859 (4.8418) lr 1.0000e-01 eta 0:21:04
+epoch [1/50] batch [16/24] time 0.528 (0.999) data 0.000 (0.139) loss 4.6406 (4.8167) lr 1.0000e-01 eta 0:19:43
+epoch [1/50] batch [18/24] time 0.537 (0.947) data 0.000 (0.124) loss 4.6094 (4.7936) lr 1.0000e-01 eta 0:18:39
+epoch [1/50] batch [20/24] time 0.528 (0.906) data 0.000 (0.112) loss 4.5859 (4.7709) lr 1.0000e-01 eta 0:17:48
+epoch [1/50] batch [22/24] time 0.528 (0.871) data 0.000 (0.101) loss 4.5859 (4.7500) lr 1.0000e-01 eta 0:17:06
+epoch [1/50] batch [24/24] time 0.525 (0.843) data 0.000 (0.093) loss 4.5352 (4.7331) lr 9.9901e-02 eta 0:16:30
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:04<00:16,  4.16s/it] 40%|████      | 2/5 [00:04<00:05,  1.91s/it] 60%|██████    | 3/5 [00:04<00:02,  1.17s/it] 80%|████████  | 4/5 [00:05<00:00,  1.20it/s]100%|██████████| 5/5 [00:05<00:00,  1.06s/it]=> result
+* total: 812
+* correct: 464
+* accuracy: 57.1%
+* error: 42.9%
+* macro_f1: 53.9%
+Checkpoint saved to output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/prompt_learner/model-best.pth.tar
+
+epoch [2/50] batch [2/24] time 0.875 (1.514) data 0.000 (0.601) loss 4.5820 (4.5801) lr 9.9901e-02 eta 0:29:37
+epoch [2/50] batch [4/24] time 0.525 (1.024) data 0.000 (0.301) loss 4.5195 (4.5596) lr 9.9901e-02 eta 0:19:59
+epoch [2/50] batch [6/24] time 0.525 (0.857) data 0.000 (0.201) loss 4.5078 (4.5423) lr 9.9901e-02 eta 0:16:43
+epoch [2/50] batch [8/24] time 0.526 (0.775) data 0.000 (0.150) loss 4.5234 (4.5332) lr 9.9901e-02 eta 0:15:05
+epoch [2/50] batch [10/24] time 0.522 (0.725) data 0.000 (0.120) loss 4.4766 (4.5215) lr 9.9901e-02 eta 0:14:04
+epoch [2/50] batch [12/24] time 0.525 (0.691) data 0.000 (0.100) loss 4.4492 (4.5133) lr 9.9901e-02 eta 0:13:24
+epoch [2/50] batch [14/24] time 0.531 (0.668) data 0.000 (0.086) loss 4.4883 (4.5114) lr 9.9901e-02 eta 0:12:55
+epoch [2/50] batch [16/24] time 0.528 (0.650) data 0.000 (0.075) loss 4.4023 (4.4966) lr 9.9901e-02 eta 0:12:34
+epoch [2/50] batch [18/24] time 0.532 (0.637) data 0.000 (0.067) loss 4.4453 (4.4902) lr 9.9901e-02 eta 0:12:17
+epoch [2/50] batch [20/24] time 0.526 (0.626) data 0.000 (0.060) loss 4.3906 (4.4797) lr 9.9901e-02 eta 0:12:03
+epoch [2/50] batch [22/24] time 0.523 (0.617) data 0.000 (0.055) loss 4.3203 (4.4666) lr 9.9901e-02 eta 0:11:51
+epoch [2/50] batch [24/24] time 0.525 (0.609) data 0.000 (0.050) loss 4.3320 (4.4561) lr 9.9606e-02 eta 0:11:41
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:04<00:16,  4.06s/it] 40%|████      | 2/5 [00:04<00:05,  1.87s/it] 60%|██████    | 3/5 [00:04<00:02,  1.15s/it] 80%|████████  | 4/5 [00:05<00:00,  1.22it/s]100%|██████████| 5/5 [00:05<00:00,  1.04s/it]=> result
+* total: 812
+* correct: 488
+* accuracy: 60.1%
+* error: 39.9%
+* macro_f1: 57.4%
+Checkpoint saved to output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/prompt_learner/model-best.pth.tar
+
+epoch [3/50] batch [2/24] time 0.574 (1.896) data 0.000 (1.272) loss 4.3867 (4.3809) lr 9.9606e-02 eta 0:36:20
+epoch [3/50] batch [4/24] time 0.528 (1.211) data 0.000 (0.636) loss 4.3164 (4.3564) lr 9.9606e-02 eta 0:23:10
+epoch [3/50] batch [6/24] time 0.523 (0.983) data 0.000 (0.424) loss 4.3516 (4.3431) lr 9.9606e-02 eta 0:18:47
+epoch [3/50] batch [8/24] time 0.524 (0.882) data 0.000 (0.318) loss 4.2812 (4.3315) lr 9.9606e-02 eta 0:16:49
+epoch [3/50] batch [10/24] time 0.522 (0.810) data 0.000 (0.255) loss 4.3438 (4.3273) lr 9.9606e-02 eta 0:15:25
+epoch [3/50] batch [12/24] time 0.530 (0.764) data 0.000 (0.212) loss 4.2344 (4.3174) lr 9.9606e-02 eta 0:14:30
+epoch [3/50] batch [14/24] time 0.523 (0.729) data 0.000 (0.182) loss 4.2695 (4.3119) lr 9.9606e-02 eta 0:13:49
+epoch [3/50] batch [16/24] time 0.533 (0.704) data 0.000 (0.159) loss 4.3047 (4.3083) lr 9.9606e-02 eta 0:13:20
+epoch [3/50] batch [18/24] time 0.526 (0.685) data 0.000 (0.141) loss 4.2305 (4.3040) lr 9.9606e-02 eta 0:12:56
+epoch [3/50] batch [20/24] time 0.530 (0.669) data 0.000 (0.127) loss 4.1641 (4.2979) lr 9.9606e-02 eta 0:12:37
+epoch [3/50] batch [22/24] time 0.527 (0.656) data 0.000 (0.116) loss 4.2695 (4.2946) lr 9.9606e-02 eta 0:12:21
+epoch [3/50] batch [24/24] time 0.530 (0.646) data 0.000 (0.106) loss 4.2539 (4.2923) lr 9.9114e-02 eta 0:12:08
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.90s/it] 40%|████      | 2/5 [00:04<00:05,  1.81s/it] 60%|██████    | 3/5 [00:04<00:02,  1.12s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.01s/it]=> result
+* total: 812
+* correct: 526
+* accuracy: 64.8%
+* error: 35.2%
+* macro_f1: 62.3%
+Checkpoint saved to output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/prompt_learner/model-best.pth.tar
+
+epoch [4/50] batch [2/24] time 0.741 (1.545) data 0.000 (0.705) loss 4.1953 (4.2129) lr 9.9114e-02 eta 0:28:59
+epoch [4/50] batch [4/24] time 0.525 (1.058) data 0.000 (0.352) loss 4.2305 (4.2207) lr 9.9114e-02 eta 0:19:49
+epoch [4/50] batch [6/24] time 0.532 (0.883) data 0.000 (0.235) loss 4.2148 (4.2279) lr 9.9114e-02 eta 0:16:30
+epoch [4/50] batch [8/24] time 0.526 (0.793) data 0.000 (0.176) loss 4.2266 (4.2241) lr 9.9114e-02 eta 0:14:48
+epoch [4/50] batch [10/24] time 0.530 (0.741) data 0.000 (0.141) loss 4.2461 (4.2297) lr 9.9114e-02 eta 0:13:48
+epoch [4/50] batch [12/24] time 0.533 (0.706) data 0.000 (0.118) loss 4.2305 (4.2305) lr 9.9114e-02 eta 0:13:07
+epoch [4/50] batch [14/24] time 0.533 (0.681) data 0.000 (0.101) loss 4.2148 (4.2257) lr 9.9114e-02 eta 0:12:38
+epoch [4/50] batch [16/24] time 0.525 (0.661) data 0.000 (0.088) loss 4.2070 (4.2241) lr 9.9114e-02 eta 0:12:15
+epoch [4/50] batch [18/24] time 0.524 (0.646) data 0.000 (0.079) loss 4.1953 (4.2220) lr 9.9114e-02 eta 0:11:57
+epoch [4/50] batch [20/24] time 0.534 (0.635) data 0.000 (0.071) loss 4.2148 (4.2199) lr 9.9114e-02 eta 0:11:43
+epoch [4/50] batch [22/24] time 0.529 (0.625) data 0.000 (0.064) loss 4.1328 (4.2136) lr 9.9114e-02 eta 0:11:31
+epoch [4/50] batch [24/24] time 0.532 (0.617) data 0.000 (0.059) loss 4.1875 (4.2111) lr 9.8429e-02 eta 0:11:21
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.92s/it] 40%|████      | 2/5 [00:04<00:05,  1.80s/it] 60%|██████    | 3/5 [00:04<00:02,  1.12s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.00s/it]=> result
+* total: 812
+* correct: 533
+* accuracy: 65.6%
+* error: 34.4%
+* macro_f1: 63.4%
+Checkpoint saved to output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/prompt_learner/model-best.pth.tar
+
+epoch [5/50] batch [2/24] time 0.682 (1.643) data 0.000 (0.837) loss 4.1680 (4.1621) lr 9.8429e-02 eta 0:30:10
+epoch [5/50] batch [4/24] time 0.531 (1.100) data 0.000 (0.418) loss 4.2383 (4.1758) lr 9.8429e-02 eta 0:20:10
+epoch [5/50] batch [6/24] time 0.533 (0.911) data 0.000 (0.279) loss 4.2266 (4.1790) lr 9.8429e-02 eta 0:16:39
+epoch [5/50] batch [8/24] time 0.533 (0.816) data 0.000 (0.209) loss 4.1484 (4.1714) lr 9.8429e-02 eta 0:14:53
+epoch [5/50] batch [10/24] time 0.527 (0.758) data 0.000 (0.168) loss 4.1914 (4.1656) lr 9.8429e-02 eta 0:13:48
+epoch [5/50] batch [12/24] time 0.524 (0.719) data 0.000 (0.140) loss 4.1250 (4.1644) lr 9.8429e-02 eta 0:13:05
+epoch [5/50] batch [14/24] time 0.532 (0.692) data 0.000 (0.120) loss 4.2031 (4.1666) lr 9.8429e-02 eta 0:12:34
+epoch [5/50] batch [16/24] time 0.526 (0.672) data 0.000 (0.105) loss 4.2305 (4.1677) lr 9.8429e-02 eta 0:12:11
+epoch [5/50] batch [18/24] time 0.527 (0.656) data 0.000 (0.093) loss 4.0938 (4.1625) lr 9.8429e-02 eta 0:11:52
+epoch [5/50] batch [20/24] time 0.528 (0.643) data 0.000 (0.084) loss 4.0859 (4.1555) lr 9.8429e-02 eta 0:11:37
+epoch [5/50] batch [22/24] time 0.528 (0.633) data 0.000 (0.076) loss 4.1602 (4.1541) lr 9.8429e-02 eta 0:11:24
+epoch [5/50] batch [24/24] time 0.533 (0.624) data 0.000 (0.070) loss 4.0703 (4.1483) lr 9.7553e-02 eta 0:11:13
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.91s/it] 40%|████      | 2/5 [00:04<00:05,  1.81s/it] 60%|██████    | 3/5 [00:04<00:02,  1.12s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.01s/it]=> result
+* total: 812
+* correct: 529
+* accuracy: 65.1%
+* error: 34.9%
+* macro_f1: 62.8%
+
+epoch [6/50] batch [2/24] time 0.699 (1.668) data 0.000 (0.868) loss 4.1172 (4.0996) lr 9.7553e-02 eta 0:29:58
+epoch [6/50] batch [4/24] time 0.535 (1.100) data 0.000 (0.434) loss 4.0664 (4.1055) lr 9.7553e-02 eta 0:19:43
+epoch [6/50] batch [6/24] time 0.527 (0.909) data 0.000 (0.289) loss 4.0977 (4.0983) lr 9.7553e-02 eta 0:16:16
+epoch [6/50] batch [8/24] time 0.533 (0.814) data 0.000 (0.217) loss 4.1367 (4.1001) lr 9.7553e-02 eta 0:14:32
+epoch [6/50] batch [10/24] time 0.536 (0.758) data 0.000 (0.174) loss 4.0938 (4.0938) lr 9.7553e-02 eta 0:13:30
+epoch [6/50] batch [12/24] time 0.531 (0.720) data 0.000 (0.145) loss 4.0195 (4.0928) lr 9.7553e-02 eta 0:12:48
+epoch [6/50] batch [14/24] time 0.528 (0.693) data 0.000 (0.124) loss 4.1211 (4.0924) lr 9.7553e-02 eta 0:12:18
+epoch [6/50] batch [16/24] time 0.530 (0.673) data 0.000 (0.109) loss 4.0898 (4.0918) lr 9.7553e-02 eta 0:11:55
+epoch [6/50] batch [18/24] time 0.529 (0.656) data 0.000 (0.097) loss 4.1133 (4.0901) lr 9.7553e-02 eta 0:11:37
+epoch [6/50] batch [20/24] time 0.528 (0.644) data 0.000 (0.087) loss 3.9961 (4.0834) lr 9.7553e-02 eta 0:11:22
+epoch [6/50] batch [22/24] time 0.530 (0.633) data 0.000 (0.079) loss 4.0156 (4.0806) lr 9.7553e-02 eta 0:11:09
+epoch [6/50] batch [24/24] time 0.527 (0.625) data 0.000 (0.073) loss 4.0312 (4.0793) lr 9.6489e-02 eta 0:10:59
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.89s/it] 40%|████      | 2/5 [00:04<00:05,  1.80s/it] 60%|██████    | 3/5 [00:04<00:02,  1.12s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.00s/it]=> result
+* total: 812
+* correct: 535
+* accuracy: 65.9%
+* error: 34.1%
+* macro_f1: 63.3%
+Checkpoint saved to output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/prompt_learner/model-best.pth.tar
+
+epoch [7/50] batch [2/24] time 0.701 (1.560) data 0.000 (0.721) loss 4.0391 (4.0645) lr 9.6489e-02 eta 0:27:24
+epoch [7/50] batch [4/24] time 0.526 (1.065) data 0.000 (0.361) loss 4.0117 (4.0420) lr 9.6489e-02 eta 0:18:40
+epoch [7/50] batch [6/24] time 0.526 (0.885) data 0.000 (0.240) loss 4.0469 (4.0342) lr 9.6489e-02 eta 0:15:29
+epoch [7/50] batch [8/24] time 0.525 (0.796) data 0.000 (0.180) loss 4.0586 (4.0334) lr 9.6489e-02 eta 0:13:54
+epoch [7/50] batch [10/24] time 0.524 (0.742) data 0.000 (0.144) loss 4.0547 (4.0381) lr 9.6489e-02 eta 0:12:55
+epoch [7/50] batch [12/24] time 0.527 (0.706) data 0.000 (0.120) loss 4.0391 (4.0428) lr 9.6489e-02 eta 0:12:17
+epoch [7/50] batch [14/24] time 0.529 (0.681) data 0.000 (0.103) loss 4.0430 (4.0428) lr 9.6489e-02 eta 0:11:49
+epoch [7/50] batch [16/24] time 0.526 (0.662) data 0.000 (0.090) loss 3.9922 (4.0416) lr 9.6489e-02 eta 0:11:28
+epoch [7/50] batch [18/24] time 0.524 (0.647) data 0.000 (0.080) loss 3.9766 (4.0359) lr 9.6489e-02 eta 0:11:11
+epoch [7/50] batch [20/24] time 0.524 (0.635) data 0.000 (0.072) loss 4.0039 (4.0353) lr 9.6489e-02 eta 0:10:57
+epoch [7/50] batch [22/24] time 0.528 (0.625) data 0.000 (0.066) loss 3.9297 (4.0276) lr 9.6489e-02 eta 0:10:46
+epoch [7/50] batch [24/24] time 0.532 (0.617) data 0.000 (0.060) loss 4.0078 (4.0304) lr 9.5241e-02 eta 0:10:37
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.91s/it] 40%|████      | 2/5 [00:04<00:05,  1.79s/it] 60%|██████    | 3/5 [00:04<00:02,  1.11s/it] 80%|████████  | 4/5 [00:04<00:00,  1.26it/s]100%|██████████| 5/5 [00:05<00:00,  1.00s/it]=> result
+* total: 812
+* correct: 537
+* accuracy: 66.1%
+* error: 33.9%
+* macro_f1: 64.0%
+Checkpoint saved to output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/prompt_learner/model-best.pth.tar
+
+epoch [8/50] batch [2/24] time 0.644 (1.687) data 0.000 (0.963) loss 4.0508 (4.0254) lr 9.5241e-02 eta 0:28:57
+epoch [8/50] batch [4/24] time 0.526 (1.108) data 0.000 (0.482) loss 4.0078 (4.0132) lr 9.5241e-02 eta 0:18:59
+epoch [8/50] batch [6/24] time 0.534 (0.915) data 0.000 (0.321) loss 4.0273 (4.0085) lr 9.5241e-02 eta 0:15:39
+epoch [8/50] batch [8/24] time 0.531 (0.819) data 0.000 (0.241) loss 4.0391 (4.0073) lr 9.5241e-02 eta 0:13:58
+epoch [8/50] batch [10/24] time 0.528 (0.769) data 0.000 (0.193) loss 3.9844 (4.0008) lr 9.5241e-02 eta 0:13:05
+epoch [8/50] batch [12/24] time 0.525 (0.729) data 0.000 (0.161) loss 3.9961 (3.9967) lr 9.5241e-02 eta 0:12:23
+epoch [8/50] batch [14/24] time 0.541 (0.701) data 0.000 (0.138) loss 3.9473 (3.9932) lr 9.5241e-02 eta 0:11:54
+epoch [8/50] batch [16/24] time 0.530 (0.680) data 0.000 (0.121) loss 4.0820 (3.9973) lr 9.5241e-02 eta 0:11:30
+epoch [8/50] batch [18/24] time 0.531 (0.663) data 0.000 (0.107) loss 3.9199 (3.9883) lr 9.5241e-02 eta 0:11:12
+epoch [8/50] batch [20/24] time 0.526 (0.649) data 0.000 (0.096) loss 4.0117 (3.9852) lr 9.5241e-02 eta 0:10:57
+epoch [8/50] batch [22/24] time 0.524 (0.638) data 0.000 (0.088) loss 3.9492 (3.9805) lr 9.5241e-02 eta 0:10:44
+epoch [8/50] batch [24/24] time 0.526 (0.629) data 0.000 (0.080) loss 3.9238 (3.9754) lr 9.3815e-02 eta 0:10:33
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.93s/it] 40%|████      | 2/5 [00:04<00:05,  1.80s/it] 60%|██████    | 3/5 [00:04<00:02,  1.12s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.01s/it]=> result
+* total: 812
+* correct: 534
+* accuracy: 65.8%
+* error: 34.2%
+* macro_f1: 63.8%
+
+epoch [9/50] batch [2/24] time 0.654 (1.723) data 0.001 (0.999) loss 3.9141 (3.9375) lr 9.3815e-02 eta 0:28:53
+epoch [9/50] batch [4/24] time 0.529 (1.126) data 0.000 (0.500) loss 3.9375 (3.9224) lr 9.3815e-02 eta 0:18:50
+epoch [9/50] batch [6/24] time 0.531 (0.927) data 0.000 (0.333) loss 3.9258 (3.9163) lr 9.3815e-02 eta 0:15:28
+epoch [9/50] batch [8/24] time 0.530 (0.828) data 0.000 (0.250) loss 3.9004 (3.9170) lr 9.3815e-02 eta 0:13:47
+epoch [9/50] batch [10/24] time 0.525 (0.767) data 0.000 (0.200) loss 3.9648 (3.9127) lr 9.3815e-02 eta 0:12:45
+epoch [9/50] batch [12/24] time 0.526 (0.727) data 0.000 (0.167) loss 3.8027 (3.8994) lr 9.3815e-02 eta 0:12:04
+epoch [9/50] batch [14/24] time 0.529 (0.699) data 0.000 (0.143) loss 3.8887 (3.8987) lr 9.3815e-02 eta 0:11:34
+epoch [9/50] batch [16/24] time 0.529 (0.678) data 0.000 (0.125) loss 3.8594 (3.8993) lr 9.3815e-02 eta 0:11:12
+epoch [9/50] batch [18/24] time 0.533 (0.662) data 0.000 (0.111) loss 3.8184 (3.8958) lr 9.3815e-02 eta 0:10:55
+epoch [9/50] batch [20/24] time 0.528 (0.648) data 0.000 (0.100) loss 3.9414 (3.9007) lr 9.3815e-02 eta 0:10:40
+epoch [9/50] batch [22/24] time 0.534 (0.638) data 0.000 (0.091) loss 3.9473 (3.9068) lr 9.3815e-02 eta 0:10:28
+epoch [9/50] batch [24/24] time 0.526 (0.629) data 0.000 (0.083) loss 3.8242 (3.9038) lr 9.2216e-02 eta 0:10:18
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.93s/it] 40%|████      | 2/5 [00:04<00:05,  1.80s/it] 60%|██████    | 3/5 [00:04<00:02,  1.12s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.01s/it]=> result
+* total: 812
+* correct: 544
+* accuracy: 67.0%
+* error: 33.0%
+* macro_f1: 64.6%
+Checkpoint saved to output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/prompt_learner/model-best.pth.tar
+
+epoch [10/50] batch [2/24] time 0.892 (1.543) data 0.000 (0.642) loss 3.7266 (3.7832) lr 9.2216e-02 eta 0:25:15
+epoch [10/50] batch [4/24] time 0.541 (1.052) data 0.000 (0.321) loss 3.8066 (3.8140) lr 9.2216e-02 eta 0:17:10
+epoch [10/50] batch [6/24] time 0.536 (0.880) data 0.000 (0.214) loss 3.7891 (3.7952) lr 9.2216e-02 eta 0:14:20
+epoch [10/50] batch [8/24] time 0.538 (0.794) data 0.000 (0.161) loss 3.7988 (3.8040) lr 9.2216e-02 eta 0:12:55
+epoch [10/50] batch [10/24] time 0.536 (0.742) data 0.000 (0.129) loss 3.8438 (3.8143) lr 9.2216e-02 eta 0:12:02
+epoch [10/50] batch [12/24] time 0.537 (0.708) data 0.000 (0.107) loss 3.7695 (3.8086) lr 9.2216e-02 eta 0:11:28
+epoch [10/50] batch [14/24] time 0.537 (0.684) data 0.000 (0.092) loss 3.7871 (3.8071) lr 9.2216e-02 eta 0:11:03
+epoch [10/50] batch [16/24] time 0.541 (0.666) data 0.000 (0.080) loss 3.8125 (3.8085) lr 9.2216e-02 eta 0:10:44
+epoch [10/50] batch [18/24] time 0.537 (0.652) data 0.000 (0.072) loss 3.7812 (3.8091) lr 9.2216e-02 eta 0:10:29
+epoch [10/50] batch [20/24] time 0.537 (0.640) data 0.000 (0.064) loss 3.7637 (3.8101) lr 9.2216e-02 eta 0:10:17
+epoch [10/50] batch [22/24] time 0.539 (0.631) data 0.000 (0.059) loss 3.7344 (3.8053) lr 9.2216e-02 eta 0:10:06
+epoch [10/50] batch [24/24] time 0.537 (0.623) data 0.000 (0.054) loss 3.9141 (3.8107) lr 9.0451e-02 eta 0:09:58
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.89s/it] 40%|████      | 2/5 [00:04<00:05,  1.80s/it] 60%|██████    | 3/5 [00:04<00:02,  1.12s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.01s/it]=> result
+* total: 812
+* correct: 540
+* accuracy: 66.5%
+* error: 33.5%
+* macro_f1: 64.1%
+Checkpoint saved to output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/prompt_learner/model.pth.tar-10
+
+epoch [11/50] batch [2/24] time 0.641 (1.688) data 0.000 (0.955) loss 3.7715 (3.7861) lr 9.0451e-02 eta 0:26:57
+epoch [11/50] batch [4/24] time 0.529 (1.110) data 0.000 (0.478) loss 3.7266 (3.7563) lr 9.0451e-02 eta 0:17:41
+epoch [11/50] batch [6/24] time 0.528 (0.916) data 0.000 (0.318) loss 3.7656 (3.7562) lr 9.0451e-02 eta 0:14:34
+epoch [11/50] batch [8/24] time 0.534 (0.820) data 0.000 (0.239) loss 3.6426 (3.7368) lr 9.0451e-02 eta 0:13:00
+epoch [11/50] batch [10/24] time 0.526 (0.761) data 0.000 (0.191) loss 3.6621 (3.7314) lr 9.0451e-02 eta 0:12:03
+epoch [11/50] batch [12/24] time 0.531 (0.723) data 0.000 (0.159) loss 3.7207 (3.7337) lr 9.0451e-02 eta 0:11:24
+epoch [11/50] batch [14/24] time 0.525 (0.694) data 0.000 (0.137) loss 3.6426 (3.7246) lr 9.0451e-02 eta 0:10:56
+epoch [11/50] batch [16/24] time 0.524 (0.673) data 0.000 (0.120) loss 3.6758 (3.7198) lr 9.0451e-02 eta 0:10:35
+epoch [11/50] batch [18/24] time 0.527 (0.657) data 0.000 (0.106) loss 3.7422 (3.7222) lr 9.0451e-02 eta 0:10:18
+epoch [11/50] batch [20/24] time 0.529 (0.644) data 0.000 (0.096) loss 3.7402 (3.7176) lr 9.0451e-02 eta 0:10:05
+epoch [11/50] batch [22/24] time 0.525 (0.633) data 0.000 (0.087) loss 3.6953 (3.7184) lr 9.0451e-02 eta 0:09:54
+epoch [11/50] batch [24/24] time 0.531 (0.625) data 0.000 (0.080) loss 3.6875 (3.7175) lr 8.8526e-02 eta 0:09:45
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.85s/it] 40%|████      | 2/5 [00:04<00:05,  1.79s/it] 60%|██████    | 3/5 [00:04<00:02,  1.11s/it] 80%|████████  | 4/5 [00:04<00:00,  1.26it/s]100%|██████████| 5/5 [00:04<00:00,  1.00it/s]=> result
+* total: 812
+* correct: 542
+* accuracy: 66.7%
+* error: 33.3%
+* macro_f1: 64.5%
+
+epoch [12/50] batch [2/24] time 0.779 (1.415) data 0.000 (0.537) loss 3.6465 (3.6289) lr 8.8526e-02 eta 0:22:01
+epoch [12/50] batch [4/24] time 0.528 (0.995) data 0.000 (0.269) loss 3.7598 (3.6802) lr 8.8526e-02 eta 0:15:27
+epoch [12/50] batch [6/24] time 0.528 (0.839) data 0.000 (0.179) loss 3.6973 (3.6960) lr 8.8526e-02 eta 0:13:00
+epoch [12/50] batch [8/24] time 0.537 (0.763) data 0.000 (0.134) loss 3.7227 (3.6985) lr 8.8526e-02 eta 0:11:47
+epoch [12/50] batch [10/24] time 0.529 (0.716) data 0.000 (0.108) loss 3.7266 (3.7104) lr 8.8526e-02 eta 0:11:03
+epoch [12/50] batch [12/24] time 0.533 (0.686) data 0.000 (0.090) loss 3.6855 (3.7082) lr 8.8526e-02 eta 0:10:33
+epoch [12/50] batch [14/24] time 0.535 (0.664) data 0.000 (0.077) loss 3.7051 (3.7087) lr 8.8526e-02 eta 0:10:12
+epoch [12/50] batch [16/24] time 0.534 (0.647) data 0.000 (0.067) loss 3.5820 (3.7029) lr 8.8526e-02 eta 0:09:55
+epoch [12/50] batch [18/24] time 0.532 (0.634) data 0.000 (0.060) loss 3.6074 (3.6947) lr 8.8526e-02 eta 0:09:42
+epoch [12/50] batch [20/24] time 0.530 (0.624) data 0.000 (0.054) loss 3.7051 (3.6979) lr 8.8526e-02 eta 0:09:31
+epoch [12/50] batch [22/24] time 0.527 (0.615) data 0.000 (0.049) loss 3.6816 (3.6964) lr 8.8526e-02 eta 0:09:22
+epoch [12/50] batch [24/24] time 0.531 (0.608) data 0.000 (0.045) loss 3.7090 (3.6893) lr 8.6448e-02 eta 0:09:14
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.89s/it] 40%|████      | 2/5 [00:04<00:05,  1.79s/it] 60%|██████    | 3/5 [00:04<00:02,  1.11s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.00s/it]=> result
+* total: 812
+* correct: 547
+* accuracy: 67.4%
+* error: 32.6%
+* macro_f1: 65.2%
+Checkpoint saved to output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/prompt_learner/model-best.pth.tar
+
+epoch [13/50] batch [2/24] time 0.648 (1.696) data 0.000 (0.930) loss 3.6152 (3.6602) lr 8.6448e-02 eta 0:25:43
+epoch [13/50] batch [4/24] time 0.534 (1.115) data 0.000 (0.465) loss 3.6172 (3.6528) lr 8.6448e-02 eta 0:16:52
+epoch [13/50] batch [6/24] time 0.527 (0.920) data 0.000 (0.310) loss 3.6797 (3.6533) lr 8.6448e-02 eta 0:13:53
+epoch [13/50] batch [8/24] time 0.528 (0.822) data 0.000 (0.233) loss 3.6094 (3.6484) lr 8.6448e-02 eta 0:12:23
+epoch [13/50] batch [10/24] time 0.527 (0.763) data 0.000 (0.186) loss 3.6406 (3.6564) lr 8.6448e-02 eta 0:11:28
+epoch [13/50] batch [12/24] time 0.527 (0.724) data 0.000 (0.155) loss 3.7148 (3.6618) lr 8.6448e-02 eta 0:10:51
+epoch [13/50] batch [14/24] time 0.534 (0.697) data 0.000 (0.133) loss 3.7188 (3.6674) lr 8.6448e-02 eta 0:10:25
+epoch [13/50] batch [16/24] time 0.536 (0.676) data 0.000 (0.116) loss 3.7383 (3.6721) lr 8.6448e-02 eta 0:10:06
+epoch [13/50] batch [18/24] time 0.533 (0.660) data 0.000 (0.104) loss 3.6914 (3.6689) lr 8.6448e-02 eta 0:09:50
+epoch [13/50] batch [20/24] time 0.528 (0.647) data 0.000 (0.093) loss 3.6562 (3.6683) lr 8.6448e-02 eta 0:09:37
+epoch [13/50] batch [22/24] time 0.535 (0.637) data 0.000 (0.085) loss 3.6406 (3.6682) lr 8.6448e-02 eta 0:09:27
+epoch [13/50] batch [24/24] time 0.620 (0.632) data 0.000 (0.078) loss 3.5801 (3.6622) lr 8.4227e-02 eta 0:09:21
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.92s/it] 40%|████      | 2/5 [00:04<00:05,  1.80s/it] 60%|██████    | 3/5 [00:04<00:02,  1.12s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.00s/it]=> result
+* total: 812
+* correct: 548
+* accuracy: 67.5%
+* error: 32.5%
+* macro_f1: 65.5%
+Checkpoint saved to output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/prompt_learner/model-best.pth.tar
+
+epoch [14/50] batch [2/24] time 0.714 (1.591) data 0.000 (0.776) loss 3.7324 (3.7070) lr 8.4227e-02 eta 0:23:29
+epoch [14/50] batch [4/24] time 0.534 (1.063) data 0.000 (0.388) loss 3.5938 (3.6792) lr 8.4227e-02 eta 0:15:39
+epoch [14/50] batch [6/24] time 0.526 (0.884) data 0.000 (0.259) loss 3.6934 (3.6823) lr 8.4227e-02 eta 0:12:59
+epoch [14/50] batch [8/24] time 0.526 (0.795) data 0.000 (0.194) loss 3.6934 (3.6692) lr 8.4227e-02 eta 0:11:39
+epoch [14/50] batch [10/24] time 0.530 (0.743) data 0.000 (0.155) loss 3.6680 (3.6674) lr 8.4227e-02 eta 0:10:51
+epoch [14/50] batch [12/24] time 0.534 (0.708) data 0.000 (0.130) loss 3.6777 (3.6615) lr 8.4227e-02 eta 0:10:20
+epoch [14/50] batch [14/24] time 0.530 (0.683) data 0.000 (0.111) loss 3.7695 (3.6662) lr 8.4227e-02 eta 0:09:56
+epoch [14/50] batch [16/24] time 0.528 (0.663) data 0.000 (0.097) loss 3.6484 (3.6633) lr 8.4227e-02 eta 0:09:38
+epoch [14/50] batch [18/24] time 0.526 (0.648) data 0.000 (0.086) loss 3.5898 (3.6589) lr 8.4227e-02 eta 0:09:24
+epoch [14/50] batch [20/24] time 0.531 (0.636) data 0.000 (0.078) loss 3.6895 (3.6578) lr 8.4227e-02 eta 0:09:12
+epoch [14/50] batch [22/24] time 0.527 (0.626) data 0.000 (0.071) loss 3.6426 (3.6518) lr 8.4227e-02 eta 0:09:02
+epoch [14/50] batch [24/24] time 0.529 (0.619) data 0.000 (0.065) loss 3.6602 (3.6510) lr 8.1871e-02 eta 0:08:54
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.90s/it] 40%|████      | 2/5 [00:04<00:05,  1.80s/it] 60%|██████    | 3/5 [00:04<00:02,  1.12s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.01s/it]=> result
+* total: 812
+* correct: 547
+* accuracy: 67.4%
+* error: 32.6%
+* macro_f1: 65.4%
+
+epoch [15/50] batch [2/24] time 0.701 (1.561) data 0.000 (0.727) loss 3.6211 (3.6143) lr 8.1871e-02 eta 0:22:25
+epoch [15/50] batch [4/24] time 0.532 (1.047) data 0.000 (0.363) loss 3.5605 (3.5923) lr 8.1871e-02 eta 0:15:00
+epoch [15/50] batch [6/24] time 0.528 (0.874) data 0.000 (0.242) loss 3.6680 (3.6009) lr 8.1871e-02 eta 0:12:29
+epoch [15/50] batch [8/24] time 0.531 (0.788) data 0.000 (0.182) loss 3.6484 (3.6016) lr 8.1871e-02 eta 0:11:14
+epoch [15/50] batch [10/24] time 0.528 (0.736) data 0.000 (0.146) loss 3.6133 (3.6119) lr 8.1871e-02 eta 0:10:28
+epoch [15/50] batch [12/24] time 0.534 (0.702) data 0.000 (0.121) loss 3.6562 (3.6107) lr 8.1871e-02 eta 0:09:57
+epoch [15/50] batch [14/24] time 0.536 (0.678) data 0.000 (0.104) loss 3.6270 (3.6152) lr 8.1871e-02 eta 0:09:36
+epoch [15/50] batch [16/24] time 0.528 (0.659) data 0.000 (0.091) loss 3.5430 (3.6075) lr 8.1871e-02 eta 0:09:19
+epoch [15/50] batch [18/24] time 0.528 (0.645) data 0.000 (0.081) loss 3.7051 (3.6148) lr 8.1871e-02 eta 0:09:05
+epoch [15/50] batch [20/24] time 0.527 (0.633) data 0.000 (0.073) loss 3.6680 (3.6189) lr 8.1871e-02 eta 0:08:54
+epoch [15/50] batch [22/24] time 0.527 (0.623) data 0.000 (0.066) loss 3.5996 (3.6180) lr 8.1871e-02 eta 0:08:44
+epoch [15/50] batch [24/24] time 0.527 (0.616) data 0.000 (0.061) loss 3.6953 (3.6182) lr 7.9389e-02 eta 0:08:37
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.92s/it] 40%|████      | 2/5 [00:04<00:05,  1.81s/it] 60%|██████    | 3/5 [00:04<00:02,  1.13s/it] 80%|████████  | 4/5 [00:04<00:00,  1.24it/s]100%|██████████| 5/5 [00:05<00:00,  1.01s/it]=> result
+* total: 812
+* correct: 557
+* accuracy: 68.6%
+* error: 31.4%
+* macro_f1: 66.6%
+Checkpoint saved to output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/prompt_learner/model-best.pth.tar
+
+epoch [16/50] batch [2/24] time 0.735 (1.551) data 0.000 (0.668) loss 3.6914 (3.5898) lr 7.9389e-02 eta 0:21:39
+epoch [16/50] batch [4/24] time 0.530 (1.043) data 0.000 (0.334) loss 3.4902 (3.5645) lr 7.9389e-02 eta 0:14:31
+epoch [16/50] batch [6/24] time 0.532 (0.872) data 0.000 (0.223) loss 3.6113 (3.5749) lr 7.9389e-02 eta 0:12:06
+epoch [16/50] batch [8/24] time 0.531 (0.786) data 0.000 (0.167) loss 3.7168 (3.6099) lr 7.9389e-02 eta 0:10:53
+epoch [16/50] batch [10/24] time 0.527 (0.734) data 0.000 (0.134) loss 3.5918 (3.6021) lr 7.9389e-02 eta 0:10:09
+epoch [16/50] batch [12/24] time 0.530 (0.700) data 0.000 (0.112) loss 3.5996 (3.5947) lr 7.9389e-02 eta 0:09:39
+epoch [16/50] batch [14/24] time 0.528 (0.676) data 0.000 (0.096) loss 3.5098 (3.5884) lr 7.9389e-02 eta 0:09:17
+epoch [16/50] batch [16/24] time 0.536 (0.658) data 0.000 (0.084) loss 3.6602 (3.5939) lr 7.9389e-02 eta 0:09:01
+epoch [16/50] batch [18/24] time 0.534 (0.644) data 0.000 (0.074) loss 3.6133 (3.5954) lr 7.9389e-02 eta 0:08:49
+epoch [16/50] batch [20/24] time 0.528 (0.632) data 0.000 (0.067) loss 3.6504 (3.5970) lr 7.9389e-02 eta 0:08:38
+epoch [16/50] batch [22/24] time 0.525 (0.623) data 0.000 (0.061) loss 3.5176 (3.5917) lr 7.9389e-02 eta 0:08:29
+epoch [16/50] batch [24/24] time 0.527 (0.615) data 0.000 (0.056) loss 3.6094 (3.5978) lr 7.6791e-02 eta 0:08:21
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.90s/it] 40%|████      | 2/5 [00:04<00:05,  1.81s/it] 60%|██████    | 3/5 [00:04<00:02,  1.12s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.01s/it]=> result
+* total: 812
+* correct: 547
+* accuracy: 67.4%
+* error: 32.6%
+* macro_f1: 65.4%
+
+epoch [17/50] batch [2/24] time 0.735 (1.566) data 0.001 (0.776) loss 3.6445 (3.6396) lr 7.6791e-02 eta 0:21:14
+epoch [17/50] batch [4/24] time 0.547 (1.058) data 0.000 (0.388) loss 3.5684 (3.6172) lr 7.6791e-02 eta 0:14:18
+epoch [17/50] batch [6/24] time 0.545 (0.886) data 0.000 (0.259) loss 3.6758 (3.6331) lr 7.6791e-02 eta 0:11:57
+epoch [17/50] batch [8/24] time 0.539 (0.798) data 0.000 (0.194) loss 3.6074 (3.6279) lr 7.6791e-02 eta 0:10:45
+epoch [17/50] batch [10/24] time 0.539 (0.746) data 0.000 (0.155) loss 3.6152 (3.6107) lr 7.6791e-02 eta 0:10:01
+epoch [17/50] batch [12/24] time 0.536 (0.711) data 0.000 (0.130) loss 3.5781 (3.6090) lr 7.6791e-02 eta 0:09:31
+epoch [17/50] batch [14/24] time 0.543 (0.687) data 0.000 (0.111) loss 3.5508 (3.6003) lr 7.6791e-02 eta 0:09:10
+epoch [17/50] batch [16/24] time 0.543 (0.668) data 0.000 (0.097) loss 3.6875 (3.6003) lr 7.6791e-02 eta 0:08:54
+epoch [17/50] batch [18/24] time 0.545 (0.655) data 0.000 (0.086) loss 3.5859 (3.6002) lr 7.6791e-02 eta 0:08:42
+epoch [17/50] batch [20/24] time 0.539 (0.643) data 0.000 (0.078) loss 3.5977 (3.6035) lr 7.6791e-02 eta 0:08:32
+epoch [17/50] batch [22/24] time 0.542 (0.634) data 0.000 (0.071) loss 3.6738 (3.6048) lr 7.6791e-02 eta 0:08:23
+epoch [17/50] batch [24/24] time 0.538 (0.626) data 0.000 (0.065) loss 3.6152 (3.6001) lr 7.4088e-02 eta 0:08:15
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.88s/it] 40%|████      | 2/5 [00:04<00:05,  1.79s/it] 60%|██████    | 3/5 [00:04<00:02,  1.12s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.00s/it]=> result
+* total: 812
+* correct: 549
+* accuracy: 67.6%
+* error: 32.4%
+* macro_f1: 65.7%
+
+epoch [18/50] batch [2/24] time 0.756 (1.549) data 0.001 (0.672) loss 3.5312 (3.6094) lr 7.4088e-02 eta 0:20:24
+epoch [18/50] batch [4/24] time 0.532 (1.061) data 0.000 (0.336) loss 3.6445 (3.5952) lr 7.4088e-02 eta 0:13:55
+epoch [18/50] batch [6/24] time 0.530 (0.884) data 0.000 (0.224) loss 3.4805 (3.5697) lr 7.4088e-02 eta 0:11:34
+epoch [18/50] batch [8/24] time 0.526 (0.796) data 0.000 (0.168) loss 3.5098 (3.5669) lr 7.4088e-02 eta 0:10:23
+epoch [18/50] batch [10/24] time 0.530 (0.743) data 0.000 (0.135) loss 3.6152 (3.5650) lr 7.4088e-02 eta 0:09:40
+epoch [18/50] batch [12/24] time 0.527 (0.707) data 0.000 (0.112) loss 3.5293 (3.5628) lr 7.4088e-02 eta 0:09:11
+epoch [18/50] batch [14/24] time 0.526 (0.681) data 0.000 (0.096) loss 3.5293 (3.5619) lr 7.4088e-02 eta 0:08:49
+epoch [18/50] batch [16/24] time 0.534 (0.663) data 0.000 (0.084) loss 3.5176 (3.5629) lr 7.4088e-02 eta 0:08:34
+epoch [18/50] batch [18/24] time 0.617 (0.653) data 0.000 (0.075) loss 3.5820 (3.5651) lr 7.4088e-02 eta 0:08:25
+epoch [18/50] batch [20/24] time 0.542 (0.642) data 0.000 (0.067) loss 3.6289 (3.5677) lr 7.4088e-02 eta 0:08:15
+epoch [18/50] batch [22/24] time 0.535 (0.632) data 0.000 (0.061) loss 3.5801 (3.5724) lr 7.4088e-02 eta 0:08:06
+epoch [18/50] batch [24/24] time 0.526 (0.623) data 0.000 (0.056) loss 3.5215 (3.5701) lr 7.1289e-02 eta 0:07:58
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.86s/it] 40%|████      | 2/5 [00:04<00:05,  1.78s/it] 60%|██████    | 3/5 [00:04<00:02,  1.11s/it] 80%|████████  | 4/5 [00:04<00:00,  1.26it/s]100%|██████████| 5/5 [00:05<00:00,  1.00s/it]=> result
+* total: 812
+* correct: 545
+* accuracy: 67.1%
+* error: 32.9%
+* macro_f1: 65.4%
+
+epoch [19/50] batch [2/24] time 0.969 (1.714) data 0.324 (0.911) loss 3.6172 (3.5889) lr 7.1289e-02 eta 0:21:53
+epoch [19/50] batch [4/24] time 0.530 (1.124) data 0.000 (0.456) loss 3.5625 (3.5830) lr 7.1289e-02 eta 0:14:18
+epoch [19/50] batch [6/24] time 0.537 (0.928) data 0.000 (0.304) loss 3.5781 (3.5713) lr 7.1289e-02 eta 0:11:47
+epoch [19/50] batch [8/24] time 0.537 (0.831) data 0.000 (0.228) loss 3.5469 (3.5630) lr 7.1289e-02 eta 0:10:31
+epoch [19/50] batch [10/24] time 0.534 (0.772) data 0.000 (0.182) loss 3.5723 (3.5682) lr 7.1289e-02 eta 0:09:45
+epoch [19/50] batch [12/24] time 0.543 (0.733) data 0.000 (0.152) loss 3.6582 (3.5656) lr 7.1289e-02 eta 0:09:14
+epoch [19/50] batch [14/24] time 0.544 (0.706) data 0.000 (0.130) loss 3.5547 (3.5677) lr 7.1289e-02 eta 0:08:52
+epoch [19/50] batch [16/24] time 0.531 (0.684) data 0.000 (0.114) loss 3.5684 (3.5709) lr 7.1289e-02 eta 0:08:34
+epoch [19/50] batch [18/24] time 0.526 (0.667) data 0.000 (0.101) loss 3.7383 (3.5803) lr 7.1289e-02 eta 0:08:20
+epoch [19/50] batch [20/24] time 0.531 (0.653) data 0.000 (0.091) loss 3.5625 (3.5766) lr 7.1289e-02 eta 0:08:08
+epoch [19/50] batch [22/24] time 0.535 (0.643) data 0.000 (0.083) loss 3.5996 (3.5756) lr 7.1289e-02 eta 0:07:59
+epoch [19/50] batch [24/24] time 0.539 (0.634) data 0.000 (0.076) loss 3.5996 (3.5768) lr 6.8406e-02 eta 0:07:51
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.86s/it] 40%|████      | 2/5 [00:04<00:05,  1.78s/it] 60%|██████    | 3/5 [00:04<00:02,  1.11s/it] 80%|████████  | 4/5 [00:04<00:00,  1.26it/s]100%|██████████| 5/5 [00:04<00:00,  1.00it/s]=> result
+* total: 812
+* correct: 547
+* accuracy: 67.4%
+* error: 32.6%
+* macro_f1: 65.4%
+
+epoch [20/50] batch [2/24] time 0.811 (1.516) data 0.000 (0.625) loss 3.5742 (3.5898) lr 6.8406e-02 eta 0:18:44
+epoch [20/50] batch [4/24] time 0.536 (1.050) data 0.000 (0.313) loss 3.5254 (3.5708) lr 6.8406e-02 eta 0:12:57
+epoch [20/50] batch [6/24] time 0.534 (0.879) data 0.000 (0.208) loss 3.7051 (3.5859) lr 6.8406e-02 eta 0:10:49
+epoch [20/50] batch [8/24] time 0.539 (0.794) data 0.000 (0.156) loss 3.6641 (3.5852) lr 6.8406e-02 eta 0:09:44
+epoch [20/50] batch [10/24] time 0.533 (0.743) data 0.000 (0.125) loss 3.6348 (3.5936) lr 6.8406e-02 eta 0:09:04
+epoch [20/50] batch [12/24] time 0.528 (0.708) data 0.000 (0.104) loss 3.5117 (3.5785) lr 6.8406e-02 eta 0:08:38
+epoch [20/50] batch [14/24] time 0.533 (0.682) data 0.000 (0.089) loss 3.5898 (3.5808) lr 6.8406e-02 eta 0:08:18
+epoch [20/50] batch [16/24] time 0.533 (0.664) data 0.000 (0.078) loss 3.4492 (3.5674) lr 6.8406e-02 eta 0:08:03
+epoch [20/50] batch [18/24] time 0.536 (0.649) data 0.000 (0.070) loss 3.5859 (3.5704) lr 6.8406e-02 eta 0:07:51
+epoch [20/50] batch [20/24] time 0.537 (0.638) data 0.000 (0.063) loss 3.5488 (3.5677) lr 6.8406e-02 eta 0:07:41
+epoch [20/50] batch [22/24] time 0.535 (0.628) data 0.000 (0.057) loss 3.5977 (3.5759) lr 6.8406e-02 eta 0:07:33
+epoch [20/50] batch [24/24] time 0.531 (0.620) data 0.000 (0.052) loss 3.6016 (3.5741) lr 6.5451e-02 eta 0:07:26
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.98s/it] 40%|████      | 2/5 [00:04<00:05,  1.82s/it] 60%|██████    | 3/5 [00:04<00:02,  1.13s/it] 80%|████████  | 4/5 [00:04<00:00,  1.24it/s]100%|██████████| 5/5 [00:05<00:00,  1.02s/it]=> result
+* total: 812
+* correct: 550
+* accuracy: 67.7%
+* error: 32.3%
+* macro_f1: 65.6%
+Checkpoint saved to output/rpo_prime/base2new/train_base/stanford_cars/shots_16/RPO_prime_sdl/main_tmp/seed1/prompt_learner/model.pth.tar-20
+
+epoch [21/50] batch [2/24] time 0.665 (1.646) data 0.000 (0.874) loss 3.5664 (3.6436) lr 6.5451e-02 eta 0:19:41
+epoch [21/50] batch [4/24] time 0.527 (1.087) data 0.000 (0.437) loss 3.4727 (3.5552) lr 6.5451e-02 eta 0:12:57
+epoch [21/50] batch [6/24] time 0.529 (0.902) data 0.000 (0.291) loss 3.5156 (3.5332) lr 6.5451e-02 eta 0:10:43
+epoch [21/50] batch [8/24] time 0.529 (0.809) data 0.000 (0.219) loss 3.5723 (3.5474) lr 6.5451e-02 eta 0:09:36
+epoch [21/50] batch [10/24] time 0.529 (0.753) data 0.000 (0.175) loss 3.6543 (3.5537) lr 6.5451e-02 eta 0:08:54
+epoch [21/50] batch [12/24] time 0.531 (0.716) data 0.000 (0.146) loss 3.4805 (3.5430) lr 6.5451e-02 eta 0:08:26
+epoch [21/50] batch [14/24] time 0.528 (0.689) data 0.000 (0.125) loss 3.6113 (3.5490) lr 6.5451e-02 eta 0:08:06
+epoch [21/50] batch [16/24] time 0.532 (0.669) data 0.000 (0.109) loss 3.5918 (3.5535) lr 6.5451e-02 eta 0:07:51
+epoch [21/50] batch [18/24] time 0.527 (0.654) data 0.000 (0.097) loss 3.5547 (3.5537) lr 6.5451e-02 eta 0:07:38
+epoch [21/50] batch [20/24] time 0.534 (0.641) data 0.000 (0.088) loss 3.5000 (3.5540) lr 6.5451e-02 eta 0:07:28
+epoch [21/50] batch [22/24] time 0.528 (0.631) data 0.000 (0.080) loss 3.4941 (3.5456) lr 6.5451e-02 eta 0:07:20
+epoch [21/50] batch [24/24] time 0.531 (0.623) data 0.000 (0.073) loss 3.6152 (3.5511) lr 6.2434e-02 eta 0:07:13
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.94s/it] 40%|████      | 2/5 [00:04<00:05,  1.81s/it] 60%|██████    | 3/5 [00:04<00:02,  1.13s/it] 80%|████████  | 4/5 [00:04<00:00,  1.24it/s]100%|██████████| 5/5 [00:05<00:00,  1.01s/it]=> result
+* total: 812
+* correct: 550
+* accuracy: 67.7%
+* error: 32.3%
+* macro_f1: 66.1%
+
+epoch [22/50] batch [2/24] time 0.615 (1.717) data 0.001 (0.974) loss 3.5605 (3.5029) lr 6.2434e-02 eta 0:19:51
+epoch [22/50] batch [4/24] time 0.534 (1.125) data 0.000 (0.487) loss 3.5000 (3.5117) lr 6.2434e-02 eta 0:12:58
+epoch [22/50] batch [6/24] time 0.527 (0.926) data 0.000 (0.325) loss 3.5957 (3.5365) lr 6.2434e-02 eta 0:10:38
+epoch [22/50] batch [8/24] time 0.528 (0.827) data 0.000 (0.244) loss 3.5449 (3.5447) lr 6.2434e-02 eta 0:09:29
+epoch [22/50] batch [10/24] time 0.528 (0.768) data 0.000 (0.195) loss 3.5156 (3.5424) lr 6.2434e-02 eta 0:08:46
+epoch [22/50] batch [12/24] time 0.526 (0.728) data 0.000 (0.163) loss 3.6328 (3.5594) lr 6.2434e-02 eta 0:08:18
+epoch [22/50] batch [14/24] time 0.533 (0.700) data 0.000 (0.139) loss 3.6738 (3.5625) lr 6.2434e-02 eta 0:07:57
+epoch [22/50] batch [16/24] time 0.539 (0.679) data 0.000 (0.122) loss 3.5078 (3.5576) lr 6.2434e-02 eta 0:07:41
+epoch [22/50] batch [18/24] time 0.530 (0.663) data 0.000 (0.108) loss 3.6074 (3.5534) lr 6.2434e-02 eta 0:07:29
+epoch [22/50] batch [20/24] time 0.531 (0.649) data 0.000 (0.098) loss 3.6094 (3.5561) lr 6.2434e-02 eta 0:07:18
+epoch [22/50] batch [22/24] time 0.526 (0.638) data 0.000 (0.089) loss 3.5469 (3.5568) lr 6.2434e-02 eta 0:07:10
+epoch [22/50] batch [24/24] time 0.526 (0.629) data 0.000 (0.081) loss 3.5684 (3.5557) lr 5.9369e-02 eta 0:07:02
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.88s/it] 40%|████      | 2/5 [00:04<00:05,  1.80s/it] 60%|██████    | 3/5 [00:04<00:02,  1.12s/it] 80%|████████  | 4/5 [00:04<00:00,  1.25it/s]100%|██████████| 5/5 [00:05<00:00,  1.01s/it]=> result
+* total: 812
+* correct: 550
+* accuracy: 67.7%
+* error: 32.3%
+* macro_f1: 66.0%
+
+epoch [23/50] batch [2/24] time 0.902 (1.393) data 0.001 (0.509) loss 3.4941 (3.5410) lr 5.9369e-02 eta 0:15:33
+epoch [23/50] batch [4/24] time 0.531 (0.996) data 0.000 (0.255) loss 3.4766 (3.5205) lr 5.9369e-02 eta 0:11:05
+epoch [23/50] batch [6/24] time 0.530 (0.841) data 0.000 (0.170) loss 3.5703 (3.5335) lr 5.9369e-02 eta 0:09:20
+epoch [23/50] batch [8/24] time 0.527 (0.763) data 0.000 (0.128) loss 3.6660 (3.5496) lr 5.9369e-02 eta 0:08:26
+epoch [23/50] batch [10/24] time 0.526 (0.716) data 0.000 (0.102) loss 3.5742 (3.5527) lr 5.9369e-02 eta 0:07:54
+epoch [23/50] batch [12/24] time 0.531 (0.685) data 0.000 (0.085) loss 3.5703 (3.5584) lr 5.9369e-02 eta 0:07:32
+epoch [23/50] batch [14/24] time 0.534 (0.664) data 0.000 (0.073) loss 3.4805 (3.5566) lr 5.9369e-02 eta 0:07:16
+epoch [23/50] batch [16/24] time 0.530 (0.648) data 0.000 (0.064) loss 3.4766 (3.5575) lr 5.9369e-02 eta 0:07:04
+epoch [23/50] batch [18/24] time 0.531 (0.635) data 0.000 (0.057) loss 3.5957 (3.5628) lr 5.9369e-02 eta 0:06:55
+epoch [23/50] batch [20/24] time 0.529 (0.624) data 0.000 (0.051) loss 3.6172 (3.5639) lr 5.9369e-02 eta 0:06:46
+epoch [23/50] batch [22/24] time 0.529 (0.616) data 0.000 (0.047) loss 3.4883 (3.5566) lr 5.9369e-02 eta 0:06:40
+epoch [23/50] batch [24/24] time 0.532 (0.608) data 0.000 (0.043) loss 3.4922 (3.5548) lr 5.6267e-02 eta 0:06:34
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:15,  3.93s/it] 40%|████      | 2/5 [00:04<00:05,  1.81s/it] 60%|██████    | 3/5 [00:04<00:02,  1.13s/it] 80%|████████  | 4/5 [00:04<00:00,  1.24it/s]100%|██████████| 5/5 [00:05<00:00,  1.01s/it]=> result
+* total: 812
+* correct: 551
+* accuracy: 67.9%
+* error: 32.1%
+* macro_f1: 66.2%
+
+epoch [24/50] batch [2/24] time 0.900 (1.541) data 0.000 (0.646) loss 3.5840 (3.5420) lr 5.6267e-02 eta 0:16:35
+epoch [24/50] batch [4/24] time 0.632 (1.074) data 0.000 (0.323) loss 3.5703 (3.5586) lr 5.6267e-02 eta 0:11:31
+epoch [24/50] batch [6/24] time 0.535 (0.895) data 0.000 (0.215) loss 3.5215 (3.5355) lr 5.6267e-02 eta 0:09:34
+epoch [24/50] batch [8/24] time 0.540 (0.806) data 0.000 (0.162) loss 3.5547 (3.5413) lr 5.6267e-02 eta 0:08:35
+epoch [24/50] batch [10/24] time 0.538 (0.752) data 0.000 (0.129) loss 3.5234 (3.5371) lr 5.6267e-02 eta 0:07:59
+epoch [24/50] batch [12/24] time 0.536 (0.717) data 0.000 (0.108) loss 3.5801 (3.5524) lr 5.6267e-02 eta 0:07:35
+epoch [24/50] batch [14/24] time 0.541 (0.691) data 0.000 (0.092) loss 3.5742 (3.5558) lr 5.6267e-02 eta 0:07:18
+epoch [24/50] batch [16/24] time 0.539 (0.672) data 0.000 (0.081) loss 3.4863 (3.5568) lr 5.6267e-02 eta 0:07:04
+epoch [24/50] batch [18/24] time 0.545 (0.658) data 0.000 (0.072) loss 3.5898 (3.5591) lr 5.6267e-02 eta 0:06:54
+epoch [24/50] batch [20/24] time 0.545 (0.646) data 0.000 (0.065) loss 3.5469 (3.5569) lr 5.6267e-02 eta 0:06:45
+epoch [24/50] batch [22/24] time 0.540 (0.636) data 0.000 (0.059) loss 3.4980 (3.5536) lr 5.6267e-02 eta 0:06:38
+epoch [24/50] batch [24/24] time 0.535 (0.628) data 0.000 (0.054) loss 3.5918 (3.5558) lr 5.3140e-02 eta 0:06:31
+Evaluate on the *val* set
+  0%|          | 0/5 [00:00<?, ?it/s]slurmstepd: error: *** JOB 391536 ON a02 CANCELLED AT 2024-02-26T14:33:15 ***

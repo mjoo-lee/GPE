@@ -3,7 +3,7 @@
 #cd ../..
 
 # custom config
-#DATA=/hub_data2/intern/data/
+DATA=/shared/s2/lab01/dataset/clip
 TRAINER=RPO
 
 DATASET=$1
@@ -18,7 +18,7 @@ SUB=$7
 
 
 COMMON_DIR=${DATASET}/shots_${SHOTS}/${TRAINER}/${CFG}/seed${SEED}
-MODEL_DIR=output/rpo/base2new/train_base/${COMMON_DIR}
+MODEL_DIR=output/rpo/base2new/train_base/${DATASET}/shots_${SHOTS}/${TRAINER}/${CFG}/seed${SEED}
 DIR=output/rpo/base2new/test_${SUB}/${COMMON_DIR}
 
 #if [ -d "$DIR" ]; then

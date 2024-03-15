@@ -3,7 +3,7 @@
 #cd ../..
 
 # custom config
-#DATA=/hub_data2/intern/data/
+DATA=/shared/s2/lab01/dataset/clip
 TRAINER=RPO
 
 DATASET=$1

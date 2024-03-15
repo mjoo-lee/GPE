@@ -127,7 +127,10 @@ class CustomCLIP(nn.Module):
         self.prompts = self.make_prompts(classnames, prompt) # ["a photo of a dog.", ".."]
 
         # define mask
-        self.define_mask()
+        self.prompt_attention = False
+        self.rpo_prime = True
+        self.define_mask(prompt_attention=self.prompt_attention, rpo_prime = self.rpo_prime)
+        #self.define_mask()
 
     def make_prompts(self, classnames, prompt):
         prompts = [prompt.replace('_', c) for c in classnames]
@@ -136,7 +139,7 @@ class CustomCLIP(nn.Module):
             self.text_x = self.token_embedding(self.text_tokenized).type(self.dtype) + self.text_pos_embedding.type(self.dtype)
             self.len_prompts = self.text_tokenized.argmax(dim=-1) + 1
         return prompts
-
+    """
     def define_mask(self):
         len_max = 77
         attn_head = 8
@@ -157,7 +160,54 @@ class CustomCLIP(nn.Module):
         #####
 
         self.visual_mask = visual_mask
+    """
+    def define_mask(self, prompt_attention=False, rpo_prime=False):
+        #start_time = time.time()
+        len_max = 77
+        attn_head = 8
 
+        #수정 0131
+        text_mask = []
+        for idx in self.len_prompts:
+            mask = torch.full((len_max, len_max), float("-inf"), dtype=torch.float32)
+            mask = torch.triu(mask, diagonal=1)  # Upper triangular matrix
+            mask[:, idx:] = float("-inf")
+            if prompt_attention:
+                # mask[idx:, idx-1].fill_(float("-inf"))
+                mask.fill_diagonal_(0)
+            half_K = 18 #self.cfg.TRAINER.RPO.K//2
+            quad_K = half_K//2 #self.cfg.TRAINER.RPO.K//4    
+            K = self.cfg.TRAINER.RPO.K
+            if rpo_prime:
+                mask[idx + half_K : idx + K , :].fill_(float("-inf"))
+                # mask[ idx : idx + half_K, idx + half_K: idx + K].fill_(0) # RPO 12/ auxilary prompt 12
+                mask[ idx +quad_K: idx + half_K, idx + half_K: idx + K].fill_(0) # RPO 6+6/ auxialiry prompt 12
+                corner = torch.full((half_K, half_K), float("-inf"), dtype=torch.float32)
+                corner = torch.triu(corner, diagonal=1) 
+                # mask[idx + half_K : idx + K, idx + half_K  : idx + K] = corner
+                mask[idx + half_K : idx + K, idx + half_K  : idx + K].fill_(0)
+            text_mask.append(mask.repeat(attn_head, 1, 1))  # Repeat for attention heads
+   
+        self.text_mask = torch.cat(text_mask, dim=0)
+        
+        # image encoder mask
+        att_size = 1 + 14 * 14 + K
+        visual_mask = torch.zeros((att_size, att_size), dtype=self.dtype, requires_grad=False)
+        visual_mask[:, -1 * K:] = float("-inf")
+        if prompt_attention:
+            # visual_mask[-1 * K:, 0].fill_(float("-inf"))
+            # visual_mask[-1 * K:, -1 * K:].fill_diagonal_(0)
+            visual_mask.fill_diagonal_(0)
+        
+        if rpo_prime:
+            visual_mask[-1 * (K-half_K) : , :].fill_(float("-inf"))
+            # visual_mask[-1 * K : , -1 * half_K:].fill_(0)  # RPO 12/ auxilary prompt 12
+            visual_mask[-1 * K + quad_K: , -1 * (K-half_K):].fill_(0)  # RPO 6+6/ auxialiry prompt 12
+            # visual_mask[-1 * half_K : , -1 * K : -1 * half_K].fill_(0)
+        #####
+
+        self.visual_mask = visual_mask
+        
     def forward(self, image, label=None):
         device = image.device
 
@@ -181,7 +231,10 @@ class CustomCLIP(nn.Module):
         text_x = self.text_transformers(text_x, text_mask)
         text_x = text_x.permute(1, 0, 2)
         text_x = self.text_ln_final(text_x).type(self.dtype)
-
+        if self.rpo_prime:
+            # K = K//2
+            K=18
+            
         text_f = torch.empty(text_x.shape[0], 0, 512, device=device, dtype=self.dtype)
         for i in range(K):
             idx = self.len_prompts + i
@@ -207,25 +260,37 @@ class CustomCLIP(nn.Module):
         img_x = img_x.permute(1, 0, 2)
         img_x = self.img_transformer(img_x, visual_mask)
         img_x = img_x.permute(1, 0, 2)
-        img_f = self.img_post_ln(img_x[:, -1 * K:, :]) @ self.img_proj
+        # img_f = self.img_post_ln(img_x[:, -1 * K:, :]) @ self.img_proj
+        if self.rpo_prime:
+            img_f = self.img_post_ln(img_x[:, -1 * self.prompt_learner.K: -1 * (self.prompt_learner.K-K), :]) @ self.img_proj
+        else:
+            img_f = self.img_post_ln(img_x[:, -1 * self.prompt_learner.K:, :]) @ self.img_proj
         i_f = self.img_post_ln(img_x[:, 0, :]) @ self.img_proj
         ####################### logit ###########################
         # logit
 
         text_f = text_f / text_f.norm(dim=-1, keepdim=True)
         t_f = t_f / t_f.norm(dim=-1, keepdim=True)
-
+        t_prompt_f = text_f.mean(1) #추가
+        
         img_f = img_f / img_f.norm(dim=-1, keepdim=True)
         i_f = i_f / i_f.norm(dim=-1, keepdim=True)
+        i_prompt_f = img_f.mean(1) #추가
 
-        logits = torch.zeros(img_f.shape[0], text_f.shape[0], device=device)
-        for i in range(K):
-            i_img_f = img_f[:,i,:]
-            i_text_f = text_f[:,i,:]
-            logit = self.logit_scale.exp() * i_img_f @ i_text_f.t()
-            logits += logit
-        logits /= K
-
+        img_f_i_f = torch.cat((i_f.unsqueeze(1),img_f),dim=1).transpose(0,1)
+        text_f_t_f = torch.cat((t_f.unsqueeze(1),text_f),dim=1).permute(1,2,0)
+        
+        # logits = torch.zeros(img_f.shape[0], text_f.shape[0], device=device)
+        # for i in range(K):
+        #     i_img_f = img_f[:,i,:]
+        #     i_text_f = text_f[:,i,:]
+        #     logit = self.logit_scale.exp() * i_img_f @ i_text_f.t()
+        #     logits += logit
+        # logits /= K
+        
+        logits_576 = self.logit_scale.exp() * torch.einsum('pbe,Pec->pPbc',img_f_i_f, text_f_t_f).reshape((K+1) * (K+1), img_f.shape[0], text_f.shape[0]).to(device)
+        logits = logits_576.mean(0)
+        
         if self.prompt_learner.training:
             return F.cross_entropy(logits, label)
         

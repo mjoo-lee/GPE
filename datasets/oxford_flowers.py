@@ -1,5 +1,5 @@
 import os
-import pickle
+import pickle5 as pickle
 import random
 from scipy.io import loadmat
 from collections import defaultdict
@@ -22,7 +22,7 @@ class OxfordFlowers(DatasetBase):
         self.label_file = os.path.join(self.dataset_dir, "imagelabels.mat")
         self.lab2cname_file = os.path.join(self.dataset_dir, "cat_to_name.json")
         self.split_path = os.path.join(self.dataset_dir, "split_zhou_OxfordFlowers.json")
-        self.split_fewshot_dir = os.path.join(self.dataset_dir, "split_fewshot")
+        self.split_fewshot_dir = os.path.join(self.dataset_dir, "split_fewshot_taesup")
         mkdir_if_missing(self.split_fewshot_dir)
 
         if os.path.exists(self.split_path):
@@ -43,7 +43,7 @@ class OxfordFlowers(DatasetBase):
                     train, val = data["train"], data["val"]
             else:
                 train = self.generate_fewshot_dataset(train, num_shots=num_shots)
-                val = self.generate_fewshot_dataset(val, num_shots=min(num_shots, 4))
+                #val = self.generate_fewshot_dataset(val, num_shots=min(num_shots, 4))
                 data = {"train": train, "val": val}
                 print(f"Saving preprocessed few-shot data to {preprocessed}")
                 with open(preprocessed, "wb") as file:
@@ -51,7 +51,7 @@ class OxfordFlowers(DatasetBase):
 
         subsample = cfg.DATASET.SUBSAMPLE_CLASSES
         train, val, test = OxfordPets.subsample_classes(train, val, test, subsample=subsample)
-
+        print(len(train), len(val), len(test))
         super().__init__(train_x=train, val=val, test=test)
 
     def read_data(self):

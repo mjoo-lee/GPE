@@ -1,5 +1,5 @@
 import os
-import pickle
+import pickle5 as pickle #0222추가
 from collections import OrderedDict
 
 from dassl.data.datasets import DATASET_REGISTRY, Datum, DatasetBase
@@ -11,14 +11,14 @@ from .oxford_pets import OxfordPets
 @DATASET_REGISTRY.register()
 class ImageNet(DatasetBase):
 
-    dataset_dir = "imagenet"
+    dataset_dir = "ImageNet"
 
     def __init__(self, cfg):
         root = os.path.abspath(os.path.expanduser(cfg.DATASET.ROOT))
         self.dataset_dir = os.path.join(root, self.dataset_dir)
         self.image_dir = os.path.join(self.dataset_dir, "images")
         self.preprocessed = os.path.join(self.dataset_dir, "preprocessed.pkl")
-        self.split_fewshot_dir = os.path.join(self.dataset_dir, "split_fewshot")
+        self.split_fewshot_dir = os.path.join(self.dataset_dir, "split_fewshot_taesup")
         mkdir_if_missing(self.split_fewshot_dir)
 
         if os.path.exists(self.preprocessed):

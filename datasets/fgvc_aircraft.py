@@ -1,5 +1,5 @@
 import os
-import pickle
+import pickle5 as pickle
 
 from dassl.data.datasets import DATASET_REGISTRY, Datum, DatasetBase
 from dassl.utils import mkdir_if_missing
@@ -10,13 +10,13 @@ from .oxford_pets import OxfordPets
 @DATASET_REGISTRY.register()
 class FGVCAircraft(DatasetBase):
 
-    dataset_dir = "fgvc_aircraft"
+    dataset_dir = "fgvc-aircraft/data"
 
     def __init__(self, cfg):
         root = os.path.abspath(os.path.expanduser(cfg.DATASET.ROOT))
         self.dataset_dir = os.path.join(root, self.dataset_dir)
         self.image_dir = os.path.join(self.dataset_dir, "images")
-        self.split_fewshot_dir = os.path.join(self.dataset_dir, "split_fewshot")
+        self.split_fewshot_dir = os.path.join(self.dataset_dir, "split_fewshot_taesup")
         mkdir_if_missing(self.split_fewshot_dir)
 
         classnames = []
@@ -42,7 +42,7 @@ class FGVCAircraft(DatasetBase):
                     train, val = data["train"], data["val"]
             else:
                 train = self.generate_fewshot_dataset(train, num_shots=num_shots)
-                val = self.generate_fewshot_dataset(val, num_shots=min(num_shots, 4))
+                # val = self.generate_fewshot_dataset(val, num_shots=min(num_shots, 4))
                 data = {"train": train, "val": val}
                 print(f"Saving preprocessed few-shot data to {preprocessed}")
                 with open(preprocessed, "wb") as file:
@@ -50,7 +50,7 @@ class FGVCAircraft(DatasetBase):
 
         subsample = cfg.DATASET.SUBSAMPLE_CLASSES
         train, val, test = OxfordPets.subsample_classes(train, val, test, subsample=subsample)
-
+        print(len(train), len(val), len(test))
         super().__init__(train_x=train, val=val, test=test)
 
     def read_data(self, cname2lab, split_file):

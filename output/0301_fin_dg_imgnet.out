@@ -1,0 +1,1206 @@
+set -e
+set -x
+
+eval "$(conda shell.bash hook)"
+++ conda shell.bash hook
++ eval 'export CONDA_EXE='\''/home/s2/mjoolee/anaconda/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/home/s2/mjoolee/anaconda/bin/python'\''
+
+# Copyright (C) 2012 Anaconda, Inc
+# SPDX-License-Identifier: BSD-3-Clause
+__conda_exe() (
+    "$CONDA_EXE" $_CE_M $_CE_CONDA "$@"
+)
+
+__conda_hashr() {
+    if [ -n "${ZSH_VERSION:+x}" ]; then
+        \rehash
+    elif [ -n "${POSH_VERSION:+x}" ]; then
+        :  # pass
+    else
+        \hash -r
+    fi
+}
+
+__conda_activate() {
+    if [ -n "${CONDA_PS1_BACKUP:+x}" ]; then
+        # Handle transition from shell activated with conda <= 4.3 to a subsequent activation
+        # after conda updated to >= 4.4. See issue #6173.
+        PS1="$CONDA_PS1_BACKUP"
+        \unset CONDA_PS1_BACKUP
+    fi
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix "$@")" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+__conda_reactivate() {
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix reactivate)" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+conda() {
+    \local cmd="${1-__missing__}"
+    case "$cmd" in
+        activate|deactivate)
+            __conda_activate "$@"
+            ;;
+        install|update|upgrade|remove|uninstall)
+            __conda_exe "$@" || \return
+            __conda_reactivate
+            ;;
+        *)
+            __conda_exe "$@"
+            ;;
+    esac
+}
+
+if [ -z "${CONDA_SHLVL+x}" ]; then
+    \export CONDA_SHLVL=0
+    # In dev-mode CONDA_EXE is python.exe and on Windows
+    # it is in a different relative location to condabin.
+    if [ -n "${_CE_CONDA:+x}" ] && [ -n "${WINDIR+x}" ]; then
+        PATH="$(\dirname "$CONDA_EXE")/condabin${PATH:+":${PATH}"}"
+    else
+        PATH="$(\dirname "$(\dirname "$CONDA_EXE")")/condabin${PATH:+":${PATH}"}"
+    fi
+    \export PATH
+
+    # We'\''re not allowing PS1 to be unbound. It must at least be set.
+    # However, we'\''re not exporting it, which can cause problems when starting a second shell
+    # via a first shell (i.e. starting zsh from bash).
+    if [ -z "${PS1+x}" ]; then
+        PS1=
+    fi
+fi
+
+conda activate base'
+export CONDA_EXE='/home/s2/mjoolee/anaconda/bin/conda'
+++ export CONDA_EXE=/home/s2/mjoolee/anaconda/bin/conda
+++ CONDA_EXE=/home/s2/mjoolee/anaconda/bin/conda
+export _CE_M=''
+++ export _CE_M=
+++ _CE_M=
+export _CE_CONDA=''
+++ export _CE_CONDA=
+++ _CE_CONDA=
+export CONDA_PYTHON_EXE='/home/s2/mjoolee/anaconda/bin/python'
+++ export CONDA_PYTHON_EXE=/home/s2/mjoolee/anaconda/bin/python
+++ CONDA_PYTHON_EXE=/home/s2/mjoolee/anaconda/bin/python
+
+# Copyright (C) 2012 Anaconda, Inc
+# SPDX-License-Identifier: BSD-3-Clause
+__conda_exe() (
+    "$CONDA_EXE" $_CE_M $_CE_CONDA "$@"
+)
+
+__conda_hashr() {
+    if [ -n "${ZSH_VERSION:+x}" ]; then
+        \rehash
+    elif [ -n "${POSH_VERSION:+x}" ]; then
+        :  # pass
+    else
+        \hash -r
+    fi
+}
+
+__conda_activate() {
+    if [ -n "${CONDA_PS1_BACKUP:+x}" ]; then
+        # Handle transition from shell activated with conda <= 4.3 to a subsequent activation
+        # after conda updated to >= 4.4. See issue #6173.
+        PS1="$CONDA_PS1_BACKUP"
+        \unset CONDA_PS1_BACKUP
+    fi
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix "$@")" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+__conda_reactivate() {
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix reactivate)" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+conda() {
+    \local cmd="${1-__missing__}"
+    case "$cmd" in
+        activate|deactivate)
+            __conda_activate "$@"
+            ;;
+        install|update|upgrade|remove|uninstall)
+            __conda_exe "$@" || \return
+            __conda_reactivate
+            ;;
+        *)
+            __conda_exe "$@"
+            ;;
+    esac
+}
+
+if [ -z "${CONDA_SHLVL+x}" ]; then
+    \export CONDA_SHLVL=0
+    # In dev-mode CONDA_EXE is python.exe and on Windows
+    # it is in a different relative location to condabin.
+    if [ -n "${_CE_CONDA:+x}" ] && [ -n "${WINDIR+x}" ]; then
+        PATH="$(\dirname "$CONDA_EXE")/condabin${PATH:+":${PATH}"}"
+    else
+        PATH="$(\dirname "$(\dirname "$CONDA_EXE")")/condabin${PATH:+":${PATH}"}"
+    fi
+    \export PATH
+
+    # We're not allowing PS1 to be unbound. It must at least be set.
+    # However, we're not exporting it, which can cause problems when starting a second shell
+    # via a first shell (i.e. starting zsh from bash).
+    if [ -z "${PS1+x}" ]; then
+        PS1=
+    fi
+fi
+++ '[' -z x ']'
+
+conda activate base
+++ conda activate base
+++ local cmd=activate
+++ case "$cmd" in
+++ __conda_activate activate base
+++ '[' -n '' ']'
+++ local ask_conda
++++ PS1=
++++ __conda_exe shell.posix activate base
++++ /home/s2/mjoolee/anaconda/bin/conda shell.posix activate base
+++ ask_conda='PS1='\''(base) '\''
+export PATH='\''/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'\''
+export CONDA_PREFIX='\''/home/s2/mjoolee/anaconda'\''
+export CONDA_SHLVL='\''3'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_PREFIX_2='\''/home/s2/mjoolee/anaconda/envs/dassl'\''
+export CONDA_EXE='\''/home/s2/mjoolee/anaconda/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/home/s2/mjoolee/anaconda/bin/python'\'''
+++ eval 'PS1='\''(base) '\''
+export PATH='\''/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'\''
+export CONDA_PREFIX='\''/home/s2/mjoolee/anaconda'\''
+export CONDA_SHLVL='\''3'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_PREFIX_2='\''/home/s2/mjoolee/anaconda/envs/dassl'\''
+export CONDA_EXE='\''/home/s2/mjoolee/anaconda/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/home/s2/mjoolee/anaconda/bin/python'\'''
+PS1='(base) '
++++ PS1='(base) '
+export PATH='/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
++++ export PATH=/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
++++ PATH=/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+export CONDA_PREFIX='/home/s2/mjoolee/anaconda'
++++ export CONDA_PREFIX=/home/s2/mjoolee/anaconda
++++ CONDA_PREFIX=/home/s2/mjoolee/anaconda
+export CONDA_SHLVL='3'
++++ export CONDA_SHLVL=3
++++ CONDA_SHLVL=3
+export CONDA_DEFAULT_ENV='base'
++++ export CONDA_DEFAULT_ENV=base
++++ CONDA_DEFAULT_ENV=base
+export CONDA_PROMPT_MODIFIER='(base) '
++++ export 'CONDA_PROMPT_MODIFIER=(base) '
++++ CONDA_PROMPT_MODIFIER='(base) '
+export CONDA_PREFIX_2='/home/s2/mjoolee/anaconda/envs/dassl'
++++ export CONDA_PREFIX_2=/home/s2/mjoolee/anaconda/envs/dassl
++++ CONDA_PREFIX_2=/home/s2/mjoolee/anaconda/envs/dassl
+export CONDA_EXE='/home/s2/mjoolee/anaconda/bin/conda'
++++ export CONDA_EXE=/home/s2/mjoolee/anaconda/bin/conda
++++ CONDA_EXE=/home/s2/mjoolee/anaconda/bin/conda
+export _CE_M=''
++++ export _CE_M=
++++ _CE_M=
+export _CE_CONDA=''
++++ export _CE_CONDA=
++++ _CE_CONDA=
+export CONDA_PYTHON_EXE='/home/s2/mjoolee/anaconda/bin/python'
++++ export CONDA_PYTHON_EXE=/home/s2/mjoolee/anaconda/bin/python
++++ CONDA_PYTHON_EXE=/home/s2/mjoolee/anaconda/bin/python
+++ __conda_hashr
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
+conda activate dassl
++ conda activate dassl
++ local cmd=activate
++ case "$cmd" in
++ __conda_activate activate dassl
++ '[' -n '' ']'
++ local ask_conda
+++ PS1='(base) '
+++ __conda_exe shell.posix activate dassl
+++ /home/s2/mjoolee/anaconda/bin/conda shell.posix activate dassl
++ ask_conda='PS1='\''(dassl) '\''
+export PATH='\''/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/envs/dassl/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'\''
+export CONDA_PREFIX='\''/home/s2/mjoolee/anaconda/envs/dassl'\''
+export CONDA_SHLVL='\''4'\''
+export CONDA_DEFAULT_ENV='\''dassl'\''
+export CONDA_PROMPT_MODIFIER='\''(dassl) '\''
+export CONDA_PREFIX_3='\''/home/s2/mjoolee/anaconda'\''
+export CONDA_EXE='\''/home/s2/mjoolee/anaconda/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/home/s2/mjoolee/anaconda/bin/python'\'''
++ eval 'PS1='\''(dassl) '\''
+export PATH='\''/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/envs/dassl/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'\''
+export CONDA_PREFIX='\''/home/s2/mjoolee/anaconda/envs/dassl'\''
+export CONDA_SHLVL='\''4'\''
+export CONDA_DEFAULT_ENV='\''dassl'\''
+export CONDA_PROMPT_MODIFIER='\''(dassl) '\''
+export CONDA_PREFIX_3='\''/home/s2/mjoolee/anaconda'\''
+export CONDA_EXE='\''/home/s2/mjoolee/anaconda/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/home/s2/mjoolee/anaconda/bin/python'\'''
+PS1='(dassl) '
+++ PS1='(dassl) '
+export PATH='/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/envs/dassl/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
+++ export PATH=/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/envs/dassl/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+++ PATH=/home/s2/mjoolee/.vscode-server/cli/servers/Stable-903b1e9d8990623e3d7da1df3d33db3e42d80eda/server/bin/remote-cli:/home/s2/mjoolee/anaconda/envs/dassl/bin:/home/s2/mjoolee/anaconda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+export CONDA_PREFIX='/home/s2/mjoolee/anaconda/envs/dassl'
+++ export CONDA_PREFIX=/home/s2/mjoolee/anaconda/envs/dassl
+++ CONDA_PREFIX=/home/s2/mjoolee/anaconda/envs/dassl
+export CONDA_SHLVL='4'
+++ export CONDA_SHLVL=4
+++ CONDA_SHLVL=4
+export CONDA_DEFAULT_ENV='dassl'
+++ export CONDA_DEFAULT_ENV=dassl
+++ CONDA_DEFAULT_ENV=dassl
+export CONDA_PROMPT_MODIFIER='(dassl) '
+++ export 'CONDA_PROMPT_MODIFIER=(dassl) '
+++ CONDA_PROMPT_MODIFIER='(dassl) '
+export CONDA_PREFIX_3='/home/s2/mjoolee/anaconda'
+++ export CONDA_PREFIX_3=/home/s2/mjoolee/anaconda
+++ CONDA_PREFIX_3=/home/s2/mjoolee/anaconda
+export CONDA_EXE='/home/s2/mjoolee/anaconda/bin/conda'
+++ export CONDA_EXE=/home/s2/mjoolee/anaconda/bin/conda
+++ CONDA_EXE=/home/s2/mjoolee/anaconda/bin/conda
+export _CE_M=''
+++ export _CE_M=
+++ _CE_M=
+export _CE_CONDA=''
+++ export _CE_CONDA=
+++ _CE_CONDA=
+export CONDA_PYTHON_EXE='/home/s2/mjoolee/anaconda/bin/python'
+++ export CONDA_PYTHON_EXE=/home/s2/mjoolee/anaconda/bin/python
+++ CONDA_PYTHON_EXE=/home/s2/mjoolee/anaconda/bin/python
++ __conda_hashr
++ '[' -n '' ']'
++ '[' -n '' ']'
++ hash -r
+
+GPU=0
++ GPU=0
+SHOT=16
++ SHOT=16
+EPOCH=15
++ EPOCH=15
+TRAINER=RPO_prime
++ TRAINER=RPO_prime
+
+for seed in 1 2 3
+do
+    #sh scripts/rpo_prime/dg_train.sh imagenet ${seed} ${GPU} main_final_imagenet ${SHOT} ${TRAINER}
+    for dataset in imagenet #imagenet_a imagenet_r imagenet_sketch imagenetv2 
+    do 
+        sh scripts/rpo_prime/dg_test.sh imagenet ${dataset} ${seed} ${GPU} main_final_imagenet ${SHOT} ${EPOCH} ${TRAINER}
+    done
+done
++ for seed in 1 2 3
++ for dataset in imagenet
++ sh scripts/rpo_prime/dg_test.sh imagenet imagenet 1 0 main_final_imagenet 16 15 RPO_prime
+/shared/s2/lab01/myungjoo/RPO_v2/clip/clip.py:23: UserWarning: PyTorch version 1.7.1 or higher is recommended
+  warnings.warn("PyTorch version 1.7.1 or higher is recommended")
+Setting fixed seed: 1
+***************
+** Arguments **
+***************
+backbone: 
+config_file: configs/trainers/RPO_prime/main_final_imagenet.yaml
+dataset_config_file: configs/datasets/imagenet.yaml
+eval_only: True
+head: 
+load_epoch: 15
+model_dir: output/rpo_prime/crossdataset/train_source/imagenet/shots_16/RPO_prime/main_final_imagenet/seed1
+no_train: False
+opts: ['DATASET.NUM_SHOTS', '16', 'DATASET.SUBSAMPLE_CLASSES', 'all']
+output_dir: output/rpo_prime/dg/test_target/source_imagenet/imagenet/seed1
+resume: 
+root: /shared/s2/lab01/dataset/clip
+seed: 1
+source_domains: None
+target_domains: None
+trainer: RPO_prime
+transforms: None
+************
+** Config **
+************
+DATALOADER:
+  K_TRANSFORMS: 1
+  NUM_WORKERS: 12
+  RETURN_IMG0: False
+  TEST:
+    BATCH_SIZE: 196
+    SAMPLER: SequentialSampler
+  TRAIN_U:
+    BATCH_SIZE: 32
+    N_DOMAIN: 0
+    N_INS: 16
+    SAME_AS_X: True
+    SAMPLER: RandomSampler
+  TRAIN_X:
+    BATCH_SIZE: 4
+    N_DOMAIN: 0
+    N_INS: 16
+    SAMPLER: RandomSampler
+DATASET:
+  ALL_AS_UNLABELED: False
+  CIFAR_C_LEVEL: 1
+  CIFAR_C_TYPE: 
+  NAME: ImageNet
+  NUM_LABELED: -1
+  NUM_SHOTS: 16
+  PROMPT: a photo of a _.
+  ROOT: /shared/s2/lab01/dataset/clip
+  SOURCE_DOMAINS: ()
+  STL10_FOLD: -1
+  SUBSAMPLE_CLASSES: all
+  TARGET_DOMAINS: ()
+  VAL_PERCENT: 0.1
+INPUT:
+  COLORJITTER_B: 0.4
+  COLORJITTER_C: 0.4
+  COLORJITTER_H: 0.1
+  COLORJITTER_S: 0.4
+  CROP_PADDING: 4
+  CUTOUT_LEN: 16
+  CUTOUT_N: 1
+  GB_K: 21
+  GB_P: 0.5
+  GN_MEAN: 0.0
+  GN_STD: 0.15
+  INTERPOLATION: bicubic
+  NO_TRANSFORM: False
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  RANDAUGMENT_M: 10
+  RANDAUGMENT_N: 2
+  RGS_P: 0.2
+  RRCROP_SCALE: (0.08, 1.0)
+  SIZE: (224, 224)
+  TRANSFORMS: ('random_resized_crop', 'random_flip', 'normalize')
+MODEL:
+  BACKBONE:
+    NAME: ViT-B/16
+    PRETRAINED: True
+  HEAD:
+    ACTIVATION: relu
+    BN: True
+    DROPOUT: 0.0
+    HIDDEN_LAYERS: ()
+    NAME: 
+  INIT_WEIGHTS: 
+OPTIM:
+  ADAM_BETA1: 0.9
+  ADAM_BETA2: 0.999
+  BASE_LR_MULT: 0.1
+  GAMMA: 0.1
+  LR: 0.01
+  LR_SCHEDULER: cosine
+  MAX_EPOCH: 15
+  MOMENTUM: 0.9
+  NAME: sgd
+  NEW_LAYERS: ()
+  RMSPROP_ALPHA: 0.99
+  SGD_DAMPNING: 0
+  SGD_NESTEROV: False
+  STAGED_LR: False
+  STEPSIZE: (-1,)
+  WARMUP_CONS_LR: 1e-05
+  WARMUP_EPOCH: -1
+  WARMUP_MIN_LR: 1e-05
+  WARMUP_RECOUNT: True
+  WARMUP_TYPE: linear
+  WEIGHT_DECAY: 0.0005
+OUTPUT_DIR: output/rpo_prime/dg/test_target/source_imagenet/imagenet/seed1
+RESUME: 
+SEED: 1
+TEST:
+  COMPUTE_CMAT: False
+  EVALUATOR: Classification
+  FINAL_MODEL: last_step
+  NO_TEST: False
+  PER_CLASS_RESULT: False
+  SPLIT: test
+TRAIN:
+  CHECKPOINT_FREQ: 5
+  COUNT_ITER: train_x
+  PRINT_FREQ: 2
+TRAINER:
+  CDAC:
+    CLASS_LR_MULTI: 10
+    P_THRESH: 0.95
+    RAMPUP_COEF: 30
+    RAMPUP_ITRS: 1000
+    STRONG_TRANSFORMS: ()
+    TOPK_MATCH: 5
+  COCOOP:
+    CTX_INIT: a photo of a
+    N_CTX: 4
+    PREC: fp16
+  COOP:
+    CLASS_TOKEN_POSITION: end
+    CSC: False
+    CTX_INIT: 
+    N_CTX: 16
+    PREC: fp16
+  CROSSGRAD:
+    ALPHA_D: 0.5
+    ALPHA_F: 0.5
+    EPS_D: 1.0
+    EPS_F: 1.0
+  DAEL:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 0.5
+  DAELDG:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 0.5
+  DDAIG:
+    ALPHA: 0.5
+    CLAMP: False
+    CLAMP_MAX: 1.0
+    CLAMP_MIN: -1.0
+    G_ARCH: 
+    LMDA: 0.3
+    WARMUP: 0
+  DOMAINMIX:
+    ALPHA: 1.0
+    BETA: 1.0
+    TYPE: crossdomain
+  ENTMIN:
+    LMDA: 0.001
+  FIXMATCH:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 1.0
+  LP:
+    PREC: fp16
+    PROMPT: A photo of a {cls_name}
+  M3SDA:
+    LMDA: 0.5
+    N_STEP_F: 4
+  MCD:
+    N_STEP_F: 4
+  MEANTEACHER:
+    EMA_ALPHA: 0.999
+    RAMPUP: 5
+    WEIGHT_U: 1.0
+  MIXMATCH:
+    MIXUP_BETA: 0.75
+    RAMPUP: 20000
+    TEMP: 2.0
+    WEIGHT_U: 100.0
+  MME:
+    LMDA: 0.1
+  NAME: RPO_prime
+  RPO:
+    CTX_INIT: a photo of a
+    K1: 18
+    K2: 6
+    PREC: fp16
+    cov_loss: 500
+    sdl_loss: 1
+  SE:
+    CONF_THRE: 0.95
+    EMA_ALPHA: 0.999
+    RAMPUP: 300
+USE_CUDA: True
+VERBOSE: True
+VERSION: 1
+Collecting env info ...
+** System info **
+PyTorch version: 1.13.1
+Is debug build: False
+CUDA used to build PyTorch: 11.7
+ROCM used to build PyTorch: N/A
+
+OS: Ubuntu 20.04.6 LTS (x86_64)
+GCC version: (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+Clang version: Could not collect
+CMake version: version 3.16.3
+Libc version: glibc-2.10
+
+Python version: 3.7.12 | packaged by conda-forge | (default, Oct 26 2021, 06:08:21)  [GCC 9.4.0] (64-bit runtime)
+Python platform: Linux-5.4.0-100-generic-x86_64-with-debian-bullseye-sid
+Is CUDA available: True
+CUDA runtime version: Could not collect
+CUDA_MODULE_LOADING set to: LAZY
+GPU models and configuration: GPU 0: NVIDIA GeForce RTX 3090
+Nvidia driver version: 520.61.05
+cuDNN version: Could not collect
+HIP runtime version: N/A
+MIOpen runtime version: N/A
+Is XNNPACK available: True
+
+Versions of relevant libraries:
+[pip3] imagenetv2-pytorch==0.1
+[pip3] numpy==1.21.5
+[pip3] torch==1.13.1
+[pip3] torchvision==0.14.1
+[conda] blas                      1.0                         mkl  
+[conda] cudatoolkit               10.2.89              hfd86e86_1  
+[conda] ffmpeg                    4.3                  hf484d3e_0    pytorch
+[conda] imagenetv2-pytorch        0.1                      pypi_0    pypi
+[conda] mkl                       2021.4.0           h06a4308_640  
+[conda] mkl-service               2.4.0            py37h7f8727e_0  
+[conda] mkl_fft                   1.3.1            py37hd3c417c_0  
+[conda] mkl_random                1.2.2            py37h51133e4_0  
+[conda] numpy                     1.21.6                   pypi_0    pypi
+[conda] numpy-base                1.21.5           py37ha15fc14_3  
+[conda] pytorch                   1.13.1          py3.7_cuda11.7_cudnn8.5.0_0    pytorch
+[conda] pytorch-cuda              11.7                 h778d358_5    pytorch
+[conda] pytorch-mutex             1.0                        cuda    pytorch
+[conda] torchvision               0.14.1               py37_cu117    pytorch
+        Pillow (9.4.0)
+
+requested:RPO_prime
+Loading trainer: RPO_prime
+requested:ImageNet
+Loading dataset: ImageNet
+Loading preprocessed few-shot data from /shared/s2/lab01/dataset/clip/ImageNet/split_fewshot_taesup/shot_16-seed_1.pkl
+Building transform_train
++ random resized crop (size=(224, 224), scale=(0.08, 1.0))
++ random flip
++ to torch tensor of range [0, 1]
++ normalization (mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
+Building transform_test
++ resize the smaller edge to 224
++ 224x224 center crop
++ to torch tensor of range [0, 1]
++ normalization (mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
+---------  --------
+Dataset    ImageNet
+# classes  1,000
+# train_x  16,000
+# val      50,000
+# test     50,000
+---------  --------
+Loading CLIP (backbone: ViT-B/16)
+Building custom CLIP
+Parameters to be updated: {'prompt_learner.img_prompt', 'prompt_learner.text_prompt'}
+requested:Classification
+Loading evaluator: Classification
+Loading weights to prompt_learner from "output/rpo_prime/crossdataset/train_source/imagenet/shots_16/RPO_prime/main_final_imagenet/seed1/prompt_learner/model.pth.tar-15" (epoch = 15)
+Evaluate on the *test* set
+  0%|          | 0/256 [00:00<?, ?it/s]  0%|          | 1/256 [00:08<34:16,  8.07s/it]  1%|          | 2/256 [00:08<15:48,  3.73s/it]  1%|          | 3/256 [00:09<09:55,  2.35s/it]  2%|▏         | 4/256 [00:10<07:12,  1.71s/it]  2%|▏         | 5/256 [00:10<05:40,  1.36s/it]  2%|▏         | 6/256 [00:11<04:45,  1.14s/it]  3%|▎         | 7/256 [00:12<04:11,  1.01s/it]  3%|▎         | 8/256 [00:13<03:48,  1.09it/s]  4%|▎         | 9/256 [00:13<03:36,  1.14it/s]  4%|▍         | 10/256 [00:14<03:25,  1.19it/s]  4%|▍         | 11/256 [00:15<03:20,  1.22it/s]  5%|▍         | 12/256 [00:16<03:13,  1.26it/s]  5%|▌         | 13/256 [00:16<03:07,  1.29it/s]  5%|▌         | 14/256 [00:17<03:05,  1.31it/s]  6%|▌         | 15/256 [00:18<03:02,  1.32it/s]  6%|▋         | 16/256 [00:19<03:00,  1.33it/s]  7%|▋         | 17/256 [00:19<02:57,  1.35it/s]  7%|▋         | 18/256 [00:20<02:57,  1.34it/s]  7%|▋         | 19/256 [00:21<02:56,  1.34it/s]  8%|▊         | 20/256 [00:22<02:56,  1.34it/s]  8%|▊         | 21/256 [00:22<02:55,  1.34it/s]  9%|▊         | 22/256 [00:23<02:53,  1.35it/s]  9%|▉         | 23/256 [00:24<02:54,  1.34it/s]  9%|▉         | 24/256 [00:25<02:54,  1.33it/s] 10%|▉         | 25/256 [00:25<02:52,  1.34it/s] 10%|█         | 26/256 [00:26<02:50,  1.35it/s] 11%|█         | 27/256 [00:27<02:49,  1.35it/s] 11%|█         | 28/256 [00:28<02:51,  1.33it/s] 11%|█▏        | 29/256 [00:28<02:49,  1.34it/s] 12%|█▏        | 30/256 [00:29<02:50,  1.32it/s] 12%|█▏        | 31/256 [00:30<02:49,  1.33it/s] 12%|█▎        | 32/256 [00:31<02:46,  1.34it/s] 13%|█▎        | 33/256 [00:31<02:46,  1.34it/s] 13%|█▎        | 34/256 [00:32<02:45,  1.34it/s] 14%|█▎        | 35/256 [00:33<02:44,  1.35it/s] 14%|█▍        | 36/256 [00:34<02:43,  1.34it/s] 14%|█▍        | 37/256 [00:34<02:43,  1.34it/s] 15%|█▍        | 38/256 [00:35<02:42,  1.34it/s] 15%|█▌        | 39/256 [00:36<02:42,  1.33it/s] 16%|█▌        | 40/256 [00:37<02:43,  1.32it/s] 16%|█▌        | 41/256 [00:37<02:40,  1.34it/s] 16%|█▋        | 42/256 [00:38<02:39,  1.34it/s] 17%|█▋        | 43/256 [00:39<02:36,  1.36it/s] 17%|█▋        | 44/256 [00:39<02:37,  1.34it/s] 18%|█▊        | 45/256 [00:40<02:35,  1.35it/s] 18%|█▊        | 46/256 [00:41<02:36,  1.34it/s] 18%|█▊        | 47/256 [00:42<02:34,  1.35it/s] 19%|█▉        | 48/256 [00:42<02:36,  1.33it/s] 19%|█▉        | 49/256 [00:43<02:35,  1.33it/s] 20%|█▉        | 50/256 [00:44<02:32,  1.35it/s] 20%|█▉        | 51/256 [00:45<02:32,  1.34it/s] 20%|██        | 52/256 [00:45<02:31,  1.34it/s] 21%|██        | 53/256 [00:46<02:31,  1.34it/s] 21%|██        | 54/256 [00:47<02:30,  1.34it/s] 21%|██▏       | 55/256 [00:48<02:30,  1.33it/s] 22%|██▏       | 56/256 [00:48<02:31,  1.32it/s] 22%|██▏       | 57/256 [00:49<02:29,  1.34it/s] 23%|██▎       | 58/256 [00:50<02:27,  1.34it/s] 23%|██▎       | 59/256 [00:51<02:27,  1.33it/s] 23%|██▎       | 60/256 [00:51<02:26,  1.33it/s] 24%|██▍       | 61/256 [00:52<02:25,  1.34it/s] 24%|██▍       | 62/256 [00:53<02:23,  1.36it/s] 25%|██▍       | 63/256 [00:54<02:23,  1.34it/s] 25%|██▌       | 64/256 [00:54<02:24,  1.33it/s] 25%|██▌       | 65/256 [00:55<02:22,  1.34it/s] 26%|██▌       | 66/256 [00:56<02:21,  1.34it/s] 26%|██▌       | 67/256 [00:57<02:20,  1.34it/s] 27%|██▋       | 68/256 [00:57<02:21,  1.33it/s] 27%|██▋       | 69/256 [00:58<02:21,  1.32it/s] 27%|██▋       | 70/256 [00:59<02:18,  1.34it/s] 28%|██▊       | 71/256 [01:00<02:17,  1.34it/s] 28%|██▊       | 72/256 [01:00<02:16,  1.35it/s] 29%|██▊       | 73/256 [01:01<02:15,  1.35it/s] 29%|██▉       | 74/256 [01:02<02:14,  1.35it/s] 29%|██▉       | 75/256 [01:03<02:16,  1.33it/s] 30%|██▉       | 76/256 [01:03<02:16,  1.31it/s] 30%|███       | 77/256 [01:04<02:15,  1.32it/s] 30%|███       | 78/256 [01:05<02:15,  1.32it/s] 31%|███       | 79/256 [01:06<02:11,  1.34it/s] 31%|███▏      | 80/256 [01:06<02:12,  1.33it/s] 32%|███▏      | 81/256 [01:07<02:11,  1.33it/s] 32%|███▏      | 82/256 [01:08<02:11,  1.32it/s] 32%|███▏      | 83/256 [01:09<02:09,  1.33it/s] 33%|███▎      | 84/256 [01:09<02:09,  1.33it/s] 33%|███▎      | 85/256 [01:10<02:07,  1.34it/s] 34%|███▎      | 86/256 [01:11<02:06,  1.34it/s] 34%|███▍      | 87/256 [01:12<02:06,  1.33it/s] 34%|███▍      | 88/256 [01:12<02:07,  1.32it/s] 35%|███▍      | 89/256 [01:13<02:07,  1.31it/s] 35%|███▌      | 90/256 [01:14<02:06,  1.31it/s] 36%|███▌      | 91/256 [01:15<02:06,  1.31it/s] 36%|███▌      | 92/256 [01:16<02:03,  1.32it/s] 36%|███▋      | 93/256 [01:16<02:01,  1.34it/s] 37%|███▋      | 94/256 [01:17<02:01,  1.33it/s] 37%|███▋      | 95/256 [01:18<02:00,  1.34it/s] 38%|███▊      | 96/256 [01:18<02:00,  1.33it/s] 38%|███▊      | 97/256 [01:19<01:58,  1.35it/s] 38%|███▊      | 98/256 [01:20<01:57,  1.35it/s] 39%|███▊      | 99/256 [01:21<01:57,  1.34it/s] 39%|███▉      | 100/256 [01:21<01:56,  1.34it/s] 39%|███▉      | 101/256 [01:22<01:55,  1.34it/s] 40%|███▉      | 102/256 [01:23<01:53,  1.35it/s] 40%|████      | 103/256 [01:24<01:54,  1.34it/s] 41%|████      | 104/256 [01:24<01:52,  1.35it/s] 41%|████      | 105/256 [01:25<01:52,  1.34it/s] 41%|████▏     | 106/256 [01:26<01:51,  1.34it/s] 42%|████▏     | 107/256 [01:27<01:50,  1.35it/s] 42%|████▏     | 108/256 [01:27<01:49,  1.35it/s] 43%|████▎     | 109/256 [01:28<01:48,  1.35it/s] 43%|████▎     | 110/256 [01:29<01:48,  1.34it/s] 43%|████▎     | 111/256 [01:30<01:48,  1.34it/s] 44%|████▍     | 112/256 [01:30<01:47,  1.34it/s] 44%|████▍     | 113/256 [01:31<01:47,  1.33it/s] 45%|████▍     | 114/256 [01:32<01:46,  1.34it/s] 45%|████▍     | 115/256 [01:33<01:45,  1.34it/s] 45%|████▌     | 116/256 [01:33<01:46,  1.32it/s] 46%|████▌     | 117/256 [01:34<01:44,  1.33it/s] 46%|████▌     | 118/256 [01:35<01:43,  1.34it/s] 46%|████▋     | 119/256 [01:36<01:42,  1.33it/s] 47%|████▋     | 120/256 [01:36<01:41,  1.34it/s] 47%|████▋     | 121/256 [01:37<01:40,  1.34it/s] 48%|████▊     | 122/256 [01:38<01:40,  1.33it/s] 48%|████▊     | 123/256 [01:39<01:39,  1.33it/s] 48%|████▊     | 124/256 [01:39<01:37,  1.35it/s] 49%|████▉     | 125/256 [01:40<01:36,  1.36it/s] 49%|████▉     | 126/256 [01:41<01:36,  1.35it/s] 50%|████▉     | 127/256 [01:42<01:36,  1.33it/s] 50%|█████     | 128/256 [01:42<01:36,  1.33it/s] 50%|█████     | 129/256 [01:43<01:36,  1.32it/s] 51%|█████     | 130/256 [01:44<01:35,  1.32it/s] 51%|█████     | 131/256 [01:45<01:36,  1.30it/s] 52%|█████▏    | 132/256 [01:45<01:34,  1.32it/s] 52%|█████▏    | 133/256 [01:46<01:31,  1.34it/s] 52%|█████▏    | 134/256 [01:47<01:31,  1.33it/s] 53%|█████▎    | 135/256 [01:48<01:30,  1.34it/s] 53%|█████▎    | 136/256 [01:48<01:29,  1.34it/s] 54%|█████▎    | 137/256 [01:49<01:29,  1.33it/s] 54%|█████▍    | 138/256 [01:50<01:29,  1.31it/s] 54%|█████▍    | 139/256 [01:51<01:29,  1.31it/s] 55%|█████▍    | 140/256 [01:51<01:29,  1.30it/s] 55%|█████▌    | 141/256 [01:52<01:26,  1.33it/s] 55%|█████▌    | 142/256 [01:53<01:25,  1.33it/s] 56%|█████▌    | 143/256 [01:54<01:24,  1.33it/s] 56%|█████▋    | 144/256 [01:54<01:23,  1.34it/s] 57%|█████▋    | 145/256 [01:55<01:23,  1.32it/s] 57%|█████▋    | 146/256 [01:56<01:22,  1.34it/s] 57%|█████▋    | 147/256 [01:57<01:20,  1.35it/s] 58%|█████▊    | 148/256 [01:57<01:19,  1.35it/s] 58%|█████▊    | 149/256 [01:58<01:18,  1.35it/s] 59%|█████▊    | 150/256 [01:59<01:18,  1.35it/s] 59%|█████▉    | 151/256 [02:00<01:18,  1.34it/s] 59%|█████▉    | 152/256 [02:00<01:18,  1.33it/s] 60%|█████▉    | 153/256 [02:01<01:18,  1.32it/s] 60%|██████    | 154/256 [02:02<01:16,  1.34it/s] 61%|██████    | 155/256 [02:03<01:14,  1.35it/s] 61%|██████    | 156/256 [02:03<01:16,  1.31it/s] 61%|██████▏   | 157/256 [02:04<01:14,  1.32it/s] 62%|██████▏   | 158/256 [02:05<01:14,  1.31it/s] 62%|██████▏   | 159/256 [02:06<01:13,  1.32it/s] 62%|██████▎   | 160/256 [02:06<01:12,  1.32it/s] 63%|██████▎   | 161/256 [02:07<01:10,  1.34it/s] 63%|██████▎   | 162/256 [02:08<01:10,  1.34it/s] 64%|██████▎   | 163/256 [02:09<01:09,  1.35it/s] 64%|██████▍   | 164/256 [02:09<01:08,  1.34it/s] 64%|██████▍   | 165/256 [02:10<01:08,  1.33it/s] 65%|██████▍   | 166/256 [02:11<01:07,  1.34it/s] 65%|██████▌   | 167/256 [02:12<01:06,  1.35it/s] 66%|██████▌   | 168/256 [02:12<01:05,  1.35it/s] 66%|██████▌   | 169/256 [02:13<01:05,  1.33it/s] 66%|██████▋   | 170/256 [02:14<01:04,  1.32it/s] 67%|██████▋   | 171/256 [02:15<01:04,  1.33it/s] 67%|██████▋   | 172/256 [02:15<01:03,  1.32it/s] 68%|██████▊   | 173/256 [02:16<01:02,  1.33it/s] 68%|██████▊   | 174/256 [02:17<01:01,  1.34it/s] 68%|██████▊   | 175/256 [02:18<01:00,  1.34it/s] 69%|██████▉   | 176/256 [02:18<00:58,  1.36it/s] 69%|██████▉   | 177/256 [02:19<00:58,  1.36it/s] 70%|██████▉   | 178/256 [02:20<00:56,  1.37it/s] 70%|██████▉   | 179/256 [02:21<00:57,  1.34it/s] 70%|███████   | 180/256 [02:21<00:55,  1.36it/s] 71%|███████   | 181/256 [02:22<00:55,  1.35it/s] 71%|███████   | 182/256 [02:23<00:54,  1.35it/s] 71%|███████▏  | 183/256 [02:24<00:54,  1.35it/s] 72%|███████▏  | 184/256 [02:24<00:53,  1.35it/s] 72%|███████▏  | 185/256 [02:25<00:52,  1.36it/s] 73%|███████▎  | 186/256 [02:26<00:52,  1.34it/s] 73%|███████▎  | 187/256 [02:27<00:51,  1.34it/s] 73%|███████▎  | 188/256 [02:27<00:50,  1.33it/s] 74%|███████▍  | 189/256 [02:28<00:50,  1.34it/s] 74%|███████▍  | 190/256 [02:29<00:49,  1.34it/s] 75%|███████▍  | 191/256 [02:30<00:48,  1.33it/s] 75%|███████▌  | 192/256 [02:30<00:47,  1.34it/s] 75%|███████▌  | 193/256 [02:31<00:46,  1.35it/s] 76%|███████▌  | 194/256 [02:32<00:46,  1.34it/s] 76%|███████▌  | 195/256 [02:33<00:45,  1.34it/s] 77%|███████▋  | 196/256 [02:33<00:44,  1.35it/s] 77%|███████▋  | 197/256 [02:34<00:44,  1.34it/s] 77%|███████▋  | 198/256 [02:35<00:43,  1.33it/s] 78%|███████▊  | 199/256 [02:36<00:42,  1.33it/s] 78%|███████▊  | 200/256 [02:36<00:42,  1.33it/s] 79%|███████▊  | 201/256 [02:37<00:41,  1.34it/s] 79%|███████▉  | 202/256 [02:38<00:41,  1.31it/s] 79%|███████▉  | 203/256 [02:39<00:39,  1.33it/s] 80%|███████▉  | 204/256 [02:39<00:39,  1.32it/s] 80%|████████  | 205/256 [02:40<00:38,  1.32it/s] 80%|████████  | 206/256 [02:41<00:37,  1.32it/s] 81%|████████  | 207/256 [02:42<00:36,  1.32it/s] 81%|████████▏ | 208/256 [02:42<00:36,  1.32it/s] 82%|████████▏ | 209/256 [02:43<00:35,  1.31it/s] 82%|████████▏ | 210/256 [02:44<00:35,  1.30it/s] 82%|████████▏ | 211/256 [02:45<00:34,  1.29it/s] 83%|████████▎ | 212/256 [02:45<00:34,  1.29it/s] 83%|████████▎ | 213/256 [02:46<00:33,  1.30it/s] 84%|████████▎ | 214/256 [02:47<00:32,  1.31it/s] 84%|████████▍ | 215/256 [02:48<00:31,  1.31it/s] 84%|████████▍ | 216/256 [02:48<00:30,  1.32it/s] 85%|████████▍ | 217/256 [02:49<00:29,  1.34it/s] 85%|████████▌ | 218/256 [02:50<00:28,  1.34it/s] 86%|████████▌ | 219/256 [02:51<00:27,  1.33it/s] 86%|████████▌ | 220/256 [02:51<00:26,  1.33it/s] 86%|████████▋ | 221/256 [02:52<00:26,  1.32it/s] 87%|████████▋ | 222/256 [02:53<00:25,  1.32it/s] 87%|████████▋ | 223/256 [02:54<00:24,  1.34it/s] 88%|████████▊ | 224/256 [02:54<00:23,  1.34it/s] 88%|████████▊ | 225/256 [02:55<00:22,  1.35it/s] 88%|████████▊ | 226/256 [02:56<00:22,  1.36it/s] 89%|████████▊ | 227/256 [02:57<00:21,  1.36it/s] 89%|████████▉ | 228/256 [02:57<00:20,  1.37it/s] 89%|████████▉ | 229/256 [02:58<00:19,  1.35it/s] 90%|████████▉ | 230/256 [02:59<00:19,  1.36it/s] 90%|█████████ | 231/256 [03:00<00:18,  1.36it/s] 91%|█████████ | 232/256 [03:00<00:17,  1.37it/s] 91%|█████████ | 233/256 [03:01<00:16,  1.36it/s] 91%|█████████▏| 234/256 [03:02<00:15,  1.39it/s] 92%|█████████▏| 235/256 [03:02<00:14,  1.41it/s] 92%|█████████▏| 236/256 [03:03<00:14,  1.43it/s] 93%|█████████▎| 237/256 [03:04<00:13,  1.42it/s] 93%|█████████▎| 238/256 [03:05<00:12,  1.40it/s] 93%|█████████▎| 239/256 [03:05<00:12,  1.40it/s] 94%|█████████▍| 240/256 [03:06<00:11,  1.39it/s] 94%|█████████▍| 241/256 [03:07<00:10,  1.38it/s] 95%|█████████▍| 242/256 [03:07<00:10,  1.39it/s] 95%|█████████▍| 243/256 [03:08<00:09,  1.39it/s] 95%|█████████▌| 244/256 [03:09<00:08,  1.40it/s] 96%|█████████▌| 245/256 [03:10<00:07,  1.39it/s] 96%|█████████▌| 246/256 [03:10<00:07,  1.39it/s] 96%|█████████▋| 247/256 [03:11<00:06,  1.37it/s] 97%|█████████▋| 248/256 [03:12<00:05,  1.37it/s] 97%|█████████▋| 249/256 [03:13<00:05,  1.37it/s] 98%|█████████▊| 250/256 [03:13<00:04,  1.38it/s] 98%|█████████▊| 251/256 [03:14<00:03,  1.37it/s] 98%|█████████▊| 252/256 [03:15<00:02,  1.38it/s] 99%|█████████▉| 253/256 [03:15<00:02,  1.39it/s] 99%|█████████▉| 254/256 [03:16<00:01,  1.38it/s]100%|█████████▉| 255/256 [03:17<00:00,  1.38it/s]100%|██████████| 256/256 [03:17<00:00,  1.50it/s]100%|██████████| 256/256 [03:17<00:00,  1.29it/s]
+=> result
+* total: 50,000
+* correct: 36,058
+* accuracy: 72.1%
+* error: 27.9%
+* macro_f1: 71.5%
++ for seed in 1 2 3
++ for dataset in imagenet
++ sh scripts/rpo_prime/dg_test.sh imagenet imagenet 2 0 main_final_imagenet 16 15 RPO_prime
+/shared/s2/lab01/myungjoo/RPO_v2/clip/clip.py:23: UserWarning: PyTorch version 1.7.1 or higher is recommended
+  warnings.warn("PyTorch version 1.7.1 or higher is recommended")
+Setting fixed seed: 2
+***************
+** Arguments **
+***************
+backbone: 
+config_file: configs/trainers/RPO_prime/main_final_imagenet.yaml
+dataset_config_file: configs/datasets/imagenet.yaml
+eval_only: True
+head: 
+load_epoch: 15
+model_dir: output/rpo_prime/crossdataset/train_source/imagenet/shots_16/RPO_prime/main_final_imagenet/seed2
+no_train: False
+opts: ['DATASET.NUM_SHOTS', '16', 'DATASET.SUBSAMPLE_CLASSES', 'all']
+output_dir: output/rpo_prime/dg/test_target/source_imagenet/imagenet/seed2
+resume: 
+root: /shared/s2/lab01/dataset/clip
+seed: 2
+source_domains: None
+target_domains: None
+trainer: RPO_prime
+transforms: None
+************
+** Config **
+************
+DATALOADER:
+  K_TRANSFORMS: 1
+  NUM_WORKERS: 12
+  RETURN_IMG0: False
+  TEST:
+    BATCH_SIZE: 196
+    SAMPLER: SequentialSampler
+  TRAIN_U:
+    BATCH_SIZE: 32
+    N_DOMAIN: 0
+    N_INS: 16
+    SAME_AS_X: True
+    SAMPLER: RandomSampler
+  TRAIN_X:
+    BATCH_SIZE: 4
+    N_DOMAIN: 0
+    N_INS: 16
+    SAMPLER: RandomSampler
+DATASET:
+  ALL_AS_UNLABELED: False
+  CIFAR_C_LEVEL: 1
+  CIFAR_C_TYPE: 
+  NAME: ImageNet
+  NUM_LABELED: -1
+  NUM_SHOTS: 16
+  PROMPT: a photo of a _.
+  ROOT: /shared/s2/lab01/dataset/clip
+  SOURCE_DOMAINS: ()
+  STL10_FOLD: -1
+  SUBSAMPLE_CLASSES: all
+  TARGET_DOMAINS: ()
+  VAL_PERCENT: 0.1
+INPUT:
+  COLORJITTER_B: 0.4
+  COLORJITTER_C: 0.4
+  COLORJITTER_H: 0.1
+  COLORJITTER_S: 0.4
+  CROP_PADDING: 4
+  CUTOUT_LEN: 16
+  CUTOUT_N: 1
+  GB_K: 21
+  GB_P: 0.5
+  GN_MEAN: 0.0
+  GN_STD: 0.15
+  INTERPOLATION: bicubic
+  NO_TRANSFORM: False
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  RANDAUGMENT_M: 10
+  RANDAUGMENT_N: 2
+  RGS_P: 0.2
+  RRCROP_SCALE: (0.08, 1.0)
+  SIZE: (224, 224)
+  TRANSFORMS: ('random_resized_crop', 'random_flip', 'normalize')
+MODEL:
+  BACKBONE:
+    NAME: ViT-B/16
+    PRETRAINED: True
+  HEAD:
+    ACTIVATION: relu
+    BN: True
+    DROPOUT: 0.0
+    HIDDEN_LAYERS: ()
+    NAME: 
+  INIT_WEIGHTS: 
+OPTIM:
+  ADAM_BETA1: 0.9
+  ADAM_BETA2: 0.999
+  BASE_LR_MULT: 0.1
+  GAMMA: 0.1
+  LR: 0.01
+  LR_SCHEDULER: cosine
+  MAX_EPOCH: 15
+  MOMENTUM: 0.9
+  NAME: sgd
+  NEW_LAYERS: ()
+  RMSPROP_ALPHA: 0.99
+  SGD_DAMPNING: 0
+  SGD_NESTEROV: False
+  STAGED_LR: False
+  STEPSIZE: (-1,)
+  WARMUP_CONS_LR: 1e-05
+  WARMUP_EPOCH: -1
+  WARMUP_MIN_LR: 1e-05
+  WARMUP_RECOUNT: True
+  WARMUP_TYPE: linear
+  WEIGHT_DECAY: 0.0005
+OUTPUT_DIR: output/rpo_prime/dg/test_target/source_imagenet/imagenet/seed2
+RESUME: 
+SEED: 2
+TEST:
+  COMPUTE_CMAT: False
+  EVALUATOR: Classification
+  FINAL_MODEL: last_step
+  NO_TEST: False
+  PER_CLASS_RESULT: False
+  SPLIT: test
+TRAIN:
+  CHECKPOINT_FREQ: 5
+  COUNT_ITER: train_x
+  PRINT_FREQ: 2
+TRAINER:
+  CDAC:
+    CLASS_LR_MULTI: 10
+    P_THRESH: 0.95
+    RAMPUP_COEF: 30
+    RAMPUP_ITRS: 1000
+    STRONG_TRANSFORMS: ()
+    TOPK_MATCH: 5
+  COCOOP:
+    CTX_INIT: a photo of a
+    N_CTX: 4
+    PREC: fp16
+  COOP:
+    CLASS_TOKEN_POSITION: end
+    CSC: False
+    CTX_INIT: 
+    N_CTX: 16
+    PREC: fp16
+  CROSSGRAD:
+    ALPHA_D: 0.5
+    ALPHA_F: 0.5
+    EPS_D: 1.0
+    EPS_F: 1.0
+  DAEL:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 0.5
+  DAELDG:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 0.5
+  DDAIG:
+    ALPHA: 0.5
+    CLAMP: False
+    CLAMP_MAX: 1.0
+    CLAMP_MIN: -1.0
+    G_ARCH: 
+    LMDA: 0.3
+    WARMUP: 0
+  DOMAINMIX:
+    ALPHA: 1.0
+    BETA: 1.0
+    TYPE: crossdomain
+  ENTMIN:
+    LMDA: 0.001
+  FIXMATCH:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 1.0
+  LP:
+    PREC: fp16
+    PROMPT: A photo of a {cls_name}
+  M3SDA:
+    LMDA: 0.5
+    N_STEP_F: 4
+  MCD:
+    N_STEP_F: 4
+  MEANTEACHER:
+    EMA_ALPHA: 0.999
+    RAMPUP: 5
+    WEIGHT_U: 1.0
+  MIXMATCH:
+    MIXUP_BETA: 0.75
+    RAMPUP: 20000
+    TEMP: 2.0
+    WEIGHT_U: 100.0
+  MME:
+    LMDA: 0.1
+  NAME: RPO_prime
+  RPO:
+    CTX_INIT: a photo of a
+    K1: 18
+    K2: 6
+    PREC: fp16
+    cov_loss: 500
+    sdl_loss: 1
+  SE:
+    CONF_THRE: 0.95
+    EMA_ALPHA: 0.999
+    RAMPUP: 300
+USE_CUDA: True
+VERBOSE: True
+VERSION: 1
+Collecting env info ...
+** System info **
+PyTorch version: 1.13.1
+Is debug build: False
+CUDA used to build PyTorch: 11.7
+ROCM used to build PyTorch: N/A
+
+OS: Ubuntu 20.04.6 LTS (x86_64)
+GCC version: (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+Clang version: Could not collect
+CMake version: version 3.16.3
+Libc version: glibc-2.10
+
+Python version: 3.7.12 | packaged by conda-forge | (default, Oct 26 2021, 06:08:21)  [GCC 9.4.0] (64-bit runtime)
+Python platform: Linux-5.4.0-100-generic-x86_64-with-debian-bullseye-sid
+Is CUDA available: True
+CUDA runtime version: Could not collect
+CUDA_MODULE_LOADING set to: LAZY
+GPU models and configuration: GPU 0: NVIDIA GeForce RTX 3090
+Nvidia driver version: 520.61.05
+cuDNN version: Could not collect
+HIP runtime version: N/A
+MIOpen runtime version: N/A
+Is XNNPACK available: True
+
+Versions of relevant libraries:
+[pip3] imagenetv2-pytorch==0.1
+[pip3] numpy==1.21.5
+[pip3] torch==1.13.1
+[pip3] torchvision==0.14.1
+[conda] blas                      1.0                         mkl  
+[conda] cudatoolkit               10.2.89              hfd86e86_1  
+[conda] ffmpeg                    4.3                  hf484d3e_0    pytorch
+[conda] imagenetv2-pytorch        0.1                      pypi_0    pypi
+[conda] mkl                       2021.4.0           h06a4308_640  
+[conda] mkl-service               2.4.0            py37h7f8727e_0  
+[conda] mkl_fft                   1.3.1            py37hd3c417c_0  
+[conda] mkl_random                1.2.2            py37h51133e4_0  
+[conda] numpy                     1.21.6                   pypi_0    pypi
+[conda] numpy-base                1.21.5           py37ha15fc14_3  
+[conda] pytorch                   1.13.1          py3.7_cuda11.7_cudnn8.5.0_0    pytorch
+[conda] pytorch-cuda              11.7                 h778d358_5    pytorch
+[conda] pytorch-mutex             1.0                        cuda    pytorch
+[conda] torchvision               0.14.1               py37_cu117    pytorch
+        Pillow (9.4.0)
+
+requested:RPO_prime
+Loading trainer: RPO_prime
+requested:ImageNet
+Loading dataset: ImageNet
+Loading preprocessed few-shot data from /shared/s2/lab01/dataset/clip/ImageNet/split_fewshot_taesup/shot_16-seed_2.pkl
+Building transform_train
++ random resized crop (size=(224, 224), scale=(0.08, 1.0))
++ random flip
++ to torch tensor of range [0, 1]
++ normalization (mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
+Building transform_test
++ resize the smaller edge to 224
++ 224x224 center crop
++ to torch tensor of range [0, 1]
++ normalization (mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
+---------  --------
+Dataset    ImageNet
+# classes  1,000
+# train_x  16,000
+# val      50,000
+# test     50,000
+---------  --------
+Loading CLIP (backbone: ViT-B/16)
+Building custom CLIP
+Parameters to be updated: {'prompt_learner.text_prompt', 'prompt_learner.img_prompt'}
+requested:Classification
+Loading evaluator: Classification
+Loading weights to prompt_learner from "output/rpo_prime/crossdataset/train_source/imagenet/shots_16/RPO_prime/main_final_imagenet/seed2/prompt_learner/model.pth.tar-15" (epoch = 15)
+Evaluate on the *test* set
+  0%|          | 0/256 [00:00<?, ?it/s]  0%|          | 1/256 [00:07<33:22,  7.85s/it]  1%|          | 2/256 [00:08<15:23,  3.64s/it]  1%|          | 3/256 [00:09<09:42,  2.30s/it]  2%|▏         | 4/256 [00:09<07:02,  1.67s/it]  2%|▏         | 5/256 [00:10<05:34,  1.33s/it]  2%|▏         | 6/256 [00:11<04:41,  1.13s/it]  3%|▎         | 7/256 [00:12<04:08,  1.00it/s]  3%|▎         | 8/256 [00:12<03:49,  1.08it/s]  4%|▎         | 9/256 [00:13<03:33,  1.16it/s]  4%|▍         | 10/256 [00:14<03:24,  1.20it/s]  4%|▍         | 11/256 [00:15<03:18,  1.23it/s]  5%|▍         | 12/256 [00:15<03:14,  1.26it/s]  5%|▌         | 13/256 [00:16<03:10,  1.27it/s]  5%|▌         | 14/256 [00:17<03:07,  1.29it/s]  6%|▌         | 15/256 [00:18<03:02,  1.32it/s]  6%|▋         | 16/256 [00:18<03:01,  1.32it/s]  7%|▋         | 17/256 [00:19<02:58,  1.34it/s]  7%|▋         | 18/256 [00:20<03:00,  1.32it/s]  7%|▋         | 19/256 [00:21<02:57,  1.34it/s]  8%|▊         | 20/256 [00:21<02:58,  1.32it/s]  8%|▊         | 21/256 [00:22<02:58,  1.32it/s]  9%|▊         | 22/256 [00:23<02:55,  1.33it/s]  9%|▉         | 23/256 [00:24<02:53,  1.34it/s]  9%|▉         | 24/256 [00:24<02:54,  1.33it/s] 10%|▉         | 25/256 [00:25<02:53,  1.33it/s] 10%|█         | 26/256 [00:26<02:51,  1.34it/s] 11%|█         | 27/256 [00:27<02:47,  1.37it/s] 11%|█         | 28/256 [00:27<02:47,  1.36it/s] 11%|█▏        | 29/256 [00:28<02:45,  1.37it/s] 12%|█▏        | 30/256 [00:29<02:43,  1.38it/s] 12%|█▏        | 31/256 [00:30<02:45,  1.36it/s] 12%|█▎        | 32/256 [00:30<02:44,  1.36it/s] 13%|█▎        | 33/256 [00:31<02:43,  1.37it/s] 13%|█▎        | 34/256 [00:32<02:42,  1.37it/s] 14%|█▎        | 35/256 [00:32<02:42,  1.36it/s] 14%|█▍        | 36/256 [00:33<02:44,  1.34it/s] 14%|█▍        | 37/256 [00:34<02:43,  1.34it/s] 15%|█▍        | 38/256 [00:35<02:41,  1.35it/s] 15%|█▌        | 39/256 [00:35<02:40,  1.35it/s] 16%|█▌        | 40/256 [00:36<02:41,  1.34it/s] 16%|█▌        | 41/256 [00:37<02:39,  1.35it/s] 16%|█▋        | 42/256 [00:38<02:40,  1.34it/s] 17%|█▋        | 43/256 [00:38<02:38,  1.34it/s] 17%|█▋        | 44/256 [00:39<02:38,  1.34it/s] 18%|█▊        | 45/256 [00:40<02:38,  1.33it/s] 18%|█▊        | 46/256 [00:41<02:38,  1.32it/s] 18%|█▊        | 47/256 [00:41<02:38,  1.32it/s] 19%|█▉        | 48/256 [00:42<02:37,  1.32it/s] 19%|█▉        | 49/256 [00:43<02:36,  1.32it/s] 20%|█▉        | 50/256 [00:44<02:33,  1.34it/s] 20%|█▉        | 51/256 [00:44<02:33,  1.33it/s] 20%|██        | 52/256 [00:45<02:34,  1.32it/s] 21%|██        | 53/256 [00:46<02:32,  1.33it/s] 21%|██        | 54/256 [00:47<02:32,  1.33it/s] 21%|██▏       | 55/256 [00:48<02:31,  1.33it/s] 22%|██▏       | 56/256 [00:48<02:32,  1.31it/s] 22%|██▏       | 57/256 [00:49<02:29,  1.33it/s] 23%|██▎       | 58/256 [00:50<02:27,  1.34it/s] 23%|██▎       | 59/256 [00:51<02:29,  1.32it/s] 23%|██▎       | 60/256 [00:51<02:28,  1.32it/s] 24%|██▍       | 61/256 [00:52<02:26,  1.33it/s] 24%|██▍       | 62/256 [00:53<02:24,  1.34it/s] 25%|██▍       | 63/256 [00:54<02:25,  1.32it/s] 25%|██▌       | 64/256 [00:54<02:25,  1.32it/s] 25%|██▌       | 65/256 [00:55<02:23,  1.33it/s] 26%|██▌       | 66/256 [00:56<02:21,  1.34it/s] 26%|██▌       | 67/256 [00:56<02:20,  1.35it/s] 27%|██▋       | 68/256 [00:57<02:19,  1.34it/s] 27%|██▋       | 69/256 [00:58<02:19,  1.34it/s] 27%|██▋       | 70/256 [00:59<02:19,  1.33it/s] 28%|██▊       | 71/256 [01:00<02:19,  1.33it/s] 28%|██▊       | 72/256 [01:00<02:18,  1.33it/s] 29%|██▊       | 73/256 [01:01<02:16,  1.35it/s] 29%|██▉       | 74/256 [01:02<02:14,  1.35it/s] 29%|██▉       | 75/256 [01:02<02:13,  1.35it/s] 30%|██▉       | 76/256 [01:03<02:14,  1.34it/s] 30%|███       | 77/256 [01:04<02:14,  1.33it/s] 30%|███       | 78/256 [01:05<02:13,  1.33it/s] 31%|███       | 79/256 [01:05<02:11,  1.35it/s] 31%|███▏      | 80/256 [01:06<02:10,  1.35it/s] 32%|███▏      | 81/256 [01:07<02:10,  1.34it/s] 32%|███▏      | 82/256 [01:08<02:09,  1.34it/s] 32%|███▏      | 83/256 [01:08<02:07,  1.35it/s] 33%|███▎      | 84/256 [01:09<02:05,  1.37it/s] 33%|███▎      | 85/256 [01:10<02:04,  1.37it/s] 34%|███▎      | 86/256 [01:11<02:04,  1.36it/s] 34%|███▍      | 87/256 [01:11<02:06,  1.33it/s] 34%|███▍      | 88/256 [01:12<02:07,  1.32it/s] 35%|███▍      | 89/256 [01:13<02:05,  1.33it/s] 35%|███▌      | 90/256 [01:14<02:04,  1.33it/s] 36%|███▌      | 91/256 [01:14<02:04,  1.32it/s] 36%|███▌      | 92/256 [01:15<02:03,  1.33it/s] 36%|███▋      | 93/256 [01:16<02:02,  1.34it/s] 37%|███▋      | 94/256 [01:17<01:59,  1.35it/s] 37%|███▋      | 95/256 [01:17<01:59,  1.34it/s] 38%|███▊      | 96/256 [01:18<02:00,  1.33it/s] 38%|███▊      | 97/256 [01:19<01:59,  1.33it/s] 38%|███▊      | 98/256 [01:20<01:58,  1.34it/s] 39%|███▊      | 99/256 [01:20<01:57,  1.34it/s] 39%|███▉      | 100/256 [01:21<01:56,  1.34it/s] 39%|███▉      | 101/256 [01:22<01:56,  1.34it/s] 40%|███▉      | 102/256 [01:23<01:54,  1.35it/s] 40%|████      | 103/256 [01:23<01:55,  1.33it/s] 41%|████      | 104/256 [01:24<01:54,  1.33it/s] 41%|████      | 105/256 [01:25<01:53,  1.33it/s] 41%|████▏     | 106/256 [01:26<01:51,  1.35it/s] 42%|████▏     | 107/256 [01:26<01:50,  1.35it/s] 42%|████▏     | 108/256 [01:27<01:49,  1.36it/s] 43%|████▎     | 109/256 [01:28<01:47,  1.37it/s] 43%|████▎     | 110/256 [01:28<01:45,  1.38it/s] 43%|████▎     | 111/256 [01:29<01:44,  1.39it/s] 44%|████▍     | 112/256 [01:30<01:42,  1.40it/s] 44%|████▍     | 113/256 [01:31<01:43,  1.38it/s] 45%|████▍     | 114/256 [01:31<01:44,  1.36it/s] 45%|████▍     | 115/256 [01:32<01:43,  1.37it/s] 45%|████▌     | 116/256 [01:33<01:43,  1.36it/s] 46%|████▌     | 117/256 [01:34<01:42,  1.36it/s] 46%|████▌     | 118/256 [01:34<01:40,  1.38it/s] 46%|████▋     | 119/256 [01:35<01:41,  1.36it/s] 47%|████▋     | 120/256 [01:36<01:40,  1.35it/s] 47%|████▋     | 121/256 [01:37<01:39,  1.36it/s] 48%|████▊     | 122/256 [01:37<01:38,  1.37it/s] 48%|████▊     | 123/256 [01:38<01:37,  1.36it/s] 48%|████▊     | 124/256 [01:39<01:37,  1.35it/s] 49%|████▉     | 125/256 [01:40<01:37,  1.35it/s] 49%|████▉     | 126/256 [01:40<01:36,  1.34it/s] 50%|████▉     | 127/256 [01:41<01:36,  1.34it/s] 50%|█████     | 128/256 [01:42<01:35,  1.35it/s] 50%|█████     | 129/256 [01:43<01:37,  1.30it/s] 51%|█████     | 130/256 [01:43<01:37,  1.30it/s] 51%|█████     | 131/256 [01:44<01:36,  1.30it/s] 52%|█████▏    | 132/256 [01:45<01:34,  1.32it/s] 52%|█████▏    | 133/256 [01:46<01:32,  1.32it/s] 52%|█████▏    | 134/256 [01:46<01:32,  1.32it/s] 53%|█████▎    | 135/256 [01:47<01:30,  1.34it/s] 53%|█████▎    | 136/256 [01:48<01:28,  1.35it/s] 54%|█████▎    | 137/256 [01:49<01:27,  1.35it/s] 54%|█████▍    | 138/256 [01:49<01:26,  1.36it/s] 54%|█████▍    | 139/256 [01:50<01:25,  1.37it/s] 55%|█████▍    | 140/256 [01:51<01:24,  1.37it/s] 55%|█████▌    | 141/256 [01:51<01:23,  1.37it/s] 55%|█████▌    | 142/256 [01:52<01:23,  1.37it/s] 56%|█████▌    | 143/256 [01:53<01:22,  1.37it/s] 56%|█████▋    | 144/256 [01:54<01:21,  1.38it/s] 57%|█████▋    | 145/256 [01:54<01:22,  1.35it/s] 57%|█████▋    | 146/256 [01:55<01:21,  1.35it/s] 57%|█████▋    | 147/256 [01:56<01:20,  1.36it/s] 58%|█████▊    | 148/256 [01:57<01:20,  1.34it/s] 58%|█████▊    | 149/256 [01:57<01:19,  1.35it/s] 59%|█████▊    | 150/256 [01:58<01:17,  1.36it/s] 59%|█████▉    | 151/256 [01:59<01:16,  1.38it/s] 59%|█████▉    | 152/256 [02:00<01:15,  1.37it/s] 60%|█████▉    | 153/256 [02:00<01:14,  1.38it/s] 60%|██████    | 154/256 [02:01<01:14,  1.38it/s] 61%|██████    | 155/256 [02:02<01:13,  1.37it/s] 61%|██████    | 156/256 [02:02<01:14,  1.35it/s] 61%|██████▏   | 157/256 [02:03<01:13,  1.35it/s] 62%|██████▏   | 158/256 [02:04<01:13,  1.33it/s] 62%|██████▏   | 159/256 [02:05<01:11,  1.35it/s] 62%|██████▎   | 160/256 [02:05<01:11,  1.34it/s] 63%|██████▎   | 161/256 [02:06<01:10,  1.35it/s] 63%|██████▎   | 162/256 [02:07<01:08,  1.38it/s] 64%|██████▎   | 163/256 [02:08<01:07,  1.37it/s] 64%|██████▍   | 164/256 [02:08<01:07,  1.36it/s] 64%|██████▍   | 165/256 [02:09<01:06,  1.36it/s] 65%|██████▍   | 166/256 [02:10<01:06,  1.35it/s] 65%|██████▌   | 167/256 [02:11<01:05,  1.35it/s] 66%|██████▌   | 168/256 [02:11<01:06,  1.33it/s] 66%|██████▌   | 169/256 [02:12<01:05,  1.33it/s] 66%|██████▋   | 170/256 [02:13<01:04,  1.34it/s] 67%|██████▋   | 171/256 [02:14<01:02,  1.36it/s] 67%|██████▋   | 172/256 [02:14<01:02,  1.35it/s] 68%|██████▊   | 173/256 [02:15<01:01,  1.35it/s] 68%|██████▊   | 174/256 [02:16<01:00,  1.35it/s] 68%|██████▊   | 175/256 [02:17<01:00,  1.35it/s] 69%|██████▉   | 176/256 [02:17<00:59,  1.34it/s] 69%|██████▉   | 177/256 [02:18<00:58,  1.35it/s] 70%|██████▉   | 178/256 [02:19<00:57,  1.37it/s] 70%|██████▉   | 179/256 [02:20<00:56,  1.35it/s] 70%|███████   | 180/256 [02:20<00:55,  1.36it/s] 71%|███████   | 181/256 [02:21<00:55,  1.36it/s] 71%|███████   | 182/256 [02:22<00:54,  1.37it/s] 71%|███████▏  | 183/256 [02:22<00:53,  1.36it/s] 72%|███████▏  | 184/256 [02:23<00:53,  1.35it/s] 72%|███████▏  | 185/256 [02:24<00:52,  1.35it/s] 73%|███████▎  | 186/256 [02:25<00:51,  1.35it/s] 73%|███████▎  | 187/256 [02:25<00:51,  1.33it/s] 73%|███████▎  | 188/256 [02:26<00:51,  1.32it/s] 74%|███████▍  | 189/256 [02:27<00:50,  1.33it/s] 74%|███████▍  | 190/256 [02:28<00:48,  1.35it/s] 75%|███████▍  | 191/256 [02:28<00:47,  1.37it/s] 75%|███████▌  | 192/256 [02:29<00:47,  1.36it/s] 75%|███████▌  | 193/256 [02:30<00:46,  1.36it/s] 76%|███████▌  | 194/256 [02:31<00:46,  1.34it/s] 76%|███████▌  | 195/256 [02:31<00:45,  1.35it/s] 77%|███████▋  | 196/256 [02:32<00:44,  1.35it/s] 77%|███████▋  | 197/256 [02:33<00:43,  1.35it/s] 77%|███████▋  | 198/256 [02:34<00:42,  1.35it/s] 78%|███████▊  | 199/256 [02:34<00:42,  1.35it/s] 78%|███████▊  | 200/256 [02:35<00:41,  1.35it/s] 79%|███████▊  | 201/256 [02:36<00:40,  1.37it/s] 79%|███████▉  | 202/256 [02:37<00:39,  1.35it/s] 79%|███████▉  | 203/256 [02:37<00:39,  1.34it/s] 80%|███████▉  | 204/256 [02:38<00:38,  1.35it/s] 80%|████████  | 205/256 [02:39<00:37,  1.37it/s] 80%|████████  | 206/256 [02:39<00:36,  1.38it/s] 81%|████████  | 207/256 [02:40<00:35,  1.37it/s] 81%|████████▏ | 208/256 [02:41<00:35,  1.34it/s] 82%|████████▏ | 209/256 [02:42<00:35,  1.32it/s] 82%|████████▏ | 210/256 [02:43<00:34,  1.32it/s] 82%|████████▏ | 211/256 [02:43<00:33,  1.33it/s] 83%|████████▎ | 212/256 [02:44<00:32,  1.34it/s] 83%|████████▎ | 213/256 [02:45<00:31,  1.35it/s] 84%|████████▎ | 214/256 [02:45<00:30,  1.36it/s] 84%|████████▍ | 215/256 [02:46<00:30,  1.36it/s] 84%|████████▍ | 216/256 [02:47<00:29,  1.36it/s] 85%|████████▍ | 217/256 [02:48<00:28,  1.37it/s] 85%|████████▌ | 218/256 [02:48<00:27,  1.36it/s] 86%|████████▌ | 219/256 [02:49<00:27,  1.36it/s] 86%|████████▌ | 220/256 [02:50<00:26,  1.35it/s] 86%|████████▋ | 221/256 [02:51<00:26,  1.34it/s] 87%|████████▋ | 222/256 [02:51<00:25,  1.34it/s] 87%|████████▋ | 223/256 [02:52<00:24,  1.34it/s] 88%|████████▊ | 224/256 [02:53<00:23,  1.34it/s] 88%|████████▊ | 225/256 [02:54<00:23,  1.34it/s] 88%|████████▊ | 226/256 [02:54<00:22,  1.33it/s] 89%|████████▊ | 227/256 [02:55<00:21,  1.33it/s] 89%|████████▉ | 228/256 [02:56<00:21,  1.33it/s] 89%|████████▉ | 229/256 [02:57<00:20,  1.30it/s] 90%|████████▉ | 230/256 [02:57<00:19,  1.32it/s] 90%|█████████ | 231/256 [02:58<00:18,  1.32it/s] 91%|█████████ | 232/256 [02:59<00:17,  1.33it/s] 91%|█████████ | 233/256 [03:00<00:17,  1.35it/s] 91%|█████████▏| 234/256 [03:00<00:16,  1.35it/s] 92%|█████████▏| 235/256 [03:01<00:15,  1.38it/s] 92%|█████████▏| 236/256 [03:02<00:14,  1.39it/s] 93%|█████████▎| 237/256 [03:02<00:13,  1.41it/s] 93%|█████████▎| 238/256 [03:03<00:12,  1.42it/s] 93%|█████████▎| 239/256 [03:04<00:11,  1.43it/s] 94%|█████████▍| 240/256 [03:05<00:11,  1.43it/s] 94%|█████████▍| 241/256 [03:05<00:10,  1.43it/s] 95%|█████████▍| 242/256 [03:06<00:09,  1.44it/s] 95%|█████████▍| 243/256 [03:07<00:09,  1.44it/s] 95%|█████████▌| 244/256 [03:07<00:08,  1.45it/s] 96%|█████████▌| 245/256 [03:08<00:07,  1.44it/s] 96%|█████████▌| 246/256 [03:09<00:06,  1.44it/s] 96%|█████████▋| 247/256 [03:09<00:06,  1.44it/s] 97%|█████████▋| 248/256 [03:10<00:05,  1.45it/s] 97%|█████████▋| 249/256 [03:11<00:04,  1.45it/s] 98%|█████████▊| 250/256 [03:11<00:04,  1.45it/s] 98%|█████████▊| 251/256 [03:12<00:03,  1.45it/s] 98%|█████████▊| 252/256 [03:13<00:02,  1.44it/s] 99%|█████████▉| 253/256 [03:14<00:02,  1.44it/s] 99%|█████████▉| 254/256 [03:14<00:01,  1.43it/s]100%|█████████▉| 255/256 [03:15<00:00,  1.44it/s]100%|██████████| 256/256 [03:15<00:00,  1.58it/s]100%|██████████| 256/256 [03:16<00:00,  1.31it/s]
+=> result
+* total: 50,000
+* correct: 36,070
+* accuracy: 72.1%
+* error: 27.9%
+* macro_f1: 71.5%
++ for seed in 1 2 3
++ for dataset in imagenet
++ sh scripts/rpo_prime/dg_test.sh imagenet imagenet 3 0 main_final_imagenet 16 15 RPO_prime
+/shared/s2/lab01/myungjoo/RPO_v2/clip/clip.py:23: UserWarning: PyTorch version 1.7.1 or higher is recommended
+  warnings.warn("PyTorch version 1.7.1 or higher is recommended")
+Setting fixed seed: 3
+***************
+** Arguments **
+***************
+backbone: 
+config_file: configs/trainers/RPO_prime/main_final_imagenet.yaml
+dataset_config_file: configs/datasets/imagenet.yaml
+eval_only: True
+head: 
+load_epoch: 15
+model_dir: output/rpo_prime/crossdataset/train_source/imagenet/shots_16/RPO_prime/main_final_imagenet/seed3
+no_train: False
+opts: ['DATASET.NUM_SHOTS', '16', 'DATASET.SUBSAMPLE_CLASSES', 'all']
+output_dir: output/rpo_prime/dg/test_target/source_imagenet/imagenet/seed3
+resume: 
+root: /shared/s2/lab01/dataset/clip
+seed: 3
+source_domains: None
+target_domains: None
+trainer: RPO_prime
+transforms: None
+************
+** Config **
+************
+DATALOADER:
+  K_TRANSFORMS: 1
+  NUM_WORKERS: 12
+  RETURN_IMG0: False
+  TEST:
+    BATCH_SIZE: 196
+    SAMPLER: SequentialSampler
+  TRAIN_U:
+    BATCH_SIZE: 32
+    N_DOMAIN: 0
+    N_INS: 16
+    SAME_AS_X: True
+    SAMPLER: RandomSampler
+  TRAIN_X:
+    BATCH_SIZE: 4
+    N_DOMAIN: 0
+    N_INS: 16
+    SAMPLER: RandomSampler
+DATASET:
+  ALL_AS_UNLABELED: False
+  CIFAR_C_LEVEL: 1
+  CIFAR_C_TYPE: 
+  NAME: ImageNet
+  NUM_LABELED: -1
+  NUM_SHOTS: 16
+  PROMPT: a photo of a _.
+  ROOT: /shared/s2/lab01/dataset/clip
+  SOURCE_DOMAINS: ()
+  STL10_FOLD: -1
+  SUBSAMPLE_CLASSES: all
+  TARGET_DOMAINS: ()
+  VAL_PERCENT: 0.1
+INPUT:
+  COLORJITTER_B: 0.4
+  COLORJITTER_C: 0.4
+  COLORJITTER_H: 0.1
+  COLORJITTER_S: 0.4
+  CROP_PADDING: 4
+  CUTOUT_LEN: 16
+  CUTOUT_N: 1
+  GB_K: 21
+  GB_P: 0.5
+  GN_MEAN: 0.0
+  GN_STD: 0.15
+  INTERPOLATION: bicubic
+  NO_TRANSFORM: False
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  RANDAUGMENT_M: 10
+  RANDAUGMENT_N: 2
+  RGS_P: 0.2
+  RRCROP_SCALE: (0.08, 1.0)
+  SIZE: (224, 224)
+  TRANSFORMS: ('random_resized_crop', 'random_flip', 'normalize')
+MODEL:
+  BACKBONE:
+    NAME: ViT-B/16
+    PRETRAINED: True
+  HEAD:
+    ACTIVATION: relu
+    BN: True
+    DROPOUT: 0.0
+    HIDDEN_LAYERS: ()
+    NAME: 
+  INIT_WEIGHTS: 
+OPTIM:
+  ADAM_BETA1: 0.9
+  ADAM_BETA2: 0.999
+  BASE_LR_MULT: 0.1
+  GAMMA: 0.1
+  LR: 0.01
+  LR_SCHEDULER: cosine
+  MAX_EPOCH: 15
+  MOMENTUM: 0.9
+  NAME: sgd
+  NEW_LAYERS: ()
+  RMSPROP_ALPHA: 0.99
+  SGD_DAMPNING: 0
+  SGD_NESTEROV: False
+  STAGED_LR: False
+  STEPSIZE: (-1,)
+  WARMUP_CONS_LR: 1e-05
+  WARMUP_EPOCH: -1
+  WARMUP_MIN_LR: 1e-05
+  WARMUP_RECOUNT: True
+  WARMUP_TYPE: linear
+  WEIGHT_DECAY: 0.0005
+OUTPUT_DIR: output/rpo_prime/dg/test_target/source_imagenet/imagenet/seed3
+RESUME: 
+SEED: 3
+TEST:
+  COMPUTE_CMAT: False
+  EVALUATOR: Classification
+  FINAL_MODEL: last_step
+  NO_TEST: False
+  PER_CLASS_RESULT: False
+  SPLIT: test
+TRAIN:
+  CHECKPOINT_FREQ: 5
+  COUNT_ITER: train_x
+  PRINT_FREQ: 2
+TRAINER:
+  CDAC:
+    CLASS_LR_MULTI: 10
+    P_THRESH: 0.95
+    RAMPUP_COEF: 30
+    RAMPUP_ITRS: 1000
+    STRONG_TRANSFORMS: ()
+    TOPK_MATCH: 5
+  COCOOP:
+    CTX_INIT: a photo of a
+    N_CTX: 4
+    PREC: fp16
+  COOP:
+    CLASS_TOKEN_POSITION: end
+    CSC: False
+    CTX_INIT: 
+    N_CTX: 16
+    PREC: fp16
+  CROSSGRAD:
+    ALPHA_D: 0.5
+    ALPHA_F: 0.5
+    EPS_D: 1.0
+    EPS_F: 1.0
+  DAEL:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 0.5
+  DAELDG:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 0.5
+  DDAIG:
+    ALPHA: 0.5
+    CLAMP: False
+    CLAMP_MAX: 1.0
+    CLAMP_MIN: -1.0
+    G_ARCH: 
+    LMDA: 0.3
+    WARMUP: 0
+  DOMAINMIX:
+    ALPHA: 1.0
+    BETA: 1.0
+    TYPE: crossdomain
+  ENTMIN:
+    LMDA: 0.001
+  FIXMATCH:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 1.0
+  LP:
+    PREC: fp16
+    PROMPT: A photo of a {cls_name}
+  M3SDA:
+    LMDA: 0.5
+    N_STEP_F: 4
+  MCD:
+    N_STEP_F: 4
+  MEANTEACHER:
+    EMA_ALPHA: 0.999
+    RAMPUP: 5
+    WEIGHT_U: 1.0
+  MIXMATCH:
+    MIXUP_BETA: 0.75
+    RAMPUP: 20000
+    TEMP: 2.0
+    WEIGHT_U: 100.0
+  MME:
+    LMDA: 0.1
+  NAME: RPO_prime
+  RPO:
+    CTX_INIT: a photo of a
+    K1: 18
+    K2: 6
+    PREC: fp16
+    cov_loss: 500
+    sdl_loss: 1
+  SE:
+    CONF_THRE: 0.95
+    EMA_ALPHA: 0.999
+    RAMPUP: 300
+USE_CUDA: True
+VERBOSE: True
+VERSION: 1
+Collecting env info ...
+** System info **
+PyTorch version: 1.13.1
+Is debug build: False
+CUDA used to build PyTorch: 11.7
+ROCM used to build PyTorch: N/A
+
+OS: Ubuntu 20.04.6 LTS (x86_64)
+GCC version: (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+Clang version: Could not collect
+CMake version: version 3.16.3
+Libc version: glibc-2.10
+
+Python version: 3.7.12 | packaged by conda-forge | (default, Oct 26 2021, 06:08:21)  [GCC 9.4.0] (64-bit runtime)
+Python platform: Linux-5.4.0-100-generic-x86_64-with-debian-bullseye-sid
+Is CUDA available: True
+CUDA runtime version: Could not collect
+CUDA_MODULE_LOADING set to: LAZY
+GPU models and configuration: GPU 0: NVIDIA GeForce RTX 3090
+Nvidia driver version: 520.61.05
+cuDNN version: Could not collect
+HIP runtime version: N/A
+MIOpen runtime version: N/A
+Is XNNPACK available: True
+
+Versions of relevant libraries:
+[pip3] imagenetv2-pytorch==0.1
+[pip3] numpy==1.21.5
+[pip3] torch==1.13.1
+[pip3] torchvision==0.14.1
+[conda] blas                      1.0                         mkl  
+[conda] cudatoolkit               10.2.89              hfd86e86_1  
+[conda] ffmpeg                    4.3                  hf484d3e_0    pytorch
+[conda] imagenetv2-pytorch        0.1                      pypi_0    pypi
+[conda] mkl                       2021.4.0           h06a4308_640  
+[conda] mkl-service               2.4.0            py37h7f8727e_0  
+[conda] mkl_fft                   1.3.1            py37hd3c417c_0  
+[conda] mkl_random                1.2.2            py37h51133e4_0  
+[conda] numpy                     1.21.6                   pypi_0    pypi
+[conda] numpy-base                1.21.5           py37ha15fc14_3  
+[conda] pytorch                   1.13.1          py3.7_cuda11.7_cudnn8.5.0_0    pytorch
+[conda] pytorch-cuda              11.7                 h778d358_5    pytorch
+[conda] pytorch-mutex             1.0                        cuda    pytorch
+[conda] torchvision               0.14.1               py37_cu117    pytorch
+        Pillow (9.4.0)
+
+requested:RPO_prime
+Loading trainer: RPO_prime
+requested:ImageNet
+Loading dataset: ImageNet
+Loading preprocessed few-shot data from /shared/s2/lab01/dataset/clip/ImageNet/split_fewshot_taesup/shot_16-seed_3.pkl
+Building transform_train
++ random resized crop (size=(224, 224), scale=(0.08, 1.0))
++ random flip
++ to torch tensor of range [0, 1]
++ normalization (mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
+Building transform_test
++ resize the smaller edge to 224
++ 224x224 center crop
++ to torch tensor of range [0, 1]
++ normalization (mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
+---------  --------
+Dataset    ImageNet
+# classes  1,000
+# train_x  16,000
+# val      50,000
+# test     50,000
+---------  --------
+Loading CLIP (backbone: ViT-B/16)
+Building custom CLIP
+Parameters to be updated: {'prompt_learner.img_prompt', 'prompt_learner.text_prompt'}
+requested:Classification
+Loading evaluator: Classification
+Loading weights to prompt_learner from "output/rpo_prime/crossdataset/train_source/imagenet/shots_16/RPO_prime/main_final_imagenet/seed3/prompt_learner/model.pth.tar-15" (epoch = 15)
+Evaluate on the *test* set
+  0%|          | 0/256 [00:00<?, ?it/s]  0%|          | 1/256 [00:08<35:03,  8.25s/it]  1%|          | 2/256 [00:08<16:12,  3.83s/it]  1%|          | 3/256 [00:09<10:07,  2.40s/it]  2%|▏         | 4/256 [00:10<07:19,  1.74s/it]  2%|▏         | 5/256 [00:11<05:44,  1.37s/it]  2%|▏         | 6/256 [00:11<04:44,  1.14s/it]  3%|▎         | 7/256 [00:12<04:06,  1.01it/s]  3%|▎         | 8/256 [00:13<03:40,  1.13it/s]  4%|▎         | 9/256 [00:13<03:24,  1.21it/s]  4%|▍         | 10/256 [00:14<03:14,  1.26it/s]  4%|▍         | 11/256 [00:15<03:01,  1.35it/s]  5%|▍         | 12/256 [00:15<02:51,  1.42it/s]  5%|▌         | 13/256 [00:16<02:44,  1.48it/s]  5%|▌         | 14/256 [00:17<02:39,  1.52it/s]  6%|▌         | 15/256 [00:17<02:35,  1.55it/s]  6%|▋         | 16/256 [00:18<02:34,  1.55it/s]  7%|▋         | 17/256 [00:18<02:30,  1.59it/s]  7%|▋         | 18/256 [00:19<02:26,  1.62it/s]  7%|▋         | 19/256 [00:20<02:25,  1.62it/s]  8%|▊         | 20/256 [00:20<02:26,  1.61it/s]  8%|▊         | 21/256 [00:21<02:29,  1.57it/s]  9%|▊         | 22/256 [00:22<02:31,  1.54it/s]  9%|▉         | 23/256 [00:22<02:32,  1.53it/s]  9%|▉         | 24/256 [00:23<02:31,  1.53it/s] 10%|▉         | 25/256 [00:24<02:32,  1.51it/s] 10%|█         | 26/256 [00:24<02:30,  1.53it/s] 11%|█         | 27/256 [00:25<02:33,  1.50it/s] 11%|█         | 28/256 [00:26<02:32,  1.50it/s] 11%|█▏        | 29/256 [00:26<02:31,  1.50it/s] 12%|█▏        | 30/256 [00:27<02:31,  1.49it/s] 12%|█▏        | 31/256 [00:28<02:30,  1.49it/s] 12%|█▎        | 32/256 [00:28<02:29,  1.50it/s] 13%|█▎        | 33/256 [00:29<02:28,  1.50it/s] 13%|█▎        | 34/256 [00:30<02:26,  1.52it/s] 14%|█▎        | 35/256 [00:30<02:23,  1.54it/s] 14%|█▍        | 36/256 [00:31<02:24,  1.52it/s] 14%|█▍        | 37/256 [00:32<02:22,  1.53it/s] 15%|█▍        | 38/256 [00:32<02:23,  1.52it/s] 15%|█▌        | 39/256 [00:33<02:25,  1.49it/s] 16%|█▌        | 40/256 [00:34<02:21,  1.53it/s] 16%|█▌        | 41/256 [00:34<02:22,  1.51it/s] 16%|█▋        | 42/256 [00:35<02:22,  1.50it/s] 17%|█▋        | 43/256 [00:36<02:21,  1.50it/s] 17%|█▋        | 44/256 [00:36<02:21,  1.49it/s] 18%|█▊        | 45/256 [00:37<02:19,  1.51it/s] 18%|█▊        | 46/256 [00:37<02:17,  1.52it/s] 18%|█▊        | 47/256 [00:38<02:19,  1.50it/s] 19%|█▉        | 48/256 [00:39<02:18,  1.50it/s] 19%|█▉        | 49/256 [00:40<02:20,  1.47it/s] 20%|█▉        | 50/256 [00:40<02:23,  1.44it/s] 20%|█▉        | 51/256 [00:41<02:23,  1.43it/s] 20%|██        | 52/256 [00:42<02:18,  1.48it/s] 21%|██        | 53/256 [00:42<02:21,  1.43it/s] 21%|██        | 54/256 [00:43<02:19,  1.44it/s] 21%|██▏       | 55/256 [00:44<02:18,  1.45it/s] 22%|██▏       | 56/256 [00:44<02:17,  1.45it/s] 22%|██▏       | 57/256 [00:45<02:16,  1.46it/s] 23%|██▎       | 58/256 [00:46<02:13,  1.48it/s] 23%|██▎       | 59/256 [00:46<02:12,  1.48it/s] 23%|██▎       | 60/256 [00:47<02:15,  1.44it/s] 24%|██▍       | 61/256 [00:48<02:14,  1.45it/s] 24%|██▍       | 62/256 [00:48<02:11,  1.47it/s] 25%|██▍       | 63/256 [00:49<02:09,  1.49it/s] 25%|██▌       | 64/256 [00:50<02:09,  1.48it/s] 25%|██▌       | 65/256 [00:50<02:08,  1.49it/s] 26%|██▌       | 66/256 [00:51<02:05,  1.51it/s] 26%|██▌       | 67/256 [00:52<02:03,  1.53it/s] 27%|██▋       | 68/256 [00:52<02:04,  1.51it/s] 27%|██▋       | 69/256 [00:53<02:05,  1.49it/s] 27%|██▋       | 70/256 [00:54<02:04,  1.49it/s] 28%|██▊       | 71/256 [00:55<02:06,  1.47it/s] 28%|██▊       | 72/256 [00:55<02:05,  1.46it/s] 29%|██▊       | 73/256 [00:56<02:02,  1.49it/s] 29%|██▉       | 74/256 [00:56<02:00,  1.51it/s] 29%|██▉       | 75/256 [00:57<01:59,  1.52it/s] 30%|██▉       | 76/256 [00:58<01:57,  1.53it/s] 30%|███       | 77/256 [00:58<01:57,  1.52it/s] 30%|███       | 78/256 [00:59<01:57,  1.52it/s] 31%|███       | 79/256 [01:00<01:56,  1.52it/s] 31%|███▏      | 80/256 [01:00<01:56,  1.51it/s] 32%|███▏      | 81/256 [01:01<01:55,  1.52it/s] 32%|███▏      | 82/256 [01:02<01:55,  1.51it/s] 32%|███▏      | 83/256 [01:02<01:54,  1.52it/s] 33%|███▎      | 84/256 [01:03<01:53,  1.51it/s] 33%|███▎      | 85/256 [01:04<01:54,  1.49it/s] 34%|███▎      | 86/256 [01:04<01:52,  1.51it/s] 34%|███▍      | 87/256 [01:05<01:52,  1.50it/s] 34%|███▍      | 88/256 [01:06<01:51,  1.50it/s] 35%|███▍      | 89/256 [01:06<01:50,  1.52it/s] 35%|███▌      | 90/256 [01:07<01:50,  1.50it/s] 36%|███▌      | 91/256 [01:08<01:49,  1.51it/s] 36%|███▌      | 92/256 [01:08<01:49,  1.49it/s] 36%|███▋      | 93/256 [01:09<01:48,  1.50it/s] 37%|███▋      | 94/256 [01:10<01:48,  1.50it/s] 37%|███▋      | 95/256 [01:10<01:47,  1.50it/s] 38%|███▊      | 96/256 [01:11<01:49,  1.46it/s] 38%|███▊      | 97/256 [01:12<01:46,  1.50it/s] 38%|███▊      | 98/256 [01:12<01:46,  1.49it/s] 39%|███▊      | 99/256 [01:13<01:49,  1.44it/s] 39%|███▉      | 100/256 [01:14<01:45,  1.47it/s] 39%|███▉      | 101/256 [01:15<01:46,  1.45it/s] 40%|███▉      | 102/256 [01:15<01:46,  1.44it/s] 40%|████      | 103/256 [01:16<01:44,  1.46it/s] 41%|████      | 104/256 [01:17<01:43,  1.47it/s] 41%|████      | 105/256 [01:17<01:42,  1.48it/s] 41%|████▏     | 106/256 [01:18<01:40,  1.49it/s] 42%|████▏     | 107/256 [01:19<01:40,  1.49it/s] 42%|████▏     | 108/256 [01:19<01:41,  1.46it/s] 43%|████▎     | 109/256 [01:20<01:39,  1.48it/s] 43%|████▎     | 110/256 [01:21<01:38,  1.48it/s] 43%|████▎     | 111/256 [01:21<01:38,  1.47it/s] 44%|████▍     | 112/256 [01:22<01:38,  1.46it/s] 44%|████▍     | 113/256 [01:23<01:40,  1.42it/s] 45%|████▍     | 114/256 [01:23<01:39,  1.43it/s] 45%|████▍     | 115/256 [01:24<01:37,  1.45it/s] 45%|████▌     | 116/256 [01:25<01:38,  1.42it/s] 46%|████▌     | 117/256 [01:26<01:36,  1.44it/s] 46%|████▌     | 118/256 [01:26<01:35,  1.44it/s] 46%|████▋     | 119/256 [01:27<01:33,  1.46it/s] 47%|████▋     | 120/256 [01:28<01:31,  1.48it/s] 47%|████▋     | 121/256 [01:28<01:30,  1.50it/s] 48%|████▊     | 122/256 [01:29<01:28,  1.51it/s] 48%|████▊     | 123/256 [01:30<01:33,  1.42it/s] 48%|████▊     | 124/256 [01:30<01:32,  1.42it/s] 49%|████▉     | 125/256 [01:31<01:32,  1.42it/s] 49%|████▉     | 126/256 [01:32<01:32,  1.41it/s] 50%|████▉     | 127/256 [01:32<01:31,  1.41it/s] 50%|█████     | 128/256 [01:33<01:28,  1.44it/s] 50%|█████     | 129/256 [01:34<01:26,  1.47it/s] 51%|█████     | 130/256 [01:34<01:24,  1.50it/s] 51%|█████     | 131/256 [01:35<01:22,  1.51it/s] 52%|█████▏    | 132/256 [01:36<01:21,  1.52it/s] 52%|█████▏    | 133/256 [01:36<01:20,  1.53it/s] 52%|█████▏    | 134/256 [01:37<01:19,  1.53it/s] 53%|█████▎    | 135/256 [01:38<01:19,  1.52it/s] 53%|█████▎    | 136/256 [01:38<01:19,  1.51it/s] 54%|█████▎    | 137/256 [01:39<01:18,  1.52it/s] 54%|█████▍    | 138/256 [01:40<01:18,  1.50it/s] 54%|█████▍    | 139/256 [01:40<01:17,  1.51it/s] 55%|█████▍    | 140/256 [01:41<01:16,  1.52it/s] 55%|█████▌    | 141/256 [01:42<01:16,  1.49it/s] 55%|█████▌    | 142/256 [01:42<01:16,  1.48it/s] 56%|█████▌    | 143/256 [01:43<01:16,  1.48it/s] 56%|█████▋    | 144/256 [01:44<01:15,  1.48it/s] 57%|█████▋    | 145/256 [01:44<01:14,  1.49it/s] 57%|█████▋    | 146/256 [01:45<01:13,  1.50it/s] 57%|█████▋    | 147/256 [01:46<01:12,  1.49it/s] 58%|█████▊    | 148/256 [01:46<01:12,  1.50it/s] 58%|█████▊    | 149/256 [01:47<01:12,  1.48it/s] 59%|█████▊    | 150/256 [01:48<01:11,  1.48it/s] 59%|█████▉    | 151/256 [01:48<01:12,  1.45it/s] 59%|█████▉    | 152/256 [01:49<01:11,  1.46it/s] 60%|█████▉    | 153/256 [01:50<01:10,  1.47it/s] 60%|██████    | 154/256 [01:50<01:08,  1.49it/s] 61%|██████    | 155/256 [01:51<01:08,  1.47it/s] 61%|██████    | 156/256 [01:52<01:07,  1.49it/s] 61%|██████▏   | 157/256 [01:52<01:06,  1.49it/s] 62%|██████▏   | 158/256 [01:53<01:06,  1.48it/s] 62%|██████▏   | 159/256 [01:54<01:05,  1.49it/s] 62%|██████▎   | 160/256 [01:55<01:05,  1.46it/s] 63%|██████▎   | 161/256 [01:55<01:04,  1.47it/s] 63%|██████▎   | 162/256 [01:56<01:03,  1.47it/s] 64%|██████▎   | 163/256 [01:57<01:03,  1.47it/s] 64%|██████▍   | 164/256 [01:57<01:02,  1.47it/s] 64%|██████▍   | 165/256 [01:58<01:02,  1.46it/s] 65%|██████▍   | 166/256 [01:59<01:01,  1.48it/s] 65%|██████▌   | 167/256 [01:59<00:59,  1.50it/s] 66%|██████▌   | 168/256 [02:00<00:59,  1.48it/s] 66%|██████▌   | 169/256 [02:01<00:58,  1.48it/s] 66%|██████▋   | 170/256 [02:01<00:57,  1.50it/s] 67%|██████▋   | 171/256 [02:02<00:56,  1.51it/s] 67%|██████▋   | 172/256 [02:03<00:55,  1.51it/s] 68%|██████▊   | 173/256 [02:03<00:57,  1.44it/s] 68%|██████▊   | 174/256 [02:04<00:56,  1.46it/s] 68%|██████▊   | 175/256 [02:05<00:54,  1.48it/s] 69%|██████▉   | 176/256 [02:05<00:54,  1.48it/s] 69%|██████▉   | 177/256 [02:06<00:53,  1.48it/s] 70%|██████▉   | 178/256 [02:07<00:52,  1.48it/s] 70%|██████▉   | 179/256 [02:07<00:51,  1.49it/s] 70%|███████   | 180/256 [02:08<00:50,  1.50it/s] 71%|███████   | 181/256 [02:09<00:49,  1.51it/s] 71%|███████   | 182/256 [02:09<00:49,  1.51it/s] 71%|███████▏  | 183/256 [02:10<00:48,  1.52it/s] 72%|███████▏  | 184/256 [02:11<00:47,  1.51it/s] 72%|███████▏  | 185/256 [02:11<00:46,  1.54it/s] 73%|███████▎  | 186/256 [02:12<00:45,  1.52it/s] 73%|███████▎  | 187/256 [02:13<00:45,  1.53it/s] 73%|███████▎  | 188/256 [02:13<00:44,  1.51it/s] 74%|███████▍  | 189/256 [02:14<00:44,  1.52it/s] 74%|███████▍  | 190/256 [02:15<00:44,  1.50it/s] 75%|███████▍  | 191/256 [02:15<00:42,  1.52it/s] 75%|███████▌  | 192/256 [02:16<00:42,  1.50it/s] 75%|███████▌  | 193/256 [02:17<00:42,  1.47it/s] 76%|███████▌  | 194/256 [02:17<00:42,  1.46it/s] 76%|███████▌  | 195/256 [02:18<00:41,  1.47it/s] 77%|███████▋  | 196/256 [02:19<00:40,  1.49it/s] 77%|███████▋  | 197/256 [02:19<00:39,  1.49it/s] 77%|███████▋  | 198/256 [02:20<00:39,  1.48it/s] 78%|███████▊  | 199/256 [02:21<00:38,  1.50it/s] 78%|███████▊  | 200/256 [02:21<00:37,  1.47it/s] 79%|███████▊  | 201/256 [02:22<00:37,  1.46it/s] 79%|███████▉  | 202/256 [02:23<00:36,  1.47it/s] 79%|███████▉  | 203/256 [02:23<00:36,  1.47it/s] 80%|███████▉  | 204/256 [02:24<00:34,  1.49it/s] 80%|████████  | 205/256 [02:25<00:34,  1.47it/s] 80%|████████  | 206/256 [02:25<00:34,  1.46it/s] 81%|████████  | 207/256 [02:26<00:33,  1.46it/s] 81%|████████▏ | 208/256 [02:27<00:33,  1.45it/s] 82%|████████▏ | 209/256 [02:28<00:33,  1.40it/s] 82%|████████▏ | 210/256 [02:28<00:32,  1.41it/s] 82%|████████▏ | 211/256 [02:29<00:30,  1.45it/s] 83%|████████▎ | 212/256 [02:30<00:29,  1.50it/s] 83%|████████▎ | 213/256 [02:30<00:28,  1.49it/s] 84%|████████▎ | 214/256 [02:31<00:27,  1.50it/s] 84%|████████▍ | 215/256 [02:32<00:27,  1.50it/s] 84%|████████▍ | 216/256 [02:32<00:26,  1.50it/s] 85%|████████▍ | 217/256 [02:33<00:26,  1.49it/s] 85%|████████▌ | 218/256 [02:34<00:25,  1.48it/s] 86%|████████▌ | 219/256 [02:34<00:25,  1.45it/s] 86%|████████▌ | 220/256 [02:35<00:24,  1.48it/s] 86%|████████▋ | 221/256 [02:36<00:24,  1.45it/s] 87%|████████▋ | 222/256 [02:36<00:23,  1.45it/s] 87%|████████▋ | 223/256 [02:37<00:22,  1.44it/s] 88%|████████▊ | 224/256 [02:38<00:21,  1.48it/s] 88%|████████▊ | 225/256 [02:38<00:20,  1.49it/s] 88%|████████▊ | 226/256 [02:39<00:19,  1.50it/s] 89%|████████▊ | 227/256 [02:40<00:19,  1.49it/s] 89%|████████▉ | 228/256 [02:40<00:19,  1.47it/s] 89%|████████▉ | 229/256 [02:41<00:18,  1.47it/s] 90%|████████▉ | 230/256 [02:42<00:17,  1.47it/s] 90%|█████████ | 231/256 [02:42<00:17,  1.45it/s] 91%|█████████ | 232/256 [02:43<00:16,  1.48it/s] 91%|█████████ | 233/256 [02:44<00:15,  1.50it/s] 91%|█████████▏| 234/256 [02:44<00:14,  1.52it/s] 92%|█████████▏| 235/256 [02:45<00:13,  1.53it/s] 92%|█████████▏| 236/256 [02:46<00:12,  1.54it/s] 93%|█████████▎| 237/256 [02:46<00:12,  1.57it/s] 93%|█████████▎| 238/256 [02:47<00:11,  1.60it/s] 93%|█████████▎| 239/256 [02:48<00:10,  1.61it/s] 94%|█████████▍| 240/256 [02:48<00:09,  1.61it/s] 94%|█████████▍| 241/256 [02:49<00:09,  1.60it/s] 95%|█████████▍| 242/256 [02:49<00:08,  1.60it/s] 95%|█████████▍| 243/256 [02:50<00:08,  1.58it/s] 95%|█████████▌| 244/256 [02:51<00:07,  1.58it/s] 96%|█████████▌| 245/256 [02:51<00:06,  1.61it/s] 96%|█████████▌| 246/256 [02:52<00:06,  1.60it/s] 96%|█████████▋| 247/256 [02:53<00:05,  1.58it/s] 97%|█████████▋| 248/256 [02:53<00:05,  1.57it/s] 97%|█████████▋| 249/256 [02:54<00:04,  1.60it/s] 98%|█████████▊| 250/256 [02:54<00:03,  1.58it/s] 98%|█████████▊| 251/256 [02:55<00:03,  1.59it/s] 98%|█████████▊| 252/256 [02:56<00:02,  1.56it/s] 99%|█████████▉| 253/256 [02:56<00:01,  1.55it/s] 99%|█████████▉| 254/256 [02:57<00:01,  1.56it/s]100%|█████████▉| 255/256 [02:58<00:00,  1.58it/s]100%|██████████| 256/256 [02:58<00:00,  1.73it/s]100%|██████████| 256/256 [02:58<00:00,  1.43it/s]
+=> result
+* total: 50,000
+* correct: 36,044
+* accuracy: 72.1%
+* error: 27.9%
+* macro_f1: 71.5%

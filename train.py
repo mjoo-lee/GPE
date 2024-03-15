@@ -23,6 +23,7 @@ import datasets.imagenet
 import datasets.imagenet_sketch
 import datasets.imagenetv2
 import datasets.imagenet_a
+
 import datasets.imagenet_r
 
 import trainers.zsclip
@@ -30,7 +31,10 @@ import trainers.coop
 import trainers.cocoop
 import trainers.rpo
 import trainers.linear_prob
-
+import trainers.rpo_prime
+import trainers.rpo_prime_sdl
+import trainers.rpo_prime_cls
+import trainers.rpo_prime_v1
 
 
 def print_args(args, cfg):
@@ -93,7 +97,11 @@ def extend_cfg(cfg):
     from yacs.config import CfgNode as CN
 
     cfg.TRAINER.RPO = CN()
-    cfg.TRAINER.RPO.K = 1
+    cfg.TRAINER.RPO.K1 = 1
+    cfg.TRAINER.RPO.K2 = 1
+    cfg.TRAINER.RPO.cov_loss = 1000
+    cfg.TRAINER.RPO.sdl_loss = 1
+    
     cfg.TRAINER.RPO.CTX_INIT = ''
     cfg.TRAINER.RPO.PREC = 'fp16'
 
@@ -104,11 +112,11 @@ def extend_cfg(cfg):
     cfg.TRAINER.COCOOP.PREC = 'fp16'
 
     cfg.TRAINER.COOP = CN()
-    cfg.TRAINER.COOP.N_CTX = 4
-    cfg.TRAINER.COOP.CSC = False
-    cfg.TRAINER.COOP.CLASS_TOKEN_POSITION = ''
-    cfg.TRAINER.COOP.PREC = 'fp16'
-    cfg.TRAINER.COOP.CTX_INIT = ''
+    cfg.TRAINER.COOP.N_CTX = 16  # number of context vectors
+    cfg.TRAINER.COOP.CSC = False  # class-specific context
+    cfg.TRAINER.COOP.CTX_INIT = ""  # initialization words
+    cfg.TRAINER.COOP.PREC = "fp16"  # fp16, fp32, amp
+    cfg.TRAINER.COOP.CLASS_TOKEN_POSITION = "end"  # 'middle' or 'end' or 'front'
     
     cfg.TRAINER.LP = CN()
     cfg.TRAINER.LP.PREC = 'fp16'
@@ -173,7 +181,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--root", type=str, default="", help="path to dataset")
+    parser.add_argument("--root", type=str, default="/shared/s2/lab01/dataset/clip", help="path to dataset")
     parser.add_argument("--output-dir", type=str, default="", help="output directory")
     parser.add_argument(
         "--resume",
@@ -224,5 +232,6 @@ if __name__ == "__main__":
         nargs=argparse.REMAINDER,
         help="modify config options using the command-line",
     )
+    
     args = parser.parse_args()
     main(args)
